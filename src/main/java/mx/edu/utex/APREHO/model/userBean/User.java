@@ -26,9 +26,7 @@ public class User {
     @Column(length = 45, nullable = false)
     private String password;
 
-
-
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "rolId")
     private Rol rol;
 

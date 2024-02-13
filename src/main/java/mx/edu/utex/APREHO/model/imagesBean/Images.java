@@ -22,8 +22,8 @@ public class Images {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long imagesId;
-    @Column(nullable = false)
-    private int image;
+    @Column(nullable = false,columnDefinition = "BLOB")
+    private byte[] image;
 
 
     @OneToMany(mappedBy = "images", fetch = FetchType.LAZY, cascade = CascadeType.ALL)

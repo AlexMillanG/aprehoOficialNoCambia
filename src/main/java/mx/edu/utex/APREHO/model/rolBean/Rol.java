@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import mx.edu.utex.APREHO.model.userBean.User;
 
+import java.util.Set;
+
 @Entity
 @Table(name = "rol")
 @Getter
@@ -19,9 +21,7 @@ public class Rol {
     @Column(length = 45, nullable = false)
     private String rolName;
 
-
-
-    @OneToOne(mappedBy = "rol", cascade = CascadeType.ALL)
-    private User user;
+    @OneToMany(mappedBy = "rol",fetch = FetchType.EAGER)
+    private Set<User> user;
 
 }

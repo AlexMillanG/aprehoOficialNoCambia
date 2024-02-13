@@ -33,7 +33,7 @@ public class Hotel {
     @Column(nullable = false)
     private int phone;
 
-    @OneToMany(mappedBy = "hotel", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "hotel", fetch = FetchType.LAZY)
     private Set<Room> room;
 
     @ManyToMany

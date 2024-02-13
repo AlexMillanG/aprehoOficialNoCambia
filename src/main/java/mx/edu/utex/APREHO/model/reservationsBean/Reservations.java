@@ -40,7 +40,7 @@ public class Reservations {
     @JoinColumn(name = "roomId")
     private Room room;
 
-    @OneToMany(mappedBy = "reservations", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "reservations", fetch = FetchType.LAZY)
     private Set<PaymentHistory> paymentHistory;
 
 

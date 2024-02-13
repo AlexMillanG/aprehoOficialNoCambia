@@ -32,7 +32,7 @@ public class Room {
     private String description;
 
 
-    @OneToMany(mappedBy = "room", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "room", fetch = FetchType.LAZY)
     private Set<Reservations> reservations;
 
     @OneToOne(cascade = CascadeType.ALL)
