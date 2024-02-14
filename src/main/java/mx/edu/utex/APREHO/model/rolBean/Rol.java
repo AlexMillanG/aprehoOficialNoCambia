@@ -1,4 +1,5 @@
 package mx.edu.utex.APREHO.model.rolBean;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,6 +22,7 @@ public class Rol {
     @Column(length = 45, nullable = false)
     private String rolName;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "rol",fetch = FetchType.EAGER)
     private Set<User> user;
 
