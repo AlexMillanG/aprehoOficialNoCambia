@@ -22,9 +22,11 @@ public class ServiciosHoteles {
     private final UserRepository userRepository;
 @Transactional(rollbackFor = {SQLException.class})
    public ResponseEntity<ApiResponse> saveHotel(Hotel hotel){
+
+    public ResponseEntity<ApiResponse> saveHotel(Hotel hotel){
         Optional<Hotel> foundHotel = hotelRepository.findByEmail(hotel.getEmail());
 
-        if (foundHotel.isPresent()){
+        //if (foundHotel.isPresent())
             return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST,true,"Error, ya se ha registrado un hotel con ese emaik"),HttpStatus.BAD_REQUEST);
         }else{
             Optional<User> foundUser = null;
@@ -44,6 +46,7 @@ public class ServiciosHoteles {
     }
     public ResponseEntity<ApiResponse> getAll() {
         return new ResponseEntity<>(new ApiResponse(hotelRepository.findAll(),HttpStatus.OK, false, "Usuarios registrados"), HttpStatus.OK);
+
     }
 
 
