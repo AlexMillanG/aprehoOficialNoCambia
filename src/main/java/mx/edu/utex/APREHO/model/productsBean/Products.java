@@ -29,6 +29,14 @@ public class Products {
     @Column(nullable = false)
     private int quantity;
 
+    public Products(Long productId, String productName, int price, String productDescription, int quantity) {
+        this.productId = productId;
+        this.productName = productName;
+        this.price = price;
+        this.productDescription = productDescription;
+        this.quantity = quantity;
+    }
+
     @ManyToMany(mappedBy = "products")
     Set<Hotel> hotel;
 
