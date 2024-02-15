@@ -17,15 +17,13 @@ import java.util.Optional;
 public class ServiciosHoteles {
     private final HotelRepository hotelRepository;
 
-  /*  public ResponseEntity<ApiResponse> saveHotel(Hotel hotel){
+    public ResponseEntity<ApiResponse> saveHotel(Hotel hotel){
         Optional<Hotel> foundHotel = hotelRepository.findByEmail(hotel.getEmail());
 
-        if (foundHotel.isPresent()){
+        //if (foundHotel.isPresent())
             return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST,true,"Error, ya se ha registrado un hotel con ese emaik"),HttpStatus.BAD_REQUEST);
-        }else{
-
-       }
-    }*/
+        //return new ResponseEntity<>(new )
+    }
 
 
 }
