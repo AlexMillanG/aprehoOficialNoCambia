@@ -27,4 +27,10 @@ public class ApiResponse {
         this.error = error;
         this.mensaje = mensaje;
     }
+
+    public ApiResponse(HttpStatus status, boolean error, String mensaje) {
+        this.status = status;
+        this.error = error;
+        this.mensaje = mensaje;
+    }
 }

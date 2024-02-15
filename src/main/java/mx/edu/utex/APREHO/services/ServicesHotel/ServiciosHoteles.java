@@ -20,34 +20,29 @@ import java.util.Optional;
 public class ServiciosHoteles {
     private final HotelRepository hotelRepository;
     private final UserRepository userRepository;
-@Transactional(rollbackFor = {SQLException.class})
-   public ResponseEntity<ApiResponse> saveHotel(Hotel hotel){
 
-    public ResponseEntity<ApiResponse> saveHotel(Hotel hotel){
+    @Transactional(rollbackFor = {SQLException.class})
+    public ResponseEntity<ApiResponse> saveHotel(Hotel hotel) {
         Optional<Hotel> foundHotel = hotelRepository.findByEmail(hotel.getEmail());
-
-        //if (foundHotel.isPresent())
-            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST,true,"Error, ya se ha registrado un hotel con ese emaik"),HttpStatus.BAD_REQUEST);
-        }else{
-            Optional<User> foundUser = null;
-            if (hotel.getUser() != null) {
+        if (foundHotel.isPresent()) {
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "Error, ya se ha registrado un hotel con ese email"), HttpStatus.BAD_REQUEST);
+        } else {
+            if (hotel.getUser() == null) {
+                return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "Error, no se ha insertado un dueño del hotel"), HttpStatus.BAD_REQUEST);
+            } else {
                 for (User user : hotel.getUser()) {
-                    foundUser = userRepository.findById(user.getUserId());
-                    if (foundUser.isPresent()) {
-                        return new ResponseEntity<>(new ApiResponse(hotelRepository.saveAndFlush(hotel),HttpStatus.OK,false,"Guardado correctamente"),HttpStatus.OK);
-                        //break;
+                    Optional<User> foundUser = userRepository.findById(user.getUserId());
+                    if (!foundUser.isPresent()) {
+                        return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "Error, no se ha encontrado el usuario asociado"), HttpStatus.BAD_REQUEST);
                     }
                 }
-
+                hotelRepository.saveAndFlush(hotel);
+                return new ResponseEntity<>(new ApiResponse(HttpStatus.OK, false, "Guardado correctamente"), HttpStatus.OK);
             }
-
-       }
-        return null;
-    }
-    public ResponseEntity<ApiResponse> getAll() {
-        return new ResponseEntity<>(new ApiResponse(hotelRepository.findAll(),HttpStatus.OK, false, "Usuarios registrados"), HttpStatus.OK);
-
+        }
     }
 
-
+  /*  public ResponseEntity<ApiResponse> getAll() {
+        return new ResponseEntity<>(new ApiResponse(hotelRepository.saveAndFlush(h),HttpStatus.OK, false, "Usuarios registrados"), HttpStatus.OK);
+    }*/
 }
