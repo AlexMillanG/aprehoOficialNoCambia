@@ -33,6 +33,16 @@ public class Hotel {
     @Column(nullable = false)
     private int phone;
 
+
+    public Hotel(Long hotelId, String hotelName, String address, String email, int phone, Set<User> user) {
+        this.hotelId = hotelId;
+        this.hotelName = hotelName;
+        this.address = address;
+        this.email = email;
+        this.phone = phone;
+        this.user = user;
+    }
+
     @OneToMany(mappedBy = "hotel", fetch = FetchType.LAZY)
     private Set<Room> room;
 
@@ -54,5 +64,18 @@ public class Hotel {
             inverseJoinColumns = @JoinColumn(name = "hotelId"))
     Set<Products> products = new HashSet<>();
 
-
+    @Override
+    public String toString() {
+        return "Hotel{" +
+                "hotelId=" + hotelId +
+                ", hotelName='" + hotelName + '\'' +
+                ", address='" + address + '\'' +
+                ", email='" + email + '\'' +
+                ", phone=" + phone +
+                ", room=" + room +
+                ", user=" + user +
+                ", images=" + images +
+                ", products=" + products +
+                '}';
+    }
 }

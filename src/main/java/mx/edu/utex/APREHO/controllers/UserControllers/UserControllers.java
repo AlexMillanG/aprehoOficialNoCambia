@@ -19,7 +19,7 @@ public class UserControllers {
         return service.save(user.toEntity());
     }
 
-    @GetMapping("findAll")
+    @GetMapping("/findAll")
     public ResponseEntity<ApiResponse> findAll(){
         return service.getAll();
     }

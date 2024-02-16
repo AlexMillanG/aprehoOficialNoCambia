@@ -56,4 +56,16 @@ public class User {
         this.rol = rol;
         this.people = people;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId=" + userId +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", rol=" + rol +
+                ", people=" + people +
+                ", hotel=" + hotel +
+                '}';
+    }
 }

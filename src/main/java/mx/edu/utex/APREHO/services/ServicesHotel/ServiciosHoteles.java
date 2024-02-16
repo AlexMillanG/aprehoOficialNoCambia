@@ -25,8 +25,10 @@ public class ServiciosHoteles {
     public ResponseEntity<ApiResponse> saveHotel(Hotel hotel) {
         Optional<Hotel> foundHotel = hotelRepository.findByEmail(hotel.getEmail());
         if (foundHotel.isPresent()) {
+            //checa que el hotel sea único
             return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "Error, ya se ha registrado un hotel con ese email"), HttpStatus.BAD_REQUEST);
         } else {
+            //si es unico checa que este asociado a un usuario
             if (hotel.getUser() == null) {
                 return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "Error, no se ha insertado un dueño del hotel"), HttpStatus.BAD_REQUEST);
             } else {
@@ -37,6 +39,9 @@ public class ServiciosHoteles {
                     }
                 }
                 hotelRepository.saveAndFlush(hotel);
+                for (User user : hotel.getUser()) {
+                    System.err.println(user.getUserId());
+                }
                 return new ResponseEntity<>(new ApiResponse(HttpStatus.OK, false, "Guardado correctamente"), HttpStatus.OK);
             }
         }
