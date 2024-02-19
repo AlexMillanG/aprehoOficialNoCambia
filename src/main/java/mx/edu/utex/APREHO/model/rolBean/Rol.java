@@ -1,10 +1,7 @@
 package mx.edu.utex.APREHO.model.rolBean;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import mx.edu.utex.APREHO.model.userBean.User;
 
 import java.util.Set;
@@ -26,4 +23,11 @@ public class Rol {
     @OneToMany(mappedBy = "rol",fetch = FetchType.EAGER)
     private Set<User> user;
 
+    @Override
+    public String toString() {
+        return "Rol{" +
+                "rolId=" + rolId +
+                ", rolName='" + rolName + '\'' +
+                '}';
+    }
 }

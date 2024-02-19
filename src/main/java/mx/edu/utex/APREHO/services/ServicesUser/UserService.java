@@ -65,15 +65,14 @@ public class UserService {
     }
 
     public ResponseEntity<ApiResponse> getAll() {
-        return new ResponseEntity<>(new ApiResponse(repository.findAll(),HttpStatus.OK, false, "Usuarios registrados"), HttpStatus.OK);
+        List<User> users=repository.getUser();
+        System.err.println(users.toString());
+
+        return new ResponseEntity<>(new ApiResponse(users,HttpStatus.OK, false, "Usuarios registrados"), HttpStatus.OK);
     }
 
 
-    public ResponseEntity<ApiResponse> getAllUser() {
-            
 
-        return new ResponseEntity<>(new ApiResponse(repository.findAll(), HttpStatus.OK, false, "Usuarios registrados"), HttpStatus.OK);
-    }
 
 }
 
