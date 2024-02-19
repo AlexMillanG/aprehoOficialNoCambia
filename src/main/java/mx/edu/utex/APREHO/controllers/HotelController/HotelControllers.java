@@ -16,7 +16,24 @@ public class HotelControllers {
 
     @PostMapping("/save")
     public ResponseEntity<ApiResponse>save(@RequestBody DtoHotel hotel){
-        System.err.println(hotel.toEntity().toString());
         return  service.saveHotel(hotel.toEntity());
     }
+
+    @GetMapping("/")
+    public ResponseEntity<ApiResponse> getAll(){
+        return service.getAll();
+    }
+    @GetMapping("/{city}")
+    public ResponseEntity<ApiResponse>getByCity(@PathVariable String city){
+        return service.getByCity(city);
+    }
+    @PutMapping("/update")
+    public ResponseEntity<ApiResponse>update(@RequestBody DtoHotel hotel){
+        return  service.updateHotel(hotel.toEntityUpdate());
+    }
+    @DeleteMapping("/delete/{email}")
+    public ResponseEntity<ApiResponse>delete(@PathVariable String email){
+        return service.deleteHotel(email);
+    }
+
 }

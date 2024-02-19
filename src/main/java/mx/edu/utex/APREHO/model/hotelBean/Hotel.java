@@ -32,15 +32,27 @@ public class Hotel {
     private String email;
     @Column(nullable = false)
     private int phone;
+    @Column(nullable = false)
+    private String city;
 
 
-    public Hotel(Long hotelId, String hotelName, String address, String email, int phone, Set<User> user) {
+    public Hotel(Long hotelId, String hotelName, String address, String email, int phone, String city,Set<User> user) {
         this.hotelId = hotelId;
         this.hotelName = hotelName;
         this.address = address;
         this.email = email;
         this.phone = phone;
+        this.city = city;
         this.user = user;
+    }
+
+    public Hotel(Long hotelId, String hotelName, String address, String email, int phone, String city) {
+        this.hotelId = hotelId;
+        this.hotelName = hotelName;
+        this.address = address;
+        this.email = email;
+        this.phone = phone;
+        this.city = city;
     }
 
     @OneToMany(mappedBy = "hotel", fetch = FetchType.LAZY)

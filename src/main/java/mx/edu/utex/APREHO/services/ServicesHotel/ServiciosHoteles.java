@@ -46,8 +46,49 @@ public class ServiciosHoteles {
             }
         }
     }
+    @Transactional(rollbackFor = SQLException.class)
+    public ResponseEntity<ApiResponse> getAll() {
+        return new ResponseEntity<>(new ApiResponse(hotelRepository.findAll(), HttpStatus.OK), HttpStatus.OK);
+    }
 
-  /*  public ResponseEntity<ApiResponse> getAll() {
-        return new ResponseEntity<>(new ApiResponse(hotelRepository.saveAndFlush(h),HttpStatus.OK, false, "Usuarios registrados"), HttpStatus.OK);
-    }*/
+    //muestra los hoteles por ciudad
+    public ResponseEntity<ApiResponse>getByCity(String city){
+        Optional<Hotel> foundCity = hotelRepository.findByCity(city);
+        if (!foundCity.isPresent())
+                return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST,true,"Error, ciudad no encontrada"),HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(new ApiResponse(foundCity.get(),HttpStatus.OK,false,"ciudad encontrada"),HttpStatus.OK);
+    }
+
+    @Transactional(rollbackFor = {SQLException.class})
+    public ResponseEntity<ApiResponse> updateHotel(Hotel hotel) {
+        Optional<Hotel> foundHotel = hotelRepository.findByEmail(hotel.getEmail());
+        if (!foundHotel.isPresent()) {
+            //checa que el hotel sea único
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "Error, hotel no encontrado"), HttpStatus.BAD_REQUEST);
+        } else {
+            //si es unico checa que este asociado a un usuario
+            if (hotel.getUser() == null) {
+                return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "Error, no se ha insertado un dueño del hotel"), HttpStatus.BAD_REQUEST);
+            } else {
+                for (User user : hotel.getUser()) {
+                    Optional<User> foundUser = userRepository.findById(user.getUserId());
+                    if (!foundUser.isPresent()) {
+                        return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "Error, no se ha encontrado el usuario asociado"), HttpStatus.BAD_REQUEST);
+                    }
+                }
+                hotelRepository.saveAndFlush(hotel);
+                for (User user : hotel.getUser()) {
+                    System.err.println(user.getUserId());
+                }
+                return new ResponseEntity<>(new ApiResponse(HttpStatus.OK, false, "Actualizado correctamente"), HttpStatus.OK);
+            }
+        }
+    }
+    @Transactional(rollbackFor = {SQLException.class})
+    public ResponseEntity<ApiResponse>deleteHotel(String email){
+        Optional<Hotel> foundHotel = hotelRepository.findByEmail(email);
+        if (foundHotel.isEmpty())
+        return new ResponseEntity<>(new ApiResponse(HttpStatus.NOT_FOUND,true,"No se encontró el hotel"),HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(new ApiResponse(hotelRepository.deleteByEmail(email),HttpStatus.OK,false,"Hotel eliminado correctamente"),HttpStatus.OK);
+    }
 }
