@@ -24,4 +24,14 @@ public class UserControllers {
         return service.getAll();
     }
 
+    @PutMapping("update")
+    public  ResponseEntity<ApiResponse> update(@RequestBody DtoUser dtoUser){
+        return  service.update(dtoUser.toEntityId());
+    }
+
+    @DeleteMapping("delete")
+    public  ResponseEntity<ApiResponse> delete(@RequestBody DtoUser dtoUser){
+        return  service.delete(dtoUser.toEntityId());
+    }
+
 }

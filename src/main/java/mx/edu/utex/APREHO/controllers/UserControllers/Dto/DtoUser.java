@@ -19,11 +19,12 @@ public class DtoUser {
     private People people;
     private Set<Hotel> hotel;
 
-    public DtoUser(String username, String password, People people, Rol rol) {
-    }
-
 
     public User toEntity() {
         return new User(username, password, rol, people);
+    }
+
+    public User toEntityId() {
+        return new User(userId,username, password, rol, people);
     }
 }
