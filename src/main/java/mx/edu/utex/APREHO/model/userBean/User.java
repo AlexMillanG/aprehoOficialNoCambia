@@ -1,6 +1,8 @@
 package mx.edu.utex.APREHO.model.userBean;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,14 +29,21 @@ public class User {
     @Column(length = 45, nullable = false)
     private String password;
 
-    @JsonIgnore
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "rolId")
+    @JsonIdentityInfo(
+            generator = ObjectIdGenerators.PropertyGenerator.class,
+            property = "rolId"
+    )
     private Rol rol;
 
-    @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "peopleId")
+    @JsonIdentityInfo(
+            generator = ObjectIdGenerators.PropertyGenerator.class,
+            property = "peopleId"
+    )
     private People people;
 
     @JsonIgnore
@@ -57,6 +66,7 @@ public class User {
         this.people = people;
     }
 
+
     @Override
     public String toString() {
         return "User{" +
@@ -68,4 +78,5 @@ public class User {
                 ", hotel=" + hotel +
                 '}';
     }
+
 }

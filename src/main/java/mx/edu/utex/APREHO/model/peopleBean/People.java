@@ -1,5 +1,6 @@
 package mx.edu.utex.APREHO.model.peopleBean;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,7 +29,7 @@ public class People {
     private String curp;
 
 
-
+@JsonIgnore
     @OneToOne(mappedBy = "people", cascade = CascadeType.ALL)
     private User user;
 

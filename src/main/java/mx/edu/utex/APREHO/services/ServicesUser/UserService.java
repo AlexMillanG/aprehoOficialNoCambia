@@ -65,14 +65,66 @@ public class UserService {
     }
 
     public ResponseEntity<ApiResponse> getAll() {
-        return new ResponseEntity<>(new ApiResponse(repository.findAll(),HttpStatus.OK, false, "Usuarios registrados"), HttpStatus.OK);
+        List<User> users = repository.getUser();
+
+        return new ResponseEntity<>(new ApiResponse(users, HttpStatus.OK, false, "Usuarios registrados"), HttpStatus.OK);
     }
 
 
-    public ResponseEntity<ApiResponse> getAllUser() {
-            
+    @Transactional(rollbackFor = {SQLException.class})
+    public ResponseEntity<ApiResponse> update(User user) {
+        Optional<User> foundUser = repository.findById(user.getUserId());
+        if (foundUser.isPresent()) {
+            if (user.getPeople() != null) {
+                Optional<People> foundPeople = peopleRepository.findById(user.getPeople().getPeopleId());
+                if (foundPeople.isPresent()) {
+                    if (user.getRol() != null) {
+                        Optional<Rol> foundRol = rolRepository.findByRolName(user.getRol().getRolName());
+                        if (!foundRol.isPresent()) {
+                            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "El rol no es correcto"), HttpStatus.BAD_REQUEST);
+                        }
+                        user.setRol(foundRol.get());
+                    } else {
+                        return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "No has ingresado a un ROL para este Usuario"), HttpStatus.BAD_REQUEST);
+                    }
+                } else {
+                    return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "Los datos no son correctos"), HttpStatus.BAD_REQUEST);
+                }
+            } else {
+                return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "No has ingresado a una Persona para este Usuario"), HttpStatus.BAD_REQUEST);
+            }
+        } else {
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "Este usuario no existe"), HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(new ApiResponse(repository.saveAndFlush(user), HttpStatus.OK, false, "Usuario Actualizado exitosamente"), HttpStatus.OK);
+    }
 
-        return new ResponseEntity<>(new ApiResponse(repository.findAll(), HttpStatus.OK, false, "Usuarios registrados"), HttpStatus.OK);
+
+    @Transactional(rollbackFor = {SQLException.class})
+    public ResponseEntity<ApiResponse> delete(User user) {
+        Optional<User> foundUser = repository.findByUsername(user.getUsername());
+        if (foundUser.isPresent()) {
+            if (user.getPeople() != null) {
+                Optional<People> foundPeople = peopleRepository.findByCurp(user.getPeople().getCurp());
+                if (foundPeople.isPresent()) {
+                    People people = foundPeople.get();
+                    peopleRepository.delete(people);
+                    repository.delete(user);
+                    return new ResponseEntity<>(new ApiResponse( HttpStatus.OK, false, "usuario Eliminado exitosamente"), HttpStatus.OK);
+
+                }else {
+                    return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "No hemos encontrado a la persona"), HttpStatus.BAD_REQUEST);
+
+                }
+            }else {
+                return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "Este usuario no existe"), HttpStatus.BAD_REQUEST);
+
+            }
+        }else{
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "Este usuario no existe"), HttpStatus.BAD_REQUEST);
+
+        }
+
     }
 
 }
