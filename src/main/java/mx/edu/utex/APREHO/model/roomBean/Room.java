@@ -32,6 +32,17 @@ public class Room {
     private String description;
 
 
+    public Room(Long roomId, String status, int peopleQuantity, String description, RoomType roomType, Hotel hotel) {
+        this.roomId = roomId;
+        this.status = status;
+        this.peopleQuantity = peopleQuantity;
+        this.description = description;
+        this.roomType = roomType;
+        this.hotel = hotel;
+    }
+
+
+
     @OneToMany(mappedBy = "room", fetch = FetchType.LAZY)
     private Set<Reservations> reservations;
 
