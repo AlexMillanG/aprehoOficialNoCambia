@@ -25,6 +25,8 @@ public class Room {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long roomId;
     @Column(length = 45, nullable = false)
+    private String roomName;
+    @Column(length = 45, nullable = false)
     private String status;
     @Column(nullable = false)
     private int peopleQuantity;
@@ -32,8 +34,9 @@ public class Room {
     private String description;
 
 
-    public Room(Long roomId, String status, int peopleQuantity, String description, RoomType roomType, Hotel hotel) {
+    public Room(Long roomId,String roomName ,String status, int peopleQuantity, String description, RoomType roomType, Hotel hotel) {
         this.roomId = roomId;
+        this.roomName = roomName;
         this.status = status;
         this.peopleQuantity = peopleQuantity;
         this.description = description;
@@ -41,6 +44,15 @@ public class Room {
         this.hotel = hotel;
     }
 
+
+    public Room(String roomName ,String status, int peopleQuantity, String description, RoomType roomType, Hotel hotel) {
+        this.roomName = roomName;
+        this.status = status;
+        this.peopleQuantity = peopleQuantity;
+        this.description = description;
+        this.roomType = roomType;
+        this.hotel = hotel;
+    }
 
 
     @OneToMany(mappedBy = "room", fetch = FetchType.LAZY)

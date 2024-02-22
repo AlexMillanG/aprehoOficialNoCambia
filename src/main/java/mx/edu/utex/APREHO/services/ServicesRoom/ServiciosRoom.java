@@ -25,18 +25,25 @@ public class ServiciosRoom {
             return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST,true ,"Error, no se le ha asginado un hotel al cuarto"), HttpStatus.BAD_REQUEST);
         if (room.getPeopleQuantity() <= 0)
             return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST,true,"Error,La cantidad de personas no puede ser menor o igual que cero"),HttpStatus.BAD_REQUEST);
+        if (room.getRoomType().getTypeName() == null) {
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST,true,"Error, debe tener asignado un tipo de cuarto"),HttpStatus.BAD_REQUEST);
+        }
             return new ResponseEntity<>(new ApiResponse(roomRepository.saveAndFlush(room),HttpStatus.OK,false,"Cuarto guardado correctamente"),HttpStatus.OK);
     }
 
+
     @Transactional(rollbackFor = {SQLException.class})
-    public ResponseEntity<ApiResponse> UpdateRoom(Room room){
-        Optional<Room> foundHotel = roomRepository.findById(room.getRoomId());
-        if (!foundHotel.isPresent())
-            return new ResponseEntity<>(new ApiResponse(HttpStatus.NOT_FOUND,true,"Error, no se encontró el cuarto a actualizar"),HttpStatus.NOT_FOUND);
+    public ResponseEntity<ApiResponse> updateRoom(Room room){
+        Optional<Room> foundRoom = roomRepository.findById(room.getRoomId());
+        if (foundRoom == null)
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST,true ,"No se encontró el hotel a actualizar"), HttpStatus.BAD_REQUEST);
         if(room.getHotel() == null)
             return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST,true ,"Error, no se le ha asginado un hotel al cuarto"), HttpStatus.BAD_REQUEST);
         if (room.getPeopleQuantity() <= 0)
             return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST,true,"Error,La cantidad de personas no puede ser menor o igual que cero"),HttpStatus.BAD_REQUEST);
+        if (room.getRoomType().getTypeName() == null) {
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST,true,"Error, debe tener asignado un tipo de cuarto"),HttpStatus.BAD_REQUEST);
+        }
         return new ResponseEntity<>(new ApiResponse(roomRepository.saveAndFlush(room),HttpStatus.OK,false,"Cuarto guardado correctamente"),HttpStatus.OK);
     }
 
@@ -56,4 +63,8 @@ public class ServiciosRoom {
         return new ResponseEntity<>(new ApiResponse(foundHotelsRooms.get(),HttpStatus.OK),HttpStatus.OK);
 
     }
+
+
+    //encnotrar por tipo
+    
 }
