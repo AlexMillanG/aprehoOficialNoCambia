@@ -53,6 +53,13 @@ public class Room {
         this.roomType = roomType;
         this.hotel = hotel;
     }
+    public Room(String roomName ,String status, int peopleQuantity, String description,Hotel hotel) {
+        this.roomName = roomName;
+        this.status = status;
+        this.peopleQuantity = peopleQuantity;
+        this.description = description;
+        this.hotel = hotel;
+    }
 
 
     @OneToMany(mappedBy = "room", fetch = FetchType.LAZY)

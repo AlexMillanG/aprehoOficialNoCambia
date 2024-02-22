@@ -13,7 +13,6 @@ import java.util.Set;
 public class DtoUser {
 
     private Long userId;
-    private String username;
     private String password;
     private Rol rol;
     private People people;
@@ -21,10 +20,10 @@ public class DtoUser {
 
 
     public User toEntity() {
-        return new User(username, password, rol, people);
+        return new User( password, rol, people);
     }
 
     public User toEntityId() {
-        return new User(userId,username, password, rol, people);
+        return new User(userId,password, rol, people);
     }
 }

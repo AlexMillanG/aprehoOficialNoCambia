@@ -21,6 +21,6 @@ public class DtoRoom {
     }
 
     public Room toEntity(){
-        return new Room(roomName ,status, peopleQuantity,description,type,hotel );
+        return new Room(roomName ,status, peopleQuantity,description,hotel );
     }
 }

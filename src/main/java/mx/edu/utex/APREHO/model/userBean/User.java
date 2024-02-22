@@ -25,8 +25,6 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
     @Column(length = 45, nullable = false)
-    private String username;
-    @Column(length = 45, nullable = false)
     private String password;
 
 
@@ -51,16 +49,14 @@ public class User {
     private Set<Hotel> hotel;
 
 
-    public User(Long userId, String username, String password, Rol rol, People people) {
+    public User(Long userId,String password, Rol rol, People people) {
         this.userId = userId;
-        this.username = username;
         this.password = password;
         this.rol = rol;
         this.people = people;
     }
 
-    public User(String username, String password, Rol rol, People people) {
-        this.username = username;
+    public User( String password, Rol rol, People people) {
         this.password = password;
         this.rol = rol;
         this.people = people;
@@ -71,7 +67,6 @@ public class User {
     public String toString() {
         return "User{" +
                 "userId=" + userId +
-                ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", rol=" + rol +
                 ", people=" + people +
