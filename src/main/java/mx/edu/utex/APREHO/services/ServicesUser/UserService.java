@@ -32,10 +32,7 @@ public class UserService {
 
     @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<ApiResponse> save(User user) {
-        Optional<User> foundUser = repository.findByUsername(user.getUsername());
-        if (foundUser.isPresent()) {
-            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "Este usuario ya existe"), HttpStatus.BAD_REQUEST);
-        } else {
+
             if (user.getPeople() != null) {
                 Optional<People> foundPeople = peopleRepository.findByCurp(user.getPeople().getCurp());
                 if (!foundPeople.isPresent()) {
@@ -60,7 +57,7 @@ public class UserService {
 
             }
 
-        }
+
         return new ResponseEntity<>(new ApiResponse(repository.saveAndFlush(user), HttpStatus.OK, false, "usuario creado exitosamente"), HttpStatus.OK);
     }
 
@@ -102,8 +99,7 @@ public class UserService {
 
     @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<ApiResponse> delete(User user) {
-        Optional<User> foundUser = repository.findByUsername(user.getUsername());
-        if (foundUser.isPresent()) {
+
             if (user.getPeople() != null) {
                 Optional<People> foundPeople = peopleRepository.findByCurp(user.getPeople().getCurp());
                 if (foundPeople.isPresent()) {
@@ -120,10 +116,7 @@ public class UserService {
                 return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "Este usuario no existe"), HttpStatus.BAD_REQUEST);
 
             }
-        }else{
-            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "Este usuario no existe"), HttpStatus.BAD_REQUEST);
 
-        }
 
     }
 
