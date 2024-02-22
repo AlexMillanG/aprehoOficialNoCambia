@@ -16,12 +16,13 @@ public class DtoHotel {
     private int phone;
     private String city;
     private Set <User> user;
+    private String description;
 
     public Hotel toEntity(){
-        return new Hotel(hotelId,hotelName,address,email,phone,city,user);
+        return new Hotel(hotelId,hotelName,address,email,phone,city,user, description);
     }
     public Hotel toEntityUpdate(){
-        return new Hotel(hotelId,hotelName,address,email,phone,city);
+        return new Hotel(hotelId,hotelName,address,email,phone,city,description);
     }
 
 }

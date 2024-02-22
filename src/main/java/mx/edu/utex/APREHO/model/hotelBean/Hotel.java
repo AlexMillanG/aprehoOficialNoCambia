@@ -34,9 +34,11 @@ public class Hotel {
     private int phone;
     @Column(nullable = false)
     private String city;
+    @Column(nullable = false)
+    private String description;
 
 
-    public Hotel(Long hotelId, String hotelName, String address, String email, int phone, String city,Set<User> user) {
+    public Hotel(Long hotelId, String hotelName, String address, String email, int phone, String city,Set<User> user, String description) {
         this.hotelId = hotelId;
         this.hotelName = hotelName;
         this.address = address;
@@ -44,15 +46,17 @@ public class Hotel {
         this.phone = phone;
         this.city = city;
         this.user = user;
+        this.description = description;
     }
 
-    public Hotel(Long hotelId, String hotelName, String address, String email, int phone, String city) {
+    public Hotel(Long hotelId, String hotelName, String address, String email, int phone, String city, String description) {
         this.hotelId = hotelId;
         this.hotelName = hotelName;
         this.address = address;
         this.email = email;
         this.phone = phone;
         this.city = city;
+        this.description = description;
     }
 
     @OneToMany(mappedBy = "hotel", fetch = FetchType.LAZY)

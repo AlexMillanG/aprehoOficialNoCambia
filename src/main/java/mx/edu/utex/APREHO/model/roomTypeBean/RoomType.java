@@ -35,4 +35,10 @@ public class RoomType {
     @ManyToMany(mappedBy = "roomType")
     Set<Rates> rates;
 
+    public RoomType(Long roomTypeId, String typeName, Double price, Room room) {
+        this.roomTypeId = roomTypeId;
+        this.typeName = typeName;
+        this.price = price;
+        this.room = room;
+    }
 }

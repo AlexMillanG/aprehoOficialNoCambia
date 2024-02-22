@@ -5,6 +5,8 @@ import mx.edu.utex.APREHO.config.ApiResponse;
 import mx.edu.utex.APREHO.model.hotelBean.HotelRepository;
 import mx.edu.utex.APREHO.model.roomBean.Room;
 import mx.edu.utex.APREHO.model.roomBean.RoomRepository;
+import mx.edu.utex.APREHO.model.roomTypeBean.RoomType;
+import mx.edu.utex.APREHO.model.roomTypeBean.RoomTypeRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,7 @@ import java.util.Optional;
 public class ServiciosRoom {
     private final RoomRepository roomRepository;
     private final HotelRepository repository;
+    private  final RoomTypeRepository roomTypeRepository;
     @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<ApiResponse> saveRoom(Room room){
         if(room.getHotel() == null)
@@ -26,8 +29,15 @@ public class ServiciosRoom {
         if (room.getPeopleQuantity() <= 0)
             return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST,true,"Error,La cantidad de personas no puede ser menor o igual que cero"),HttpStatus.BAD_REQUEST);
 
-        if (room.getRoomType().getTypeName() == null) {
+        if (room.getRoomType() != null) {
+            Optional<RoomType> foundType= roomTypeRepository.findByTypeName(room.getRoomType().getTypeName());
+
+            if(!foundType.isPresent()){
+                return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST,true,"Error, debe tener asignado un tipo de cuarto"),HttpStatus.BAD_REQUEST);
+            }
+        }else {
             return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST,true,"Error, debe tener asignado un tipo de cuarto"),HttpStatus.BAD_REQUEST);
+
         }
             return new ResponseEntity<>(new ApiResponse(roomRepository.saveAndFlush(room),HttpStatus.OK,false,"Cuarto guardado correctamente"),HttpStatus.OK);
     }
