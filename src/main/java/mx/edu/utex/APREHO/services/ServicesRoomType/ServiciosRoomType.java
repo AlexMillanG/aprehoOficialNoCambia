@@ -18,14 +18,14 @@ public class ServiciosRoomType {
     private RoomTypeRepository roomTypeRepository;
 
     public ResponseEntity<ApiResponse> saveRoomType(RoomType roomType){
-        if (roomType.getPrice() <= 0)
-            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST,true ,"Error, precio no valido"), HttpStatus.BAD_REQUEST);
+    //    if (roomType.getPrice() <= 0)
+      //      return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST,true ,"Error, precio no valido"), HttpStatus.BAD_REQUEST);
             return new ResponseEntity<>(new ApiResponse(roomTypeRepository.saveAndFlush(roomType),HttpStatus.BAD_REQUEST,true ,"Error, precio no valido"), HttpStatus.BAD_REQUEST);
     }
 
     public ResponseEntity<ApiResponse> updateRoomType(RoomType roomType){
-        if (roomType.getPrice() <= 0)
-            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST,true ,"Error, precio no valido"), HttpStatus.BAD_REQUEST);
+      //  if (roomType.getPrice() <= 0)
+        //    return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST,true ,"Error, precio no valido"), HttpStatus.BAD_REQUEST);
             return new ResponseEntity<>(new ApiResponse(roomTypeRepository.saveAndFlush(roomType),HttpStatus.BAD_REQUEST,true ,"Error, precio no valido"), HttpStatus.BAD_REQUEST);
     }
 

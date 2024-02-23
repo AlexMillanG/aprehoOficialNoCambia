@@ -24,8 +24,7 @@ public class RoomType {
     private Long roomTypeId;
     @Column(length = 45, nullable = false)
     private String typeName;
-    @Column(nullable = false)
-    private  Double price;
+
 
 
 
@@ -35,10 +34,9 @@ public class RoomType {
     @ManyToMany(mappedBy = "roomType")
     Set<Rates> rates;
 
-    public RoomType(Long roomTypeId, String typeName, Double price, Room room) {
+    public RoomType(Long roomTypeId, String typeName, Room room) {
         this.roomTypeId = roomTypeId;
         this.typeName = typeName;
-        this.price = price;
         this.room = room;
     }
 }
