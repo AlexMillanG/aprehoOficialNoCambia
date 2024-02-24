@@ -26,7 +26,7 @@ public class RoomType {
     private String typeName;
 
 
-    @OneToMany(mappedBy = "cochesBean", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "roomType", fetch = FetchType.EAGER)
 
     private Set<Room> rooms;
 
@@ -35,6 +35,11 @@ public class RoomType {
 
     public RoomType(Long roomTypeId, String typeName, Set<Room> rooms) {
         this.roomTypeId = roomTypeId;
+        this.typeName = typeName;
+        this.rooms = rooms;
+    }
+
+    public RoomType(String typeName, Set<Room> rooms) {
         this.typeName = typeName;
         this.rooms = rooms;
     }

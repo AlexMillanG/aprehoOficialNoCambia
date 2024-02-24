@@ -18,7 +18,7 @@ import java.util.Optional;
 @AllArgsConstructor
 @Transactional
 @Service
-public class ServiciosRoom {
+public class RoomService {
     private final RoomRepository roomRepository;
     private final HotelRepository repository;
     private  final RoomTypeRepository roomTypeRepository;

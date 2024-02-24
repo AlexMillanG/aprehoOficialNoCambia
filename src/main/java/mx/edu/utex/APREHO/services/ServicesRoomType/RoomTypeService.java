@@ -14,7 +14,7 @@ import java.util.Optional;
 @Service
 @AllArgsConstructor
 @Transactional
-public class ServiciosRoomType {
+public class RoomTypeService {
     private RoomTypeRepository roomTypeRepository;
 
     public ResponseEntity<ApiResponse> saveRoomType(RoomType roomType){
@@ -32,6 +32,11 @@ public class ServiciosRoomType {
             roomTypeRepository.deleteById(id);
             return new ResponseEntity<>(new ApiResponse(HttpStatus.OK,false ,"Tipo de cuarto eliminado con exito"), HttpStatus.BAD_REQUEST);
     }
+    public ResponseEntity<ApiResponse> getRoomTypeByHotel(Long id){
+        Optional<RoomType> foundTypeByHotel = roomTypeRepository.findByHotelId(id);
+        if (!foundTypeByHotel.isPresent())
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST,true ,"Error, no hay tipos de cuartos asociados a este hotel"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ApiResponse(foundTypeByHotel.get(),HttpStatus.OK),HttpStatus.OK);
 
-    //select type_name from room inner join room_type on room_type.room_type_id =room.room_type_id inner join hotel on hotel.hotel_id =room.hotel_id;
+    }
 }

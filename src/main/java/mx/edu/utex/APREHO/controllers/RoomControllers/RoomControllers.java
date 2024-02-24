@@ -3,9 +3,7 @@ package mx.edu.utex.APREHO.controllers.RoomControllers;
 import lombok.AllArgsConstructor;
 import mx.edu.utex.APREHO.config.ApiResponse;
 import mx.edu.utex.APREHO.controllers.RoomControllers.Dto.DtoRoom;
-import mx.edu.utex.APREHO.model.roomBean.Room;
-import mx.edu.utex.APREHO.services.ServicesHotel.ServiciosHoteles;
-import mx.edu.utex.APREHO.services.ServicesRoom.ServiciosRoom;
+import mx.edu.utex.APREHO.services.ServicesRoom.RoomService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin({"*"})
 @AllArgsConstructor
 public class RoomControllers {
-    private final ServiciosRoom service;
+    private final RoomService service;
     @PostMapping("/save")
     public ResponseEntity<ApiResponse> save(@RequestBody DtoRoom room){
         return service.saveRoom(room.toEntity());
