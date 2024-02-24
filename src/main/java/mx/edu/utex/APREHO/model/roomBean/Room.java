@@ -59,7 +59,8 @@ public class Room {
     @OneToMany(mappedBy = "room", fetch = FetchType.LAZY)
     private Set<Reservations> reservations;
 
-    @OneToOne(cascade = CascadeType.ALL)
+
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "roomTypeId")
     private RoomType roomType;
 
