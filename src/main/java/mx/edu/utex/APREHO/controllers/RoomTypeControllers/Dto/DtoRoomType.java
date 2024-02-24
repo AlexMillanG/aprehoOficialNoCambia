@@ -12,10 +12,10 @@ public class DtoRoomType {
     private String typeName;
     private Set<Room> rooms;
 
-    private RoomType toEntity(){
+    public RoomType toEntity(){
         return new RoomType(typeName,rooms);
     }
-    private RoomType toEntityUpdate(){
+    public RoomType toEntityUpdate(){
         return new RoomType(roomTypeId,typeName,rooms);
     }
 
