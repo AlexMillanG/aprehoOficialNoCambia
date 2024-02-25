@@ -51,4 +51,16 @@ public class RoomType {
         this.rooms = rooms;
         this.hotel = hotel;
     }
+
+
+    @Override
+    public String toString() {
+        return "RoomType{" +
+                "roomTypeId=" + roomTypeId +
+                ", typeName='" + typeName + '\'' +
+                ", rooms=" + rooms +
+                ", rates=" + rates +
+                ", hotel=" + hotel +
+                '}';
+    }
 }

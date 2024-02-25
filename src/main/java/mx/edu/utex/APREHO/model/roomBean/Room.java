@@ -75,5 +75,18 @@ public class Room {
     @JoinColumn(name = "hotelId")
     private Hotel hotel;
 
-
+    @Override
+    public String toString() {
+        return "Room{" +
+                "roomId=" + roomId +
+                ", roomName='" + roomName + '\'' +
+                ", status='" + status + '\'' +
+                ", peopleQuantity=" + peopleQuantity +
+                ", description='" + description + '\'' +
+                ", reservations=" + reservations +
+                ", roomType=" + roomType +
+                ", images=" + images +
+                ", hotel=" + hotel +
+                '}';
+    }
 }

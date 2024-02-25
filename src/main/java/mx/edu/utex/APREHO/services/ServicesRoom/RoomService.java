@@ -29,16 +29,20 @@ public class RoomService {
         if (room.getPeopleQuantity() <= 0)
             return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST,true,"Error,La cantidad de personas no puede ser menor o igual que cero"),HttpStatus.BAD_REQUEST);
 
-        if (room.getRoomType() != null) {
-            Optional<RoomType> foundType= roomTypeRepository.findByTypeName(room.getRoomType().getTypeName());
+        if (room.getRoomType().getRoomTypeId() == null)
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST,true,"Error, debe tener asignado un tipo de cuarto"),HttpStatus.BAD_REQUEST);
 
+      /*  if (room.getRoomType() != null) {
+            Optional<RoomType> foundType= roomTypeRepository.findByTypeName(room.getRoomType().getTypeName());
+            System.err.println(roomRepository);
+            System.err.println(foundType);
             if(!foundType.isPresent()){
                 return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST,true,"Error, debe tener asignado un tipo de cuarto"),HttpStatus.BAD_REQUEST);
             }
         }else {
             return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST,true,"Error, debe tener asignado un tipo de cuarto"),HttpStatus.BAD_REQUEST);
 
-        }
+        }*/
             return new ResponseEntity<>(new ApiResponse(roomRepository.saveAndFlush(room),HttpStatus.OK,false,"Cuarto guardado correctamente"),HttpStatus.OK);
     }
 
