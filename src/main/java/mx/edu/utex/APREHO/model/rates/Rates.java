@@ -1,12 +1,11 @@
-package mx.edu.utex.APREHO.model.ratesBean;
+package mx.edu.utex.APREHO.model.rates;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import mx.edu.utex.APREHO.model.productsBean.Products;
-import mx.edu.utex.APREHO.model.roomTypeBean.RoomType;
+import mx.edu.utex.APREHO.model.roomType.RoomType;
 
 import java.time.LocalDate;
 import java.util.HashSet;

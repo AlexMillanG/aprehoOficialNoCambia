@@ -1,4 +1,4 @@
-package mx.edu.utex.APREHO.model.hotelBean;
+package mx.edu.utex.APREHO.model.hotel;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;

@@ -2,22 +2,19 @@ package mx.edu.utex.APREHO.services.ServicesUser;
 
 import lombok.AllArgsConstructor;
 import mx.edu.utex.APREHO.config.ApiResponse;
-import mx.edu.utex.APREHO.controllers.UserControllers.Dto.DtoUser;
-import mx.edu.utex.APREHO.model.hotelBean.HotelRepository;
-import mx.edu.utex.APREHO.model.peopleBean.People;
-import mx.edu.utex.APREHO.model.peopleBean.PeopleRepository;
-import mx.edu.utex.APREHO.model.rolBean.Rol;
-import mx.edu.utex.APREHO.model.rolBean.RolRepository;
-import mx.edu.utex.APREHO.model.userBean.User;
-import mx.edu.utex.APREHO.model.userBean.UserRepository;
-import org.apache.catalina.filters.RemoteIpFilter;
+import mx.edu.utex.APREHO.model.hotel.HotelRepository;
+import mx.edu.utex.APREHO.model.people.People;
+import mx.edu.utex.APREHO.model.people.PeopleRepository;
+import mx.edu.utex.APREHO.model.rol.Rol;
+import mx.edu.utex.APREHO.model.rol.RolRepository;
+import mx.edu.utex.APREHO.model.user.User;
+import mx.edu.utex.APREHO.model.user.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 

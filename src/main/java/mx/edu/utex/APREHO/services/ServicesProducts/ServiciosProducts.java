@@ -2,8 +2,8 @@ package mx.edu.utex.APREHO.services.ServicesProducts;
 
 import lombok.AllArgsConstructor;
 import mx.edu.utex.APREHO.config.ApiResponse;
-import mx.edu.utex.APREHO.model.productsBean.ProductRepository;
-import mx.edu.utex.APREHO.model.productsBean.Products;
+import mx.edu.utex.APREHO.model.products.ProductRepository;
+import mx.edu.utex.APREHO.model.products.Products;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;

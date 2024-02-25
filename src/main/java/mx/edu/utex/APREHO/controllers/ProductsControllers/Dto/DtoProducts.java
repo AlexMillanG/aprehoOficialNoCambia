@@ -2,7 +2,7 @@ package mx.edu.utex.APREHO.controllers.ProductsControllers.Dto;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import mx.edu.utex.APREHO.model.productsBean.Products;
+import mx.edu.utex.APREHO.model.products.Products;
 
 @Data
 @NoArgsConstructor

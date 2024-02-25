@@ -1,11 +1,10 @@
 package mx.edu.utex.APREHO.controllers.UserControllers.Dto;
 
-import jakarta.persistence.*;
 import lombok.Data;
-import mx.edu.utex.APREHO.model.hotelBean.Hotel;
-import mx.edu.utex.APREHO.model.peopleBean.People;
-import mx.edu.utex.APREHO.model.rolBean.Rol;
-import mx.edu.utex.APREHO.model.userBean.User;
+import mx.edu.utex.APREHO.model.hotel.Hotel;
+import mx.edu.utex.APREHO.model.people.People;
+import mx.edu.utex.APREHO.model.rol.Rol;
+import mx.edu.utex.APREHO.model.user.User;
 
 import java.util.Set;
 

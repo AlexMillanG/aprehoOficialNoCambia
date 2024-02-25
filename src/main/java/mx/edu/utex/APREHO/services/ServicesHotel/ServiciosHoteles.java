@@ -2,10 +2,10 @@ package mx.edu.utex.APREHO.services.ServicesHotel;
 
 import lombok.AllArgsConstructor;
 import mx.edu.utex.APREHO.config.ApiResponse;
-import mx.edu.utex.APREHO.model.hotelBean.Hotel;
-import mx.edu.utex.APREHO.model.hotelBean.HotelRepository;
-import mx.edu.utex.APREHO.model.userBean.User;
-import mx.edu.utex.APREHO.model.userBean.UserRepository;
+import mx.edu.utex.APREHO.model.hotel.Hotel;
+import mx.edu.utex.APREHO.model.hotel.HotelRepository;
+import mx.edu.utex.APREHO.model.user.User;
+import mx.edu.utex.APREHO.model.user.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;

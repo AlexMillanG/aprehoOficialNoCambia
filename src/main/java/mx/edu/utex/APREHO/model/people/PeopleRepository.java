@@ -1,4 +1,4 @@
-package mx.edu.utex.APREHO.model.peopleBean;
+package mx.edu.utex.APREHO.model.people;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

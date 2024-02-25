@@ -1,9 +1,9 @@
 package mx.edu.utex.APREHO.controllers.RoomTypeControllers.Dto;
 
 import lombok.Data;
-import mx.edu.utex.APREHO.model.hotelBean.Hotel;
-import mx.edu.utex.APREHO.model.roomBean.Room;
-import mx.edu.utex.APREHO.model.roomTypeBean.RoomType;
+import mx.edu.utex.APREHO.model.hotel.Hotel;
+import mx.edu.utex.APREHO.model.room.Room;
+import mx.edu.utex.APREHO.model.roomType.RoomType;
 
 import java.util.Set;
 

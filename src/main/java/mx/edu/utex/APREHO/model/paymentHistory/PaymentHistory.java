@@ -1,13 +1,12 @@
-package mx.edu.utex.APREHO.model.paymentHistoryBean;
+package mx.edu.utex.APREHO.model.paymentHistory;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import mx.edu.utex.APREHO.model.hotelBean.Hotel;
-import mx.edu.utex.APREHO.model.productsBean.Products;
-import mx.edu.utex.APREHO.model.reservationsBean.Reservations;
+import mx.edu.utex.APREHO.model.products.Products;
+import mx.edu.utex.APREHO.model.reservations.Reservations;
 
 import java.time.LocalDate;
 

@@ -3,7 +3,6 @@ package mx.edu.utex.APREHO.controllers.RoomTypeControllers;
 import lombok.AllArgsConstructor;
 import mx.edu.utex.APREHO.config.ApiResponse;
 import mx.edu.utex.APREHO.controllers.RoomTypeControllers.Dto.DtoRoomType;
-import mx.edu.utex.APREHO.model.roomTypeBean.RoomType;
 import mx.edu.utex.APREHO.services.ServicesRoomType.RoomTypeService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

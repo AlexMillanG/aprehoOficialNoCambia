@@ -1,4 +1,4 @@
-package mx.edu.utex.APREHO.model.roomTypeBean;
+package mx.edu.utex.APREHO.model.roomType;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -6,10 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import mx.edu.utex.APREHO.model.hotelBean.Hotel;
-import mx.edu.utex.APREHO.model.ratesBean.Rates;
-import mx.edu.utex.APREHO.model.roomBean.Room;
-import mx.edu.utex.APREHO.model.userBean.User;
+import mx.edu.utex.APREHO.model.hotel.Hotel;
+import mx.edu.utex.APREHO.model.rates.Rates;
+import mx.edu.utex.APREHO.model.room.Room;
 
 import java.util.Set;
 

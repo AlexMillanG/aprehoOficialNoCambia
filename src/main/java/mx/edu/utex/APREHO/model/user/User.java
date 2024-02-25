@@ -1,4 +1,4 @@
-package mx.edu.utex.APREHO.model.userBean;
+package mx.edu.utex.APREHO.model.user;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -8,9 +8,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import mx.edu.utex.APREHO.model.hotelBean.Hotel;
-import mx.edu.utex.APREHO.model.peopleBean.People;
-import mx.edu.utex.APREHO.model.rolBean.Rol;
+import mx.edu.utex.APREHO.model.hotel.Hotel;
+import mx.edu.utex.APREHO.model.people.People;
+import mx.edu.utex.APREHO.model.rol.Rol;
 
 import java.util.Set;
 

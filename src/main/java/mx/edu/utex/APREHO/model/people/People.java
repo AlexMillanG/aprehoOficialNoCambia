@@ -1,4 +1,4 @@
-package mx.edu.utex.APREHO.model.peopleBean;
+package mx.edu.utex.APREHO.model.people;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -6,8 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import mx.edu.utex.APREHO.model.reservationsBean.Reservations;
-import mx.edu.utex.APREHO.model.userBean.User;
+import mx.edu.utex.APREHO.model.reservations.Reservations;
+import mx.edu.utex.APREHO.model.user.User;
 
 import java.util.Set;
 

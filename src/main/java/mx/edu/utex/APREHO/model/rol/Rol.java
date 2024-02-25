@@ -1,8 +1,8 @@
-package mx.edu.utex.APREHO.model.rolBean;
+package mx.edu.utex.APREHO.model.rol;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
-import mx.edu.utex.APREHO.model.userBean.User;
+import mx.edu.utex.APREHO.model.user.User;
 
 import java.util.Set;
 

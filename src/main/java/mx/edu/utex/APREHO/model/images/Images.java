@@ -1,15 +1,13 @@
-package mx.edu.utex.APREHO.model.imagesBean;
+package mx.edu.utex.APREHO.model.images;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import mx.edu.utex.APREHO.model.hotelBean.Hotel;
-import mx.edu.utex.APREHO.model.reservationsBean.Reservations;
-import mx.edu.utex.APREHO.model.roomBean.Room;
+import mx.edu.utex.APREHO.model.hotel.Hotel;
+import mx.edu.utex.APREHO.model.room.Room;
 
-import java.sql.Blob;
 import java.util.Set;
 
 @Entity

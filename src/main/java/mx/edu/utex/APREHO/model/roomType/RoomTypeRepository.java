@@ -1,10 +1,6 @@
-package mx.edu.utex.APREHO.model.roomTypeBean;
+package mx.edu.utex.APREHO.model.roomType;
 
-import mx.edu.utex.APREHO.model.hotelBean.Hotel;
-import mx.edu.utex.APREHO.model.roomBean.Room;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;

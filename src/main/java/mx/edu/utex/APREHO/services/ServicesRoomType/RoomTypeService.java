@@ -2,9 +2,9 @@ package mx.edu.utex.APREHO.services.ServicesRoomType;
 
 import lombok.AllArgsConstructor;
 import mx.edu.utex.APREHO.config.ApiResponse;
-import mx.edu.utex.APREHO.model.hotelBean.HotelRepository;
-import mx.edu.utex.APREHO.model.roomTypeBean.RoomType;
-import mx.edu.utex.APREHO.model.roomTypeBean.RoomTypeRepository;
+import mx.edu.utex.APREHO.model.hotel.HotelRepository;
+import mx.edu.utex.APREHO.model.roomType.RoomType;
+import mx.edu.utex.APREHO.model.roomType.RoomTypeRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;

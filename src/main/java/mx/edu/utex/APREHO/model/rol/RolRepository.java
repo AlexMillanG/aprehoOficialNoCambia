@@ -1,6 +1,5 @@
-package mx.edu.utex.APREHO.model.rolBean;
+package mx.edu.utex.APREHO.model.rol;
 
-import mx.edu.utex.APREHO.model.userBean.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
