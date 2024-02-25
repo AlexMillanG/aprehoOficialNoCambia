@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/roomType")
 public class RoomTypeControllers {
     private final RoomTypeService service;
-
+    //buscar por hotel
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse> getRoomType(@PathVariable Long id){
         return service.getRoomTypeByHotel(id);
@@ -33,5 +33,11 @@ public class RoomTypeControllers {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<ApiResponse> deleteRoomType(@PathVariable Long id){
         return service.deleteRoomType(id);
+    }
+
+
+    @GetMapping("/getAll")
+    public ResponseEntity<ApiResponse> getAll(){
+        return service.getAll();
     }
 }

@@ -24,13 +24,26 @@ public class RoomTypeService {
     }
 
     public ResponseEntity<ApiResponse> updateRoomType(RoomType roomType){
-            return new ResponseEntity<>(new ApiResponse(roomTypeRepository.saveAndFlush(roomType),HttpStatus.BAD_REQUEST,true ,"Error, precio no valido"), HttpStatus.BAD_REQUEST);
+        Optional<RoomType> existingRoomType = roomTypeRepository.findById(roomType.getRoomTypeId());
+
+        if (!existingRoomType.isPresent()) {
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "Error, el tipo de cuarto que se desea actualizar no existe"), HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(new ApiResponse(roomTypeRepository.saveAndFlush(roomType),HttpStatus.OK,false ,"tipo de cuarto guardado con exito"), HttpStatus.OK);
     }
 
     public ResponseEntity<ApiResponse> deleteRoomType(Long id){
       Optional<RoomType> foundRoomType = roomTypeRepository.findById(id);
         if (!foundRoomType.isPresent())
             return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST,true ,"Error, no se encontró el tipo de cuarto a eliminar"), HttpStatus.BAD_REQUEST);
+
+        RoomType roomType = foundRoomType.get();
+
+        if (!roomType.getRooms().isEmpty()) {
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "Error, el tipo de cuarto está asociado a una o más habitaciones"), HttpStatus.BAD_REQUEST);
+        }
+
             roomTypeRepository.deleteById(id);
             return new ResponseEntity<>(new ApiResponse(HttpStatus.OK,false ,"Tipo de cuarto eliminado con exito"), HttpStatus.OK);
     }
@@ -43,4 +56,12 @@ public class RoomTypeService {
             return new ResponseEntity<>(new ApiResponse(foundTypeByHotel.get(),HttpStatus.OK),HttpStatus.OK);
 
     }
+
+    //el getAll no se va a quedar es solo para pruebas
+    public ResponseEntity<ApiResponse> getAll(){
+        return new ResponseEntity<>(new ApiResponse(roomTypeRepository.findAll(), HttpStatus.OK),HttpStatus.OK);
+    }
+
+
+
 }
