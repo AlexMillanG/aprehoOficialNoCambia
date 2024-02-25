@@ -23,12 +23,17 @@ public class RoomControllers {
     }
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<ApiResponse> delete(@PathVariable Long id){
+        System.err.println(id);
         return service.deleteRoom(id);
     }
 
     @GetMapping("/getByHotel/{id}")
     public ResponseEntity<ApiResponse> getByHotel(@PathVariable Long id){
-        System.err.println(service.getByHotel(id));
         return  service.getByHotel(id);
+    }
+    //el get all es solo pruebas
+    @GetMapping("/")
+    public ResponseEntity<ApiResponse> getAll(){
+        return service.getAll();
     }
 }

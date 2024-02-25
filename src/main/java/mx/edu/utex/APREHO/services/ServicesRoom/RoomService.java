@@ -59,20 +59,26 @@ public class RoomService {
     }
 
 
-    public ResponseEntity<ApiResponse> deleteRoom(Long id){
-        Optional<Room> foundHotel = roomRepository.findById(id);
-        if (foundHotel != null)
-        return new ResponseEntity<>(new ApiResponse(HttpStatus.NOT_FOUND,true,"Error, no se encontró el cuarto a eliminar"),HttpStatus.NOT_FOUND);
-        roomRepository.deleteById(id);
-        return new ResponseEntity<>(new ApiResponse(HttpStatus.OK,false,"Habitación eliminada correctamente"),HttpStatus.OK);
-    }
+    public ResponseEntity<ApiResponse> deleteRoom(Long id) {
+        Optional<Room> foundRoom = roomRepository.findById(id);
 
+        if (foundRoom.isPresent()){
+            roomRepository.deleteById(id);
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.OK, false, "Habitación eliminada correctamente"), HttpStatus.OK);}
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.NOT_FOUND, true, "Error, no se encontró el cuarto a eliminar"), HttpStatus.NOT_FOUND);
+
+
+    }
     public ResponseEntity<ApiResponse> getByHotel(Long id){
         Optional<Room> foundHotelsRooms = roomRepository.findByHotel_HotelId(id);
         if (foundHotelsRooms == null)
         return new ResponseEntity<>(new ApiResponse(HttpStatus.NOT_FOUND,true,"Error, no se encontró el hotel asociado"),HttpStatus.NOT_FOUND);
         return new ResponseEntity<>(new ApiResponse(foundHotelsRooms.get(),HttpStatus.OK),HttpStatus.OK);
 
+    }
+    //el getAll no se va a quedar es solo para pruebas
+    public ResponseEntity<ApiResponse> getAll(){
+        return new ResponseEntity<>(new ApiResponse(roomRepository.findAll(), HttpStatus.OK),HttpStatus.OK);
     }
 
 }
