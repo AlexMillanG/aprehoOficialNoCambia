@@ -1,5 +1,6 @@
 package mx.edu.utex.APREHO.model.hotelBean;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -59,7 +60,7 @@ public class Hotel {
         this.city = city;
         this.description = description;
     }
-
+    @JsonIgnore
     @OneToMany(mappedBy = "hotel", fetch = FetchType.LAZY)
     private Set<Room> room;
 

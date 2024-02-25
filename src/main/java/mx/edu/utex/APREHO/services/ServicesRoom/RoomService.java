@@ -75,7 +75,4 @@ public class RoomService {
 
     }
 
-
-    //encnotrar por tipo
-    
 }

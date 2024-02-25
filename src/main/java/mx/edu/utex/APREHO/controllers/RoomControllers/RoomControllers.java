@@ -28,6 +28,8 @@ public class RoomControllers {
 
     @GetMapping("/getByHotel/{id}")
     public ResponseEntity<ApiResponse> getByHotel(@PathVariable Long id){
+        System.err.println(id);
+        System.err.println(service.getByHotel(id));
         return  service.getByHotel(id);
     }
 }

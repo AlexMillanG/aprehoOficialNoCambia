@@ -1,5 +1,6 @@
 package mx.edu.utex.APREHO.model.roomBean;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -55,11 +56,11 @@ public class Room {
     }
 
 
-
+    @JsonIgnore
     @OneToMany(mappedBy = "room", fetch = FetchType.LAZY)
     private Set<Reservations> reservations;
 
-
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "roomTypeId")
     private RoomType roomType;
@@ -69,6 +70,7 @@ public class Room {
     @JoinColumn(name = "imagesId")
     private Images images;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "hotelId")
     private Hotel hotel;
