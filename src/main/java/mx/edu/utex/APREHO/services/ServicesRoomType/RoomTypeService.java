@@ -18,7 +18,7 @@ public class RoomTypeService {
     private RoomTypeRepository roomTypeRepository;
 
     public ResponseEntity<ApiResponse> saveRoomType(RoomType roomType){
-            return new ResponseEntity<>(new ApiResponse(roomTypeRepository.saveAndFlush(roomType),HttpStatus.BAD_REQUEST,true ,"Error, precio no valido"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ApiResponse(roomTypeRepository.saveAndFlush(roomType),HttpStatus.OK,false ,"tipo de cuarto guardado con exito"), HttpStatus.OK);
     }
 
     public ResponseEntity<ApiResponse> updateRoomType(RoomType roomType){
@@ -33,7 +33,9 @@ public class RoomTypeService {
             return new ResponseEntity<>(new ApiResponse(HttpStatus.OK,false ,"Tipo de cuarto eliminado con exito"), HttpStatus.BAD_REQUEST);
     }
     public ResponseEntity<ApiResponse> getRoomTypeByHotel(Long id){
+        System.err.println("service: " +id);
         Optional<RoomType> foundTypeByHotel = roomTypeRepository.findByHotelId(id);
+        System.err.println("service de optional"+foundTypeByHotel);
         if (!foundTypeByHotel.isPresent())
             return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST,true ,"Error, no hay tipos de cuartos asociados a este hotel"), HttpStatus.BAD_REQUEST);
             return new ResponseEntity<>(new ApiResponse(foundTypeByHotel.get(),HttpStatus.OK),HttpStatus.OK);

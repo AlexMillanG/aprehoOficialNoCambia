@@ -17,11 +17,13 @@ public class RoomTypeControllers {
 
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse> getRoomType(@PathVariable Long id){
+        System.err.println(id);
         return service.getRoomTypeByHotel(id);
     }
 
     @PostMapping("/save")
     public ResponseEntity<ApiResponse> saveRoomType(@RequestBody DtoRoomType dtoRoomType){
+
         return service.saveRoomType(dtoRoomType.toEntity());
     }
 
