@@ -1,5 +1,6 @@
 package mx.edu.utex.APREHO.model.roomTypeBean;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -32,15 +33,22 @@ public class RoomType {
 
     @ManyToMany(mappedBy = "roomType")
     Set<Rates> rates;
+    @JsonIgnore
 
-    public RoomType(Long roomTypeId, String typeName, Set<Room> rooms) {
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "hotel_id")
+    private Hotel hotel;
+
+    public RoomType(Long roomTypeId, String typeName, Set<Room> rooms, Hotel hotel) {
         this.roomTypeId = roomTypeId;
         this.typeName = typeName;
         this.rooms = rooms;
+        this.hotel = hotel;
     }
 
-    public RoomType(String typeName, Set<Room> rooms) {
+    public RoomType(String typeName, Set<Room> rooms, Hotel hotel) {
         this.typeName = typeName;
         this.rooms = rooms;
+        this.hotel = hotel;
     }
 }

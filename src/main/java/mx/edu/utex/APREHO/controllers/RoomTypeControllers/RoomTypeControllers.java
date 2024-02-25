@@ -17,7 +17,6 @@ public class RoomTypeControllers {
 
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse> getRoomType(@PathVariable Long id){
-        System.err.println(id);
         return service.getRoomTypeByHotel(id);
     }
 
@@ -30,5 +29,9 @@ public class RoomTypeControllers {
     @PutMapping("/update")
     public ResponseEntity<ApiResponse> updateRoomType(@RequestBody DtoRoomType dtoRoomType){
         return service.updateRoomType(dtoRoomType.toEntityUpdate());
+    }
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<ApiResponse> deleteRoomType(@PathVariable Long id){
+        return service.deleteRoomType(id);
     }
 }

@@ -8,6 +8,7 @@ import lombok.Setter;
 import mx.edu.utex.APREHO.model.imagesBean.Images;
 import mx.edu.utex.APREHO.model.productsBean.Products;
 import mx.edu.utex.APREHO.model.roomBean.Room;
+import mx.edu.utex.APREHO.model.roomTypeBean.RoomType;
 import mx.edu.utex.APREHO.model.userBean.User;
 
 import java.awt.*;
@@ -79,6 +80,10 @@ public class Hotel {
             joinColumns = @JoinColumn(name = "productId"),
             inverseJoinColumns = @JoinColumn(name = "hotelId"))
     Set<Products> products = new HashSet<>();
+
+    @OneToMany(mappedBy = "hotel", fetch = FetchType.EAGER)
+    private Set<RoomType> roomTypes;
+
 
     @Override
     public String toString() {

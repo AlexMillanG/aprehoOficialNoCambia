@@ -1,5 +1,7 @@
 package mx.edu.utex.APREHO.model.roomTypeBean;
 
+import mx.edu.utex.APREHO.model.hotelBean.Hotel;
+import mx.edu.utex.APREHO.model.roomBean.Room;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -10,12 +12,10 @@ import java.util.Optional;
 public interface RoomTypeRepository  extends JpaRepository<RoomType,Long> {
 
     Optional<RoomType> findByTypeName(String s);
+    /*
+    @Query(value = "SELECT type_name FROM room_type LEFT JOIN room ON hotel.hotel_id = room.hotel_id INNER JOIN room_type ON room.room_type_id = room_type.room_type_id WHERE hotel.hotel_id = :id;", nativeQuery = true)
+    Optional<RoomType> findByHotelId(@Param("id") Long id);*/
 
+    Optional<RoomType> findByHotel_HotelId(Long id);
 
-    @Query(value = "SELECT type_name \n" +
-            "            FROM hotel \n" +
-            "            LEFT JOIN room ON hotel.hotel_id = room.hotel_id \n" +
-            "            INNER JOIN room_type ON room.room_type_id = room_type.room_type_id \n" +
-            "            WHERE hotel.hotel_id = :id;", nativeQuery = true)
-    Optional<RoomType> findByHotelId(@Param("id") Long id);
 }
