@@ -52,6 +52,8 @@ public class ServiciosHoteles {
     }
 
     //muestra los hoteles por ciudad
+    @Transactional(rollbackFor = {SQLException.class})
+
     public ResponseEntity<ApiResponse>getByCity(String city){
         Optional<Hotel> foundCity = hotelRepository.findByCity(city);
         if (!foundCity.isPresent())
@@ -90,5 +92,13 @@ public class ServiciosHoteles {
         if (foundHotel.isEmpty())
         return new ResponseEntity<>(new ApiResponse(HttpStatus.NOT_FOUND,true,"No se encontró el hotel"),HttpStatus.NOT_FOUND);
         return new ResponseEntity<>(new ApiResponse(hotelRepository.deleteByEmail(email),HttpStatus.OK,false,"Hotel eliminado correctamente"),HttpStatus.OK);
+    }
+
+    @Transactional(rollbackFor = {SQLException.class})
+    public ResponseEntity<ApiResponse> findOneHotel(Long id){
+        Optional<Hotel> foundHotel = hotelRepository.findById(id);
+        if (foundHotel.isEmpty())
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.NOT_FOUND,true,"No se encontró el hotel"),HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new ApiResponse(foundHotel.get(),HttpStatus.OK),HttpStatus.OK);
     }
 }

@@ -36,4 +36,11 @@ public class HotelControllers {
         return service.deleteHotel(email);
     }
 
+    @GetMapping("/findOne/{id}")
+    public ResponseEntity<ApiResponse> findOne(@PathVariable Long id) {
+        return service.findOneHotel(id);
+    }
+
+    
+
 }
