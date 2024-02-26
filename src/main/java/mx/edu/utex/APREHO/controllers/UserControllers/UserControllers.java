@@ -24,6 +24,12 @@ public class UserControllers {
         return service.getAll();
     }
 
+
+    @GetMapping("/findOne/{id}")
+    private ResponseEntity<ApiResponse> findOne(@PathVariable Long id){
+        return service.findOne(id);
+    }
+
     @PutMapping("update")
     public  ResponseEntity<ApiResponse> update(@RequestBody DtoUser dtoUser){
         return  service.update(dtoUser.toEntityId());
@@ -32,6 +38,11 @@ public class UserControllers {
     @DeleteMapping("delete")
     public  ResponseEntity<ApiResponse> delete(@RequestBody DtoUser dtoUser){
         return  service.delete(dtoUser.toEntityId());
+    }
+
+    @PostMapping("/login")
+    public  ResponseEntity<ApiResponse> login(@RequestBody DtoUser dtoUser){
+        return service.loggin(dtoUser.getPassword(),dtoUser.getEmail());
     }
 
 }

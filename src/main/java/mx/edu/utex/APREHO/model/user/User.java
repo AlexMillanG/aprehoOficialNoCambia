@@ -27,6 +27,8 @@ public class User {
     @Column(length = 45, nullable = false)
     private String password;
 
+    @Column(length =45, nullable = false)
+    private  String email;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "rolId")
@@ -49,15 +51,17 @@ public class User {
     private Set<Hotel> hotel;
 
 
-    public User(Long userId,String password, Rol rol, People people) {
+    public User(Long userId,String password,String email, Rol rol, People people) {
         this.userId = userId;
+        this.email=email;
         this.password = password;
         this.rol = rol;
         this.people = people;
     }
 
-    public User( String password, Rol rol, People people) {
+    public User( String password,  String email, Rol rol, People people) {
         this.password = password;
+        this.email=email;
         this.rol = rol;
         this.people = people;
     }
