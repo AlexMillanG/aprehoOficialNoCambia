@@ -13,16 +13,18 @@ public class DtoUser {
 
     private Long userId;
     private String password;
+    private String email;
+
     private Rol rol;
     private People people;
     private Set<Hotel> hotel;
 
 
     public User toEntity() {
-        return new User( password, rol, people);
+        return new User( password,email, rol, people);
     }
 
     public User toEntityId() {
-        return new User(userId,password, rol, people);
+        return new User(userId,password,email, rol, people);
     }
 }

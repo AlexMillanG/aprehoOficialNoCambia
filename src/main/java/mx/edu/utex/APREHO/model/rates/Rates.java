@@ -37,4 +37,12 @@ public class Rates {
             inverseJoinColumns = @JoinColumn(name = "ratesId"))
     Set<RoomType> roomType = new HashSet<>();
 
+     public boolean validateDate(LocalDate ld) {
+        LocalDate ld1 = LocalDate.now();
+        if (ld.getYear() < ld1.getYear() || ld.getMonthValue() < ld1.getMonthValue() || ld.getDayOfMonth()< ld1.getDayOfMonth()) {
+            return false;
+        }
+
+        return true;
+    }
 }

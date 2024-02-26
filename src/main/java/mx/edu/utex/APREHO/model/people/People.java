@@ -9,6 +9,7 @@ import lombok.Setter;
 import mx.edu.utex.APREHO.model.reservations.Reservations;
 import mx.edu.utex.APREHO.model.user.User;
 
+import java.time.LocalDate;
 import java.util.Set;
 
 @Entity
@@ -25,6 +26,16 @@ public class People {
     private String name;
     @Column(length = 45, nullable = false)
     private String lastname;
+
+    @Column(length = 45, nullable = false)
+    private String surname;
+
+    @Column(length = 45, nullable = false)
+    private String sex;
+
+    @Column(columnDefinition = "DATE",nullable = false)
+    private LocalDate birthday;
+
     @Column(length = 18, nullable = false)
     private String curp;
 
