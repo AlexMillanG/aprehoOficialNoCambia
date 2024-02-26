@@ -10,6 +10,7 @@ import mx.edu.utex.APREHO.model.hotel.Hotel;
 import mx.edu.utex.APREHO.model.rates.Rates;
 import mx.edu.utex.APREHO.model.room.Room;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -26,9 +27,9 @@ public class RoomType {
     private String typeName;
 
 
-    @OneToMany(mappedBy = "roomType", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "roomType", cascade = CascadeType.ALL)
+    private Set<Room> rooms = new HashSet<>();
 
-    private Set<Room> rooms;
 
     @ManyToMany(mappedBy = "roomType")
     Set<Rates> rates;

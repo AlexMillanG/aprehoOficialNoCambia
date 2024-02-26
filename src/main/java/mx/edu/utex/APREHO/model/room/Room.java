@@ -57,13 +57,12 @@ public class Room {
     @JsonIgnore
     @OneToMany(mappedBy = "room", fetch = FetchType.LAZY)
     private Set<Reservations> reservations;
-
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "roomTypeId")
     private RoomType roomType;
 
-
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "imagesId")
     private Images images;

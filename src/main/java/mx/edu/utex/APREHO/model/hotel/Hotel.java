@@ -63,24 +63,25 @@ public class Hotel {
     @OneToMany(mappedBy = "hotel", fetch = FetchType.LAZY)
     private Set<Room> room;
 
+    @JsonIgnore
     @ManyToMany
     @JoinTable(name="hoteluser",
             joinColumns = @JoinColumn(name = "userId"),
             inverseJoinColumns = @JoinColumn(name = "hotelId"))
     Set<User> user = new HashSet<>();
 
-
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "imagesId")
     private Images images;
 
-
+    @JsonIgnore
     @ManyToMany
     @JoinTable(name="hotelproducts",
             joinColumns = @JoinColumn(name = "productId"),
             inverseJoinColumns = @JoinColumn(name = "hotelId"))
     Set<Products> products = new HashSet<>();
-
+    @JsonIgnore
     @OneToMany(mappedBy = "hotel", fetch = FetchType.EAGER)
     private Set<RoomType> roomTypes;
 

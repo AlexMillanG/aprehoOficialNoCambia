@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Optional;
 
 @AllArgsConstructor
@@ -57,6 +58,7 @@ public class RoomService {
         return new ResponseEntity<>(new ApiResponse(roomRepository.saveAndFlush(room),HttpStatus.OK,false,"Cuarto guardado correctamente"),HttpStatus.OK);
     }
 
+    @Transactional(rollbackFor = {SQLException.class})
 
     public ResponseEntity<ApiResponse> deleteRoom(Long id) {
         Optional<Room> foundRoom = roomRepository.findById(id);
@@ -68,14 +70,21 @@ public class RoomService {
 
 
     }
-    public ResponseEntity<ApiResponse> getByHotel(Long id){
-        Optional<Room> foundHotelsRooms = roomRepository.findByHotel_HotelId(id);
-        if (foundHotelsRooms == null)
-        return new ResponseEntity<>(new ApiResponse(HttpStatus.NOT_FOUND,true,"Error, no se encontró el hotel asociado"),HttpStatus.NOT_FOUND);
-        return new ResponseEntity<>(new ApiResponse(foundHotelsRooms.get(),HttpStatus.OK),HttpStatus.OK);
+    @Transactional(rollbackFor = {SQLException.class})
 
+    public ResponseEntity<ApiResponse> getByHotel(Long id) {
+        List<Room> hotelRooms = roomRepository.findByHotel_HotelId(id);
+        if (!hotelRooms.isEmpty()) {
+            return new ResponseEntity<>(new ApiResponse(hotelRooms, HttpStatus.OK), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.NOT_FOUND, true, "Error, no se encontraron habitaciones asociadas"), HttpStatus.NOT_FOUND);
+        }
     }
+
+
     //el getAll no se va a quedar es solo para pruebas
+    @Transactional(rollbackFor = {SQLException.class})
+
     public ResponseEntity<ApiResponse> getAll(){
         return new ResponseEntity<>(new ApiResponse(roomRepository.findAll(), HttpStatus.OK),HttpStatus.OK);
     }
