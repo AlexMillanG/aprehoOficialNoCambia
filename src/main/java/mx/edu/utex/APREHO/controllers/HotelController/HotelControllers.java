@@ -41,6 +41,6 @@ public class HotelControllers {
         return service.findOneHotel(id);
     }
 
-    
+
 
 }

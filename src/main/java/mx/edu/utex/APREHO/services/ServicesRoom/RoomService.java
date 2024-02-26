@@ -81,12 +81,17 @@ public class RoomService {
         }
     }
 
-
     //el getAll no se va a quedar es solo para pruebas
     @Transactional(rollbackFor = {SQLException.class})
-
     public ResponseEntity<ApiResponse> getAll(){
         return new ResponseEntity<>(new ApiResponse(roomRepository.findAll(), HttpStatus.OK),HttpStatus.OK);
     }
 
+    @Transactional (rollbackFor = {SQLException.class})
+    public ResponseEntity<ApiResponse> findOneRoom(Long id){
+        Optional<Room> foundOneRoom = roomRepository.findById(id);
+        if (foundOneRoom.isEmpty())
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.NOT_FOUND,true,"No se encontró la habitación"),HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new ApiResponse(foundOneRoom.get(),HttpStatus.OK),HttpStatus.OK);
+    }
 }

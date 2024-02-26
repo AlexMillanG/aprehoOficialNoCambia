@@ -36,4 +36,9 @@ public class RoomControllers {
     public ResponseEntity<ApiResponse> getAll(){
         return service.getAll();
     }
+
+    @GetMapping("/findOneRoom/{id}")
+    public ResponseEntity<ApiResponse> findOneRoom(@PathVariable Long  id){
+        return service.findOneRoom(id);
+    }
 }
