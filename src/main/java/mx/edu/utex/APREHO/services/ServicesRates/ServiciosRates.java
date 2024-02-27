@@ -29,7 +29,7 @@ public class ServiciosRates {
 
         }
 
-        return null;
+        return new ResponseEntity<>(new ApiResponse(repository.saveAndFlush(rates),HttpStatus.OK, true, "Nueva temporada creada"), HttpStatus.OK);
     }
 
 

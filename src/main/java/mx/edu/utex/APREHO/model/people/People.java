@@ -46,4 +46,24 @@ public class People {
 
     @OneToMany(mappedBy = "people", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Reservations> reservations;
+
+
+    public boolean isValid(String name, String lastname, String surname, String sex, LocalDate birthday, String curp){
+        if (name == null || name.trim().isEmpty() ||
+                lastname == null || lastname.trim().isEmpty() ||
+                surname == null || surname.trim().isEmpty() ||
+                sex == null || sex.trim().isEmpty() ||
+                birthday == null ||
+                curp == null || curp.trim().isEmpty()) {
+            return false;
+        }
+
+        this.name = name.trim();
+        this.lastname = lastname.trim();
+        this.surname = surname.trim();
+        this.sex = sex.trim();
+        this.curp = curp.trim();
+
+        return true;
+    }
 }

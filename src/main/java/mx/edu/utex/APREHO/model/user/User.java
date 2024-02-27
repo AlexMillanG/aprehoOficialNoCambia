@@ -66,7 +66,17 @@ public class User {
         this.people = people;
     }
 
+    public boolean isValid(String email, String password){
+        if (email == null || email.trim().isEmpty() ||
+                password == null || password.trim().isEmpty() ) {
+            return false;
+        }
 
+        this.email = email.trim();
+        this.password = password.trim();
+
+        return true;
+    }
     @Override
     public String toString() {
         return "User{" +

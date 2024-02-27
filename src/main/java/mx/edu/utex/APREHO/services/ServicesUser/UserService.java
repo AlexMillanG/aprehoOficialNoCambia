@@ -29,36 +29,42 @@ public class UserService {
 
     @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<ApiResponse> save(User user) {
-
-        Optional<User> foundUser=repository.findByEmail(user.getEmail());
-        if(foundUser.isPresent()){
-            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "Este correo ya se ha registrado previamente"), HttpStatus.BAD_REQUEST);
-        }else{
-            if (user.getPeople() != null) {
-                Optional<People> foundPeople = peopleRepository.findByCurp(user.getPeople().getCurp());
-                if (!foundPeople.isPresent()) {
-                    peopleRepository.saveAndFlush(user.getPeople());
-                } else {
-                    return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "El curp ya esta registrado"), HttpStatus.BAD_REQUEST);
-
-                }
-            } else {
-                return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "No has ingresado a una Persona para este Usuario"), HttpStatus.BAD_REQUEST);
-
-            }
-            if (user.getRol() != null) {
-                Optional<Rol> foundRol = rolRepository.findByRolName(user.getRol().getRolName());
-                if (!foundRol.isPresent()) {
-                    rolRepository.saveAndFlush(user.getRol());
-                } else {
-                    user.getRol().setRolId(foundRol.get().getRolId());
-                }
-            } else {
-                return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "No has ingresado a un ROL para este Usuario"), HttpStatus.BAD_REQUEST);
-
-            }
+        if (!user.isValid(user.getEmail(), user.getPassword())) {
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "Uno o algunos de los campos estan vacios"), HttpStatus.BAD_REQUEST);
         }
 
+        if (user.getPeople().isValid(user.getPeople().getName(), user.getPeople().getLastname(), user.getPeople().getSurname(), user.getPeople().getSex(), user.getPeople().getBirthday(), user.getPeople().getCurp())) {
+            Optional<User> foundUser = repository.findByEmail(user.getEmail());
+            if (foundUser.isPresent()) {
+                return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "Este correo ya se ha registrado previamente"), HttpStatus.BAD_REQUEST);
+            } else {
+                if (user.getPeople() != null) {
+                    Optional<People> foundPeople = peopleRepository.findByCurp(user.getPeople().getCurp());
+                    if (!foundPeople.isPresent()) {
+                        peopleRepository.saveAndFlush(user.getPeople());
+                    } else {
+                        return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "El curp ya esta registrado"), HttpStatus.BAD_REQUEST);
+
+                    }
+                } else {
+                    return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "No has ingresado a una Persona para este Usuario"), HttpStatus.BAD_REQUEST);
+
+                }
+                if (user.getRol() != null) {
+                    Optional<Rol> foundRol = rolRepository.findByRolName(user.getRol().getRolName());
+                    if (!foundRol.isPresent()) {
+                        rolRepository.saveAndFlush(user.getRol());
+                    } else {
+                        user.getRol().setRolId(foundRol.get().getRolId());
+                    }
+                } else {
+                    return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "No has ingresado a un ROL para este Usuario"), HttpStatus.BAD_REQUEST);
+
+                }
+            }
+        } else {
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "Uno o varios de los campos estan vacios"), HttpStatus.BAD_REQUEST);
+        }
         return new ResponseEntity<>(new ApiResponse(repository.saveAndFlush(user), HttpStatus.OK, false, "usuario creado exitosamente"), HttpStatus.OK);
     }
 
@@ -71,29 +77,39 @@ public class UserService {
 
     @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<ApiResponse> update(User user) {
-        Optional<User> foundUser = repository.findById(user.getUserId());
-        if (foundUser.isPresent()) {
-            if (user.getPeople() != null) {
-                Optional<People> foundPeople = peopleRepository.findById(user.getPeople().getPeopleId());
-                if (foundPeople.isPresent()) {
-                    if (user.getRol() != null) {
-                        Optional<Rol> foundRol = rolRepository.findByRolName(user.getRol().getRolName());
-                        if (!foundRol.isPresent()) {
-                            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "El rol no es correcto"), HttpStatus.BAD_REQUEST);
+        if (!user.isValid(user.getEmail(), user.getPassword())) {
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "Uno o algunos de los campos estan vacios"), HttpStatus.BAD_REQUEST);
+        }
+        if (user.getPeople().isValid(user.getPeople().getName(), user.getPeople().getLastname(), user.getPeople().getSurname(), user.getPeople().getSex(), user.getPeople().getBirthday(), user.getPeople().getCurp())) {
+            Optional<User> foundUser = repository.findById(user.getUserId());
+            if (foundUser.isPresent()) {
+                if (user.getPeople() != null) {
+                    Optional<People> foundPeople = peopleRepository.findById(user.getPeople().getPeopleId());
+                    if (foundPeople.isPresent()) {
+                        if (user.getRol() != null) {
+                            Optional<Rol> foundRol = rolRepository.findByRolName(user.getRol().getRolName());
+                            if (!foundRol.isPresent()) {
+                                return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "El rol no es correcto"), HttpStatus.BAD_REQUEST);
+                            }
+                            user.setRol(foundRol.get());
+                        } else {
+                            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "No has ingresado a un ROL para este Usuario"), HttpStatus.BAD_REQUEST);
                         }
-                        user.setRol(foundRol.get());
                     } else {
-                        return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "No has ingresado a un ROL para este Usuario"), HttpStatus.BAD_REQUEST);
+                        return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "Los datos no son correctos"), HttpStatus.BAD_REQUEST);
                     }
                 } else {
-                    return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "Los datos no son correctos"), HttpStatus.BAD_REQUEST);
+                    return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "No has ingresado a una Persona para este Usuario"), HttpStatus.BAD_REQUEST);
                 }
             } else {
-                return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "No has ingresado a una Persona para este Usuario"), HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "Este usuario no existe"), HttpStatus.BAD_REQUEST);
             }
-        } else {
-            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "Este usuario no existe"), HttpStatus.BAD_REQUEST);
+        }else{
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "Uno o algunos de los campos estan vacios"), HttpStatus.BAD_REQUEST);
+
         }
+
+
         return new ResponseEntity<>(new ApiResponse(repository.saveAndFlush(user), HttpStatus.OK, false, "Usuario Actualizado exitosamente"), HttpStatus.OK);
     }
 
@@ -126,26 +142,26 @@ public class UserService {
     }
 
     @Transactional(rollbackFor = {SQLException.class})
-    public  ResponseEntity<ApiResponse> findOne(Long id){
-        Optional<User> foundUser=repository.findById(id);
-        if (foundUser.isPresent()){
-            return new ResponseEntity<>(new ApiResponse(repository.findOne(id),HttpStatus.OK,false,"Usuario encontrado"),HttpStatus.OK);
+    public ResponseEntity<ApiResponse> findOne(Long id) {
+        Optional<User> foundUser = repository.findById(id);
+        if (foundUser.isPresent()) {
+            return new ResponseEntity<>(new ApiResponse(repository.findOne(id), HttpStatus.OK, false, "Usuario encontrado"), HttpStatus.OK);
 
-        }else{
-            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST,false,"Usuario no encontrado"),HttpStatus.BAD_REQUEST);
+        } else {
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, false, "Usuario no encontrado"), HttpStatus.BAD_REQUEST);
 
         }
 
     }
 
     @Transactional(rollbackFor = {SQLException.class})
-    public  ResponseEntity<ApiResponse> loggin(String pass,String email){
-        Optional<User> foundUser=repository.loggin(pass,email);
-        if(foundUser.isPresent()){
-            return new ResponseEntity<>(new ApiResponse(foundUser,HttpStatus.OK,false,"Usuario encontrado"),HttpStatus.OK);
+    public ResponseEntity<ApiResponse> loggin(String pass, String email) {
+        Optional<User> foundUser = repository.loggin(pass, email);
+        if (foundUser.isPresent()) {
+            return new ResponseEntity<>(new ApiResponse(foundUser, HttpStatus.OK, false, "Usuario encontrado"), HttpStatus.OK);
 
-        }else{
-            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST,false,"Usuario o contraseña Incorrectas"),HttpStatus.BAD_REQUEST);
+        } else {
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, false, "Usuario o contraseña Incorrectas"), HttpStatus.BAD_REQUEST);
 
         }
     }
