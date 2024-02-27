@@ -36,4 +36,29 @@ public class ServiciosRates {
     public ResponseEntity<ApiResponse> getAll() {
         return new ResponseEntity<>(new ApiResponse(repository.findAll(), HttpStatus.OK, false, "Tarifas registradas"), HttpStatus.OK);
     }
+
+    @Transactional(rollbackFor = {SQLException.class})
+    public ResponseEntity<ApiResponse> delete(Long id){
+        Optional<Rates> foundRate=repository.findById(id);
+        if (foundRate.isPresent()){
+            Rates rates=foundRate.get();
+            repository.delete(rates);
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.OK,false,"Tarifa eliminada exitosamente"),HttpStatus.OK);
+        }
+        return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST,true,"El id no existe"),HttpStatus.BAD_REQUEST);
+
+    }
+
+    @Transactional(rollbackFor = {SQLException.class})
+    public ResponseEntity<ApiResponse> findOne(Long id){
+        Optional<Rates> foundRate=repository.findById(id);
+        if (foundRate.isPresent()){
+            Rates rates=foundRate.get();
+            return new ResponseEntity<>(new ApiResponse(rates,HttpStatus.OK,false,"Tarifa eliminada exitosamente"),HttpStatus.OK);
+        }
+        return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST,true,"El id no existe"),HttpStatus.BAD_REQUEST);
+
+    }
+
+
 }
