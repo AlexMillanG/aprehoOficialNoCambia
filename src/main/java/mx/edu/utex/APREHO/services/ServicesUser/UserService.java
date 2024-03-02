@@ -40,7 +40,6 @@ public class UserService {
                     peopleRepository.saveAndFlush(user.getPeople());
                 } else {
                     return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "El curp ya esta registrado"), HttpStatus.BAD_REQUEST);
-
                 }
             } else {
                 return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "No has ingresado a una Persona para este Usuario"), HttpStatus.BAD_REQUEST);

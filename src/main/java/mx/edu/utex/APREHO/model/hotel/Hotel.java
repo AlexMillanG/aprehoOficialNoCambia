@@ -35,7 +35,7 @@ public class Hotel {
     private int phone;
     @Column(nullable = false)
     private String city;
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String description;
 
 

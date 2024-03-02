@@ -53,7 +53,7 @@ public class RoomTypeService {
         System.err.println("despues found"+foundTypeByHotel);
         if (!foundTypeByHotel.isPresent())
             return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST,true ,"Error, no hay tipos de cuartos asociados a este hotel"), HttpStatus.BAD_REQUEST);
-            return new ResponseEntity<>(new ApiResponse(foundTypeByHotel.get(),HttpStatus.OK),HttpStatus.OK);
+        return new ResponseEntity<>(new ApiResponse(foundTypeByHotel.get(),HttpStatus.OK),HttpStatus.OK);
 
     }
 

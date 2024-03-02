@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -53,12 +54,12 @@ public class ServiciosHoteles {
 
     //muestra los hoteles por ciudad
     @Transactional(rollbackFor = {SQLException.class})
-
     public ResponseEntity<ApiResponse>getByCity(String city){
-        Optional<Hotel> foundCity = hotelRepository.findByCity(city);
-        if (!foundCity.isPresent())
-                return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST,true,"Error, ciudad no encontrada"),HttpStatus.BAD_REQUEST);
-                return new ResponseEntity<>(new ApiResponse(foundCity.get(),HttpStatus.OK,false,"ciudad encontrada"),HttpStatus.OK);
+        System.err.println("ciudad"+city);
+        List<Hotel> foundCity = hotelRepository.findByCity(city);
+        if (!foundCity.isEmpty())
+            return new ResponseEntity<>(new ApiResponse(foundCity,HttpStatus.OK,false,"ciudad encontrada"),HttpStatus.OK);
+        return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST,true,"Error, ciudad no encontrada"),HttpStatus.BAD_REQUEST);
     }
 
     @Transactional(rollbackFor = {SQLException.class})
