@@ -73,6 +73,7 @@ public class RoomService {
     @Transactional(rollbackFor = {SQLException.class})
 
     public ResponseEntity<ApiResponse> getByHotel(Long id) {
+        //devolver por hotel, por categoría y que este disponible
         List<Room> hotelRooms = roomRepository.findByHotel_HotelId(id);
         if (!hotelRooms.isEmpty()) {
             return new ResponseEntity<>(new ApiResponse(hotelRooms, HttpStatus.OK), HttpStatus.OK);
