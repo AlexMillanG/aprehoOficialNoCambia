@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import mx.edu.utex.APREHO.model.reservations.Reservations;
+import mx.edu.utex.APREHO.model.reservations.ReservationsBean;
 import mx.edu.utex.APREHO.model.user.User;
 
 import java.time.LocalDate;
@@ -45,5 +45,5 @@ public class People {
     private User user;
 
     @OneToMany(mappedBy = "people", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<Reservations> reservations;
+    private Set<ReservationsBean> reservations;
 }

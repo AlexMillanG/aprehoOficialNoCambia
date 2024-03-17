@@ -15,7 +15,7 @@ import java.util.Optional;
 @Service
 @Transactional
 @AllArgsConstructor
-public class ServiciosProducts {
+public class ProductsService {
     private final ProductRepository repository;
 
     public ResponseEntity<ApiResponse> getAll(){

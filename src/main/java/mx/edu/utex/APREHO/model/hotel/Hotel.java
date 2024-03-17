@@ -31,15 +31,15 @@ public class Hotel {
     private String address;
     @Column(length = 100, nullable = false)
     private String email;
-    @Column(nullable = false)
-    private int phone;
+    @Column(nullable = false,columnDefinition = "TEXT")
+    private String phone;
     @Column(nullable = false)
     private String city;
     @Column(nullable = false, columnDefinition = "TEXT")
     private String description;
 
 
-    public Hotel(Long hotelId, String hotelName, String address, String email, int phone, String city,Set<User> user, String description) {
+    public Hotel(Long hotelId, String hotelName, String address, String email, String phone, String city,Set<User> user, String description) {
         this.hotelId = hotelId;
         this.hotelName = hotelName;
         this.address = address;
@@ -50,7 +50,7 @@ public class Hotel {
         this.description = description;
     }
 
-    public Hotel(Long hotelId, String hotelName, String address, String email, int phone, String city, String description) {
+    public Hotel(Long hotelId, String hotelName, String address, String email, String phone, String city, String description) {
         this.hotelId = hotelId;
         this.hotelName = hotelName;
         this.address = address;

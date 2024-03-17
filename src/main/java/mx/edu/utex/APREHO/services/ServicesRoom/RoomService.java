@@ -95,4 +95,15 @@ public class RoomService {
             return new ResponseEntity<>(new ApiResponse(HttpStatus.NOT_FOUND,true,"No se encontró la habitación"),HttpStatus.NOT_FOUND);
             return new ResponseEntity<>(new ApiResponse(foundOneRoom.get(),HttpStatus.OK),HttpStatus.OK);
     }
+
+    // Traer habitaciones por tipo
+/*
+    @Transactional(rollbackFor = {SQLException.class})
+    //busca todas las habitaciones de un solo hotel y tupo
+    public ResponseEntity<ApiResponse> findByTypeAndHotel(String type, Long id){
+        List<Room> foundByTypeAndHotel = roomRepository.findByHotel_HotelIdAndAndRoomType(type, id);
+        if (foundByTypeAndHotel == null)
+        return new ResponseEntity<>(new ApiResponse(HttpStatus.NOT_FOUND,true,"error, no se han encontrado registros"),HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(new ApiResponse(foundByTypeAndHotel,HttpStatus.OK),HttpStatus.OK);
+    }*/
 }

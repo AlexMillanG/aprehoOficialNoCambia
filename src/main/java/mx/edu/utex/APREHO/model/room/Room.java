@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import mx.edu.utex.APREHO.model.hotel.Hotel;
 import mx.edu.utex.APREHO.model.images.Images;
-import mx.edu.utex.APREHO.model.reservations.Reservations;
+import mx.edu.utex.APREHO.model.reservations.ReservationsBean;
 import mx.edu.utex.APREHO.model.roomType.RoomType;
 
 import java.util.Set;
@@ -56,7 +56,7 @@ public class Room {
 
     @JsonIgnore
     @OneToMany(mappedBy = "room", fetch = FetchType.LAZY)
-    private Set<Reservations> reservations;
+    private Set<ReservationsBean> reservations;
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "roomTypeId")

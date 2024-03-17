@@ -12,7 +12,7 @@ public class DtoHotel {
     private String hotelName;
     private String address;
     private String email;
-    private int phone;
+    private String phone;
     private String city;
     private Set <User> user;
     private String description;

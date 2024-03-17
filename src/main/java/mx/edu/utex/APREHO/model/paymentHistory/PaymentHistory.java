@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import mx.edu.utex.APREHO.model.products.Products;
-import mx.edu.utex.APREHO.model.reservations.Reservations;
+import mx.edu.utex.APREHO.model.reservations.ReservationsBean;
 
 import java.time.LocalDate;
 
@@ -32,5 +32,5 @@ public class PaymentHistory {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "reservationId")
-    private Reservations reservations;
+    private ReservationsBean reservations;
 }

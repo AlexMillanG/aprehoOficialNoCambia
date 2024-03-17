@@ -3,7 +3,7 @@ package mx.edu.utex.APREHO.controllers.ProductsControllers;
 import lombok.AllArgsConstructor;
 import mx.edu.utex.APREHO.config.ApiResponse;
 import mx.edu.utex.APREHO.controllers.ProductsControllers.Dto.DtoProducts;
-import mx.edu.utex.APREHO.services.ServicesProducts.ServiciosProducts;
+import mx.edu.utex.APREHO.services.ServicesProducts.ProductsService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @AllArgsConstructor
 public class ProductsControllers {
 
-private final ServiciosProducts service;
+private final ProductsService service;
 
     @GetMapping("/")
     public ResponseEntity<ApiResponse> getAll() {

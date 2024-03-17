@@ -15,7 +15,7 @@ import java.util.Optional;
 @Service
 @AllArgsConstructor
 @Transactional
-public class ServiciosRates {
+public class RatesService {
     private final RatesRepository repository;
 
     @Transactional(rollbackFor = {SQLException.class})
