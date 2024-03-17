@@ -68,6 +68,7 @@ public class UserService {
         return new ResponseEntity<>(new ApiResponse(repository.saveAndFlush(user), HttpStatus.OK, false, "usuario creado exitosamente"), HttpStatus.OK);
     }
 
+    @Transactional
     public ResponseEntity<ApiResponse> getAll() {
         List<User> users = repository.getUser();
         return new ResponseEntity<>(new ApiResponse(users, HttpStatus.OK, false, "Usuarios registrados"), HttpStatus.OK);
