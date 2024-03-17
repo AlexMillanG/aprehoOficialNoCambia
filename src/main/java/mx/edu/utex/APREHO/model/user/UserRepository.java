@@ -19,12 +19,12 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query(value = "SELECT user_table.*,rol.rol_name,People.curp,People.lastname,People.name FROM user user_table  INNER JOIN rol  on user_table.rol_id=rol.rol_id INNER JOIN People  ON user_table.people_id=People.people_id", nativeQuery = true)
     List<User> getUserss();
 
-    @Query(value = "SELECT user_table.people_id,user_table.rol_id,user_table.user_id, user_table.password,user_table.email ," +
-            "rol.rol_name," +
-            "people.curp,people.lastname,people.name ,people.surname,people.sex,people.birthday " +
-            "FROM user user_table  " +
-            "INNER JOIN rol  on user_table.rol_id = rol.rol_id " +
-            "INNER JOIN people  ON user_table.people_id = people.people_id", nativeQuery = true)
+    @Query(value = "SELECT user_table.user_id, user_table.password, user_table.email," +
+            "       rol.rol_id, rol.rol_name," +
+            "       people.people_id, people.name, people.lastname, people.surname, people.sex, people.birthday " +
+            "FROM user user_table " +
+            "INNER JOIN rol ON user_table.rol_id = rol.rol_id " +
+            "INNER JOIN people ON user_table.people_id = people.people_id", nativeQuery = true)
     List<User> getUser();
 
 

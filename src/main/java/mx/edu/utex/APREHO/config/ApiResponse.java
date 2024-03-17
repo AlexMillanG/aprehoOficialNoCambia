@@ -33,4 +33,14 @@ public class ApiResponse {
         this.error = error;
         this.mensaje = mensaje;
     }
+
+    @Override
+    public String toString() {
+        return "ApiResponse{" +
+                "data=" + data +
+                ", status=" + status +
+                ", error=" + error +
+                ", mensaje='" + mensaje + '\'' +
+                '}';
+    }
 }
