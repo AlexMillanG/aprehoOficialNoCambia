@@ -29,33 +29,6 @@ public class UserService {
 
     @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<ApiResponse> save(User user) {
-
-        Optional<User> foundUser=repository.findByEmail(user.getEmail());
-        if(foundUser.isPresent()){
-            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "Este correo ya se ha registrado previamente"), HttpStatus.BAD_REQUEST);
-        }else{
-            if (user.getPeople() != null) {
-                Optional<People> foundPeople = peopleRepository.findByCurp(user.getPeople().getCurp());
-                if (!foundPeople.isPresent()) {
-                    peopleRepository.saveAndFlush(user.getPeople());
-                } else {
-                    return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "El curp ya esta registrado"), HttpStatus.BAD_REQUEST);
-                }
-            } else {
-                return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "No has ingresado a una Persona para este Usuario"), HttpStatus.BAD_REQUEST);
-
-            }
-            if (user.getRol() != null) {
-                Optional<Rol> foundRol = rolRepository.findByRolName(user.getRol().getRolName());
-                if (!foundRol.isPresent()) {
-                    rolRepository.saveAndFlush(user.getRol());
-                } else {
-                    user.getRol().setRolId(foundRol.get().getRolId());
-                }
-            } else {
-                return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "No has ingresado a un ROL para este Usuario"), HttpStatus.BAD_REQUEST);
-
-            }
         if (!user.isValid(user.getEmail(), user.getPassword())) {
             return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "Uno o algunos de los campos estan vacios"), HttpStatus.BAD_REQUEST);
         }
@@ -93,7 +66,7 @@ public class UserService {
             return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "Uno o varios de los campos estan vacios"), HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(new ApiResponse(repository.saveAndFlush(user), HttpStatus.OK, false, "usuario creado exitosamente"), HttpStatus.OK);
-    }}
+    }
 
     public ResponseEntity<ApiResponse> getAll() {
         List<User> users = repository.getUser();
