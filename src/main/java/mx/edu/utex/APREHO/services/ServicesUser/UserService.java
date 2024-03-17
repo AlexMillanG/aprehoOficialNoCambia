@@ -70,7 +70,6 @@ public class UserService {
 
     public ResponseEntity<ApiResponse> getAll() {
         List<User> users = repository.getUser();
-
         return new ResponseEntity<>(new ApiResponse(users, HttpStatus.OK, false, "Usuarios registrados"), HttpStatus.OK);
     }
 

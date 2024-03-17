@@ -13,10 +13,11 @@ public class DtoProducts {
     private String productDescription;
     private int quantity;
 
-    public Products toEntity(){
+    public Products toEntity() {
         return new Products(productName, price, productDescription, quantity);
     }
-public Products toEntityId(){
-return new Products(productId, productName, price, productDescription, quantity);
-}
+
+    public Products toEntityId() {
+        return new Products(productId, productName, price, productDescription, quantity);
+    }
 }

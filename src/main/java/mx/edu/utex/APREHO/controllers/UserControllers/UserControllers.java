@@ -3,9 +3,13 @@ package mx.edu.utex.APREHO.controllers.UserControllers;
 import lombok.AllArgsConstructor;
 import mx.edu.utex.APREHO.config.ApiResponse;
 import mx.edu.utex.APREHO.controllers.UserControllers.Dto.DtoUser;
+import mx.edu.utex.APREHO.model.user.User;
 import mx.edu.utex.APREHO.services.ServicesUser.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/user")
@@ -21,7 +25,9 @@ public class UserControllers {
 
     @GetMapping("/findAll")
     public ResponseEntity<ApiResponse> findAll(){
-        return service.getAll();
+        ResponseEntity<ApiResponse> users=service.getAll();
+        System.err.println(users.toString());
+        return users;
     }
 
 

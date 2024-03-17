@@ -20,8 +20,14 @@ public class Rol {
     private String rolName;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "rol",fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "rol",fetch = FetchType.EAGER,  cascade = CascadeType.ALL)
     private Set<User> user;
 
-
+    @Override
+    public String toString() {
+        return "Rol{" +
+                "rolId=" + rolId +
+                ", rolName='" + rolName + '\'' +
+                '}';
+    }
 }

@@ -40,7 +40,7 @@ public class People {
     private String curp;
 
 
-@JsonIgnore
+    @JsonIgnore
     @OneToOne(mappedBy = "people", cascade = CascadeType.ALL)
     private User user;
 
