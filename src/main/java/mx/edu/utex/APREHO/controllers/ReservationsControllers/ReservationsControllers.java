@@ -15,9 +15,15 @@ public class ReservationsControllers {
     private final ReservationService service;
 
     @PostMapping("/save")
-
     public ResponseEntity<ApiResponse> saveReservation(@RequestBody DtoReservations dtoReservations){
         System.err.println(dtoReservations);
         return service.saveReservations(dtoReservations.toEntity());
     }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<ApiResponse> deleteReservation(@PathVariable Long id){
+        return service.deleteReservation(id);
+    }
+
+
 }

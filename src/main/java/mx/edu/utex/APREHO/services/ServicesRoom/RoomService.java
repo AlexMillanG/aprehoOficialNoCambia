@@ -106,4 +106,7 @@ public class RoomService {
         return new ResponseEntity<>(new ApiResponse(HttpStatus.NOT_FOUND,true,"error, no se han encontrado registros"),HttpStatus.NOT_FOUND);
         return new ResponseEntity<>(new ApiResponse(foundByTypeAndHotel,HttpStatus.OK),HttpStatus.OK);
     }*/
+
+    //
+
 }
