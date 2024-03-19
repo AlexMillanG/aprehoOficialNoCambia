@@ -42,5 +42,6 @@ public class Images {
         this.hotel = hotel;
     }
 
+    
 }
 
