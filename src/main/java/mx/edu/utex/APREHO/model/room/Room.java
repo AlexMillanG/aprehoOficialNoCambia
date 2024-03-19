@@ -57,6 +57,7 @@ public class Room {
     @JsonIgnore
     @OneToMany(mappedBy = "room", fetch = FetchType.LAZY)
     private Set<ReservationsBean> reservations;
+
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "roomTypeId")

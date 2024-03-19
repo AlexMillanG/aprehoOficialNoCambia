@@ -3,6 +3,7 @@ package mx.edu.utex.APREHO.controllers.HotelController;
 import lombok.AllArgsConstructor;
 import mx.edu.utex.APREHO.config.ApiResponse;
 import mx.edu.utex.APREHO.controllers.HotelController.Dto.DtoHotel;
+import mx.edu.utex.APREHO.model.user.User;
 import mx.edu.utex.APREHO.services.ServicesHotel.HotelsService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -56,6 +57,7 @@ public class HotelControllers {
         return service.findOneHotel(id);
     }
 
+
     @PostMapping("/saveHotelWithImages") // Cambio en el nombre del endpoint para reflejar la opción de múltiples imágenes
     public ResponseEntity<ApiResponse> saveWithImages(@RequestParam("images") Set<MultipartFile> files, // Cambio en el parámetro para aceptar una lista de archivos
                                                       @RequestParam("hotelName") String hotelName,
@@ -67,5 +69,13 @@ public class HotelControllers {
                                                       @RequestParam("description") String description) throws IOException {
         return service.saveWithImage(files, hotelName, address, email, phone, city, userId, description);
     }
+
+    @GetMapping("/findByUser")
+    public ResponseEntity<ApiResponse> findByUser(@RequestBody User user){
+        return service.findHotelsByUser(user);
+
+    }
+
+
 
 }

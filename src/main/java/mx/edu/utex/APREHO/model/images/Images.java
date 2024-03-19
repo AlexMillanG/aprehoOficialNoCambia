@@ -21,15 +21,26 @@ public class Images {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long imagesId;
-    @Column(nullable = false,columnDefinition = "BLOB")
+    @Column(nullable = false,columnDefinition = "LONGBLOB")
     private byte[] image;
 
 
     @OneToMany(mappedBy = "images", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Room> room;
 
+
     @JsonIgnoreProperties("images")
     @ManyToMany(mappedBy = "images", fetch = FetchType.LAZY)
     private Set<Hotel> hotels;
+
+    @OneToMany(mappedBy = "images", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Hotel> hotel;
+
+
+    public Images(byte[] image, Set<Hotel> hotel) {
+        this.image = image;
+        this.hotel = hotel;
+    }
+
 }
 

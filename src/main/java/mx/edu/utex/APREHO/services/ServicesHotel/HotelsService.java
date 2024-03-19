@@ -109,6 +109,7 @@ public class HotelsService {
             return new ResponseEntity<>(new ApiResponse(foundHotel.get(),HttpStatus.OK),HttpStatus.OK);
     }
 
+
     private final ImageRepository imageRepository;
     @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<ApiResponse> saveWithImage(Set<MultipartFile> files, String hotelName, String address, String email, String phone, String city, Long userId, String description) throws IOException {
@@ -139,6 +140,15 @@ public class HotelsService {
 
         hotelRepository.save(hotel);
         return new ResponseEntity<>(new ApiResponse(HttpStatus.OK, false, "Guardado correctamente"), HttpStatus.OK);
+    }
+
+
+    @Transactional(rollbackFor = {SQLException.class})
+    public ResponseEntity<ApiResponse> findHotelsByUser(User user){
+    List<Hotel> foundUsersHotels = hotelRepository.findByUser(user);
+    if (foundUsersHotels.isEmpty())
+        return new ResponseEntity<>(new ApiResponse(HttpStatus.NOT_FOUND,true,"No se encontraron hoteles relacionados a este usuario"),HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(new ApiResponse(foundUsersHotels,HttpStatus.OK),HttpStatus.OK);
     }
 
 }

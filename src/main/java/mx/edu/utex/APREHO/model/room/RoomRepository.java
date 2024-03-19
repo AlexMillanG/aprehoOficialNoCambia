@@ -12,4 +12,5 @@ public interface RoomRepository extends JpaRepository<Room,Long> {
 
     //@JsonIgnore
     //List<Room> findByHotel_HotelIdAndAndRoomType(String type, Long id);
+
 }

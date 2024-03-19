@@ -58,6 +58,7 @@ public class ReservationsBean {
 
     public boolean validateDate(LocalDate ld) {
         LocalDate ld1 = LocalDate.now();
+        //valida que la fecha que le mandes no sea menor que hoy
         if (ld.getYear() < ld1.getYear() || ld.getMonthValue() < ld1.getMonthValue() || ld.getDayOfMonth()< ld1.getDayOfMonth()) {
             return false;
         }
