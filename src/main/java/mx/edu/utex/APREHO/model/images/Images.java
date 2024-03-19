@@ -33,14 +33,9 @@ public class Images {
     @ManyToMany(mappedBy = "images", fetch = FetchType.LAZY)
     private Set<Hotel> hotels;
 
-    @OneToMany(mappedBy = "images", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<Hotel> hotel;
 
 
-    public Images(byte[] image, Set<Hotel> hotel) {
-        this.image = image;
-        this.hotel = hotel;
-    }
+
 
 
     
