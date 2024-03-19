@@ -7,6 +7,10 @@ import mx.edu.utex.APREHO.services.ServicesHotel.HotelsService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/hotel")
@@ -52,6 +56,16 @@ public class HotelControllers {
         return service.findOneHotel(id);
     }
 
-
+    @PostMapping("/saveHotelWithImages") // Cambio en el nombre del endpoint para reflejar la opción de múltiples imágenes
+    public ResponseEntity<ApiResponse> saveWithImages(@RequestParam("images") Set<MultipartFile> files, // Cambio en el parámetro para aceptar una lista de archivos
+                                                      @RequestParam("hotelName") String hotelName,
+                                                      @RequestParam("email") String email,
+                                                      @RequestParam("address") String address,
+                                                      @RequestParam("phone") String phone,
+                                                      @RequestParam("city") String city,
+                                                      @RequestParam("userId") Long userId,
+                                                      @RequestParam("description") String description) throws IOException {
+        return service.saveWithImage(files, hotelName, address, email, phone, city, userId, description);
+    }
 
 }

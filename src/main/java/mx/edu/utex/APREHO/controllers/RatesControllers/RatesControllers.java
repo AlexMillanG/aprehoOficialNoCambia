@@ -1,4 +1,4 @@
-package mx.edu.utex.APREHO.controllers.RatesControllers;
+/*package mx.edu.utex.APREHO.controllers.RatesControllers;
 
 import lombok.AllArgsConstructor;
 import mx.edu.utex.APREHO.config.ApiResponse;
@@ -25,3 +25,4 @@ public class RatesControllers {
         return rates.saveRate(ratesDto.toEntity());
     }
 }
+*/

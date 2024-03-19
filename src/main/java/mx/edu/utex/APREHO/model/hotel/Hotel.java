@@ -1,6 +1,7 @@
 package mx.edu.utex.APREHO.model.hotel;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -70,10 +71,12 @@ public class Hotel {
             inverseJoinColumns = @JoinColumn(name = "hotelId"))
     Set<User> user = new HashSet<>();
 
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "imagesId")
-    private Images images;
+    @JsonIgnoreProperties("hotels")
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name="hotel_images",
+            joinColumns = @JoinColumn(name = "hotel_id"),
+            inverseJoinColumns = @JoinColumn(name = "images_id"))
+    private Set<Images> images;
 
     @JsonIgnore
     @ManyToMany

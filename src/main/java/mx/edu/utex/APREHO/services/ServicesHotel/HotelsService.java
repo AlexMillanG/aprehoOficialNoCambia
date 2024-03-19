@@ -4,16 +4,22 @@ import lombok.AllArgsConstructor;
 import mx.edu.utex.APREHO.config.ApiResponse;
 import mx.edu.utex.APREHO.model.hotel.Hotel;
 import mx.edu.utex.APREHO.model.hotel.HotelRepository;
+import mx.edu.utex.APREHO.model.images.ImageRepository;
+import mx.edu.utex.APREHO.model.images.Images;
 import mx.edu.utex.APREHO.model.user.User;
 import mx.edu.utex.APREHO.model.user.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.sql.SQLException;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @AllArgsConstructor
@@ -102,4 +108,37 @@ public class HotelsService {
             return new ResponseEntity<>(new ApiResponse(HttpStatus.NOT_FOUND,true,"No se encontró el hotel"),HttpStatus.NOT_FOUND);
             return new ResponseEntity<>(new ApiResponse(foundHotel.get(),HttpStatus.OK),HttpStatus.OK);
     }
+
+    private final ImageRepository imageRepository;
+    @Transactional(rollbackFor = {SQLException.class})
+    public ResponseEntity<ApiResponse> saveWithImage(Set<MultipartFile> files, String hotelName, String address, String email, String phone, String city, Long userId, String description) throws IOException {
+        Set<Images> images = new HashSet<>();
+
+        for (MultipartFile file : files) {
+            byte[] imageData = file.getBytes();
+            Images image = new Images();
+            image.setImage(imageData);
+            imageRepository.saveAndFlush(image);
+            images.add(image);
+        }
+
+        User user = new User();
+        user.setUserId(userId);
+        Set<User> users = new HashSet<>();
+        users.add(user);
+
+        Hotel hotel = new Hotel();
+        hotel.setHotelName(hotelName);
+        hotel.setAddress(address);
+        hotel.setEmail(email);
+        hotel.setPhone(phone);
+        hotel.setCity(city);
+        hotel.setUser(users);
+        hotel.setDescription(description);
+        hotel.setImages(images); //relaciona las imagenes
+
+        hotelRepository.save(hotel);
+        return new ResponseEntity<>(new ApiResponse(HttpStatus.OK, false, "Guardado correctamente"), HttpStatus.OK);
+    }
+
 }

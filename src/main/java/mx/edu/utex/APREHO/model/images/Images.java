@@ -1,5 +1,6 @@
 package mx.edu.utex.APREHO.model.images;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,7 +28,8 @@ public class Images {
     @OneToMany(mappedBy = "images", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Room> room;
 
-    @OneToMany(mappedBy = "images", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<Hotel> hotel;
+    @JsonIgnoreProperties("images")
+    @ManyToMany(mappedBy = "images", fetch = FetchType.LAZY)
+    private Set<Hotel> hotels;
 }
 
