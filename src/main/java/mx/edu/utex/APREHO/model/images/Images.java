@@ -20,7 +20,7 @@ public class Images {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long imagesId;
-    @Column(nullable = false,columnDefinition = "BLOB")
+    @Column(nullable = false,columnDefinition = "LONGBLOB")
     private byte[] image;
 
 
@@ -29,5 +29,11 @@ public class Images {
 
     @OneToMany(mappedBy = "images", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Hotel> hotel;
+
+
+    public Images(byte[] image, Set<Hotel> hotel) {
+        this.image = image;
+        this.hotel = hotel;
+    }
 }
 
