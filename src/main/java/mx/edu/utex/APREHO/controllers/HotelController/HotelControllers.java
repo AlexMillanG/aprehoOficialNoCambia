@@ -67,6 +67,10 @@ public class HotelControllers {
                                                       @RequestParam("city") String city,
                                                       @RequestParam("userId") Long userId,
                                                       @RequestParam("description") String description) throws IOException {
+        if (files.isEmpty())
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "No se han subido imágenes"), HttpStatus.BAD_REQUEST);
+        if (files.size()>3)
+        return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "No se pueden subir más de 3 imagenes"), HttpStatus.BAD_REQUEST);
         return service.saveWithImage(files, hotelName, address, email, phone, city, userId, description);
     }
 
