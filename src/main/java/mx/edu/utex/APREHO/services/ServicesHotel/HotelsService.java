@@ -20,6 +20,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -27,6 +28,7 @@ import java.util.Set;
 public class HotelsService {
     private final HotelRepository hotelRepository;
     private final UserRepository userRepository;
+    private final ImageRepository imageRepository;
 
     @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<ApiResponse> saveHotel(Hotel hotel) {
@@ -110,7 +112,6 @@ public class HotelsService {
     }
 
 
-    private final ImageRepository imageRepository;
     @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<ApiResponse> saveWithImage(Set<MultipartFile> files, String hotelName, String address, String email, String phone, String city, Long userId, String description) throws IOException {
         Set<Images> images = new HashSet<>();
@@ -150,5 +151,27 @@ public class HotelsService {
         return new ResponseEntity<>(new ApiResponse(HttpStatus.NOT_FOUND,true,"No se encontraron hoteles relacionados a este usuario"),HttpStatus.NOT_FOUND);
         return new ResponseEntity<>(new ApiResponse(foundUsersHotels,HttpStatus.OK),HttpStatus.OK);
     }
+
+    @Transactional(rollbackFor = {SQLException.class})
+    public ResponseEntity<ApiResponse> getHotelAndImage() {
+        Set<Hotel> hoteles = hotelRepository.findAll().stream().collect(Collectors.toSet());
+
+        for (Hotel hotel : hoteles) {
+            Set<Images> imagenes = hotel.getImages().stream()
+                    .map(image -> imageRepository.findById(image.getImagesId()))
+                    .filter(Optional::isPresent)
+                    .map(Optional::get)
+                    .collect(Collectors.toSet());
+
+            hotel.setImages(imagenes);
+        }
+
+        if (hoteles.isEmpty()) {
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.NOT_FOUND, true, "No se encontraron registros"), HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<>(new ApiResponse(hoteles, HttpStatus.OK), HttpStatus.OK);
+        }
+    }
+
 
 }
