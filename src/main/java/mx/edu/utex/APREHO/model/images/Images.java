@@ -24,10 +24,11 @@ public class Images {
     @Column(nullable = false,columnDefinition = "LONGBLOB")
     private byte[] image;
 
-
-    @OneToMany(mappedBy = "images", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<Room> room;
-
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name = "room_images",
+            joinColumns = @JoinColumn(name = "images_id"),
+            inverseJoinColumns = @JoinColumn(name = "room_id"))
+    private Set<Room> rooms;
 
     @JsonIgnoreProperties("images")
     @ManyToMany(mappedBy = "images", fetch = FetchType.LAZY)

@@ -63,10 +63,8 @@ public class Room {
     @JoinColumn(name = "roomTypeId")
     private RoomType roomType;
 
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "imagesId")
-    private Images images;
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "rooms")
+    private Set<Images> images;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)

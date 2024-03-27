@@ -71,7 +71,7 @@ public class HotelControllers {
 
 
     @PostMapping("/saveHotelWithImages") // Cambio en el nombre del endpoint para reflejar la opción de múltiples imágenes
-    public ResponseEntity<ApiResponse> saveWithImages(@RequestParam("images") Set<MultipartFile> files, // Cambio en el parámetro para aceptar una lista de archivos
+    public ResponseEntity<ApiResponse> saveWithImages(@RequestParam("images") Set<MultipartFile> files,
                                                       @RequestParam("hotelName") String hotelName,
                                                       @RequestParam("email") String email,
                                                       @RequestParam("address") String address,
