@@ -48,6 +48,12 @@ public class HotelControllers {
     public ResponseEntity<ApiResponse>getByCity(@PathVariable String city){
         return service.getByCity(city);
     }
+
+    @GetMapping("/getByCity")
+    public ResponseEntity<ApiResponse>getByCityBody(@RequestBody DtoHotel hotel){
+        return service.getByCity(hotel.getEmail());
+    }
+
     @PutMapping("/update")
     public ResponseEntity<ApiResponse>update(@RequestBody DtoHotel hotel){
         return  service.updateHotel(hotel.toEntityUpdate());
