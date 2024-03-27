@@ -173,5 +173,25 @@ public class HotelsService {
         }
     }
 
+    @Transactional(rollbackFor = {SQLException.class})
+    public ResponseEntity<ApiResponse> getCities() {
+        // Obtener todos los hoteles
+        List<Hotel> hotels = hotelRepository.findAll();
+
+        // Extraer las ciudades de los hoteles y eliminar duplicados utilizando Stream API
+        List<String> cities = hotels.stream()
+                .map(Hotel::getCity) // Obtener la ciudad de cada hotel
+                .distinct() // Eliminar ciudades duplicadas
+                .collect(Collectors.toList()); // Recolectar en una lista
+
+        // Verificar si se encontraron ciudades
+        if (!cities.isEmpty()) {
+            return new ResponseEntity<>(new ApiResponse(cities, HttpStatus.OK), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.NOT_FOUND, true, "No se encontraron ciudades"), HttpStatus.NOT_FOUND);
+        }
+    }
+
+
 
 }

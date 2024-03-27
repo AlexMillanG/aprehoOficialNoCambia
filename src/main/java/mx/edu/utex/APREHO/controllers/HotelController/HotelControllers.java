@@ -107,6 +107,10 @@ public class HotelControllers {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
     }
 
+    @GetMapping("/getCities")
+    public  ResponseEntity<ApiResponse> getCities(){
+        return service.getCities();
+    }
 
 
 

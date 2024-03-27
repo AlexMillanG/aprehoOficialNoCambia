@@ -12,6 +12,7 @@ public interface HotelRepository extends JpaRepository<Hotel,Long> {
     Optional<Hotel> deleteByEmail(String email);
 
     List<Hotel> findByUser(User user);
+    //List<Hotel> findAllByCity();
 
 
 }
