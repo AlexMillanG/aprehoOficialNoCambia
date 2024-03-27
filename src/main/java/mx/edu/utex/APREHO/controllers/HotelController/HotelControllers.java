@@ -51,7 +51,8 @@ public class HotelControllers {
 
     @GetMapping("/getByCity")
     public ResponseEntity<ApiResponse>getByCityBody(@RequestBody DtoHotel hotel){
-        return service.getByCity(hotel.getEmail());
+        System.err.println("el drip"+hotel.getCity());
+        return service.getByCity(hotel.getCity());
     }
 
     @PutMapping("/update")
