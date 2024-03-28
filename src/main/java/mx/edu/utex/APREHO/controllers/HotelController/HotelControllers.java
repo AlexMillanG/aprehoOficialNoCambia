@@ -48,6 +48,13 @@ public class HotelControllers {
     public ResponseEntity<ApiResponse>getByCity(@PathVariable String city){
         return service.getByCity(city);
     }
+
+    @GetMapping("/getByCity")
+    public ResponseEntity<ApiResponse>getByCityBody(@RequestBody DtoHotel hotel){
+        System.err.println("el drip"+hotel.getCity());
+        return service.getByCity(hotel.getCity());
+    }
+
     @PutMapping("/update")
     public ResponseEntity<ApiResponse>update(@RequestBody DtoHotel hotel){
         return  service.updateHotel(hotel.toEntityUpdate());
@@ -64,7 +71,7 @@ public class HotelControllers {
 
 
     @PostMapping("/saveHotelWithImages") // Cambio en el nombre del endpoint para reflejar la opción de múltiples imágenes
-    public ResponseEntity<ApiResponse> saveWithImages(@RequestParam("images") Set<MultipartFile> files, // Cambio en el parámetro para aceptar una lista de archivos
+    public ResponseEntity<ApiResponse> saveWithImages(@RequestParam("images") Set<MultipartFile> files,
                                                       @RequestParam("hotelName") String hotelName,
                                                       @RequestParam("email") String email,
                                                       @RequestParam("address") String address,
