@@ -9,6 +9,7 @@ import lombok.Setter;
 import mx.edu.utex.APREHO.model.hotel.Hotel;
 import mx.edu.utex.APREHO.model.room.Room;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -16,7 +17,6 @@ import java.util.Set;
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor
 public class Images {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,9 +30,14 @@ public class Images {
             inverseJoinColumns = @JoinColumn(name = "room_id"))
     private Set<Room> rooms;
 
+    public Images() {
+        this.rooms = new HashSet<>();
+    }
+
     @JsonIgnoreProperties("images")
     @ManyToMany(mappedBy = "images", fetch = FetchType.LAZY)
     private Set<Hotel> hotels;
+
 
 
 

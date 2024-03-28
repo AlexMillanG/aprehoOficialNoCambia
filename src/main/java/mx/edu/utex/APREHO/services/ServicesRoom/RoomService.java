@@ -38,9 +38,8 @@ public class RoomService {
             return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST,true ,"Error, no se le ha asginado un hotel al cuarto"), HttpStatus.BAD_REQUEST);
 
         Optional<Hotel> optionalHotel = hotelRepository.findById(room.getHotel().getHotelId());
-        if (optionalHotel.isEmpty()) {
+        if (optionalHotel.isEmpty())
             return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST,true,"Error, el hotel asociado no existe"),HttpStatus.BAD_REQUEST);
-        }
 
         if (room.getPeopleQuantity() <= 0)
             return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST,true,"Error,La cantidad de personas no puede ser menor o igual que cero"),HttpStatus.BAD_REQUEST);
@@ -108,7 +107,7 @@ public class RoomService {
 
 
     @Transactional(rollbackFor = {SQLException.class})
-    public ResponseEntity<ApiResponse> saveWithImage(Set<MultipartFile> files, String roomName, String status, int peopleQuantity,String description, Long hotelId, Long roomTypeId ) throws IOException {
+    public ResponseEntity<ApiResponse> saveWithImage(Set<MultipartFile> files, String roomName, String status, int peopleQuantity, String description, Long hotelId, Long roomTypeId) throws IOException {
         Set<Images> images = new HashSet<>();
 
         for (MultipartFile file : files) {
@@ -132,12 +131,21 @@ public class RoomService {
         room.setDescription(description);
         room.setHotel(hotel);
         room.setRoomType(roomType);
+
+        // Asociar las imágenes creadas con la habitación
         room.setImages(images);
+
+        // Guardar la habitación
         roomRepository.saveAndFlush(room);
 
-        return new ResponseEntity<>(new ApiResponse(HttpStatus.OK, false, "Guardado correctamente"), HttpStatus.OK);
+        // Actualizar la relación en ambas direcciones
+        for (Images image : images) {
+            image.getRooms().add(room);
+        }
 
+        return new ResponseEntity<>(new ApiResponse(HttpStatus.OK, false, "Guardado correctamente"), HttpStatus.OK);
     }
+
 
     // Traer habitaciones por tipo
 
