@@ -89,7 +89,7 @@ public class Hotel {
     private Set<RoomType> roomTypes;
 
 
-
+/*
     @Override
     public String toString() {
         return "Hotel{" +
@@ -103,5 +103,5 @@ public class Hotel {
                 ", images=" + images +
                 ", products=" + products +
                 '}';
-    }
+    }*/
 }
