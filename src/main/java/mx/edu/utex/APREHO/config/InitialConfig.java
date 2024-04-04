@@ -37,11 +37,11 @@ public class InitialConfig implements CommandLineRunner {
     public void run(String... args) throws Exception {
         Rol adminRole = getOrSaveRole(new Rol( "ADMIN_ROLE"));
         getOrSaveRole(new Rol("USER_ROLE"));
-        getOrSaveRole(new Rol("CLIENT_ROLE"));
+        getOrSaveRole(new Rol("RECEPTIONIST_ROLE"));
         //Crear un usuario para que puedan iniciar sesión (person, user, user_role)
         People person = getOrSavePerson(
-                new People("mike", "moreno", "Velazquez","Hombre",
-                        LocalDate.of(1998, 1, 19), "MOVM980119HM")
+                new People("alex", "millan", "guillen","Hombre",
+                        LocalDate.of(2004, 6, 10), "MOVM980119HM")
         );
         User user = getOrSaveUser(
                 new User("admin", passwordEncoder.encode("admin"), person)
