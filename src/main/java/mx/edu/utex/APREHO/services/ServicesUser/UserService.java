@@ -104,7 +104,7 @@ public class UserService {
             } else {
                 return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "Este usuario no existe"), HttpStatus.BAD_REQUEST);
             }
-        }else{
+        } else {
             return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "Uno o algunos de los campos estan vacios"), HttpStatus.BAD_REQUEST);
 
         }
@@ -157,6 +157,7 @@ public class UserService {
     @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<ApiResponse> loggin(String pass, String email) {
         Optional<User> foundUser = repository.loggin(pass, email);
+
         if (foundUser.isPresent()) {
             return new ResponseEntity<>(new ApiResponse(foundUser, HttpStatus.OK, false, "Usuario encontrado"), HttpStatus.OK);
 
@@ -165,7 +166,17 @@ public class UserService {
 
         }
     }
-    
 
+    @Transactional(rollbackFor = {SQLException.class})
+    public Optional<User> findUserByUsernameAndPassword(String pass, String email) {
+        Optional<User> foundUser = repository.loggin(pass, email);
+
+        return foundUser;
+
+    }
+    @Transactional(readOnly = true)
+    public Optional<User> findUserByUsername(String email){
+        return repository.findFirstByEmail(email);
+    }
 }
 
