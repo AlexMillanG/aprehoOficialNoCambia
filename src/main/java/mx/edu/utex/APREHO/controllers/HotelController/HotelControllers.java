@@ -68,6 +68,10 @@ public class HotelControllers {
     public ResponseEntity<ApiResponse> findOne(@PathVariable Long id) {
         return service.findOneHotel(id);
     }
+    @GetMapping("/findOneBody")
+    public ResponseEntity<ApiResponse> findOneBody(@RequestBody DtoHotel dtoHotel){
+        return service.findOneHotel(dtoHotel.getHotelId());
+    }
 
 
     @PostMapping("/saveHotelWithImages") // Cambio en el nombre del endpoint para reflejar la opción de múltiples imágenes
