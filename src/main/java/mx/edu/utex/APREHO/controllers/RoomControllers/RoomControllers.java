@@ -58,6 +58,12 @@ public class RoomControllers {
         return service.findOneRoom(id);
     }
 
+    @GetMapping("findOneRoomBody/")
+    public ResponseEntity<ApiResponse> findOneRoomBody(@RequestBody DtoRoom room){
+        System.err.println(room.getRoomId());
+        return service.findOneRoom(room.getRoomId());
+    }
+
     @PostMapping("/saveWithImage")
     public ResponseEntity<ApiResponse> saveWithImage(@RequestParam("images") Set<MultipartFile> files,
                                                      @RequestParam("roomName") String roomName,
