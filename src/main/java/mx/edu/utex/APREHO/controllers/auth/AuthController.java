@@ -20,4 +20,6 @@ public class AuthController {
     public ResponseEntity<ApiResponse> signIn(@RequestBody SignDto dto) {
         return service.signIn(dto.getUsername(), dto.getPassword());
     }
+
+
 }

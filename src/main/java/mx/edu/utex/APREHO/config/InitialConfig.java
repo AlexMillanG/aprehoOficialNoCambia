@@ -6,7 +6,6 @@ import mx.edu.utex.APREHO.model.rol.Rol;
 import mx.edu.utex.APREHO.model.rol.RolRepository;
 import mx.edu.utex.APREHO.model.user.User;
 import mx.edu.utex.APREHO.model.user.UserRepository;
-import org.apache.catalina.mbeans.RoleMBean;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -43,11 +42,11 @@ public class InitialConfig implements CommandLineRunner {
                 new People("alex", "millan", "guillen","Hombre",
                         LocalDate.of(2004, 6, 10), "MOVM980119HM")
         );
+        Rol admin=new Rol(1L);
         User user = getOrSaveUser(
-                new User("admin", passwordEncoder.encode("admin"), person)
+                new User(passwordEncoder.encode("admin"),"admin@gmail.com", admin,person)
         );
 
-       // saveUserRoles(user.getId(), adminRole.getId());
     }
 
     @Transactional
@@ -65,10 +64,5 @@ public class InitialConfig implements CommandLineRunner {
         Optional<User> foundUser = userRepository.findFirstByEmail(user.getEmail());
         return foundUser.orElseGet(() -> userRepository.saveAndFlush(user));
     }
-    /*@Transactional
-    public void saveUserRoles(Long id, Long roleId) {
-        Long userRoleId = userRepository.getIdUserRoles(id, roleId);
-        if (userRoleId == null)
-            userRepository.saveUserRole(id, roleId);
-    }*/
+
 }

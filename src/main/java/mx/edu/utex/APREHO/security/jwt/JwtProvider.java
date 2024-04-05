@@ -69,7 +69,7 @@ public class JwtProvider {
         String bearerToken = req.getHeader(TOKEN_HEADER);
         if (bearerToken != null && bearerToken.startsWith(TOKEN_TYPE))
             return bearerToken.replace(TOKEN_TYPE, "");
-        // bearerToken.substring(TOKEN_TYPE.length());
+         //bearerToken.substring(TOKEN_TYPE.length());
         return null;
     }
 

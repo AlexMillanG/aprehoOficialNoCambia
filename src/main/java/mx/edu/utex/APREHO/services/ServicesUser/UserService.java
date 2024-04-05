@@ -169,10 +169,7 @@ public class UserService {
 
     @Transactional(rollbackFor = {SQLException.class})
     public Optional<User> findUserByUsernameAndPassword(String pass, String email) {
-        Optional<User> foundUser = repository.loggin(pass, email);
-
-        return foundUser;
-
+        return   repository.loggin(pass, email);
     }
     @Transactional(readOnly = true)
     public Optional<User> findUserByUsername(String email){

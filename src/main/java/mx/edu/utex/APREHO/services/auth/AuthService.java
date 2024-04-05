@@ -2,6 +2,7 @@ package mx.edu.utex.APREHO.services.auth;
 
 import mx.edu.utex.APREHO.config.ApiResponse;
 import mx.edu.utex.APREHO.model.user.User;
+import mx.edu.utex.APREHO.model.user.UserRepository;
 import mx.edu.utex.APREHO.security.jwt.JwtProvider;
 import mx.edu.utex.APREHO.services.ServicesUser.UserService;
 
@@ -13,9 +14,11 @@ import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.SQLException;
 import java.util.Optional;
 
 
@@ -25,11 +28,16 @@ public class AuthService {
     private final UserService userService;
     private final JwtProvider provider;
     private final AuthenticationManager manager;
+    private  final UserRepository repository;
+    private  final PasswordEncoder passwordEncoder;
 
-    public AuthService(UserService userService, JwtProvider provider, AuthenticationManager manager) {
+
+    public AuthService(UserService userService, JwtProvider provider, AuthenticationManager manager, UserRepository repository, PasswordEncoder passwordEncoder) {
         this.userService = userService;
         this.provider = provider;
         this.manager = manager;
+        this.repository = repository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Transactional
@@ -56,4 +64,18 @@ public class AuthService {
             return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, message), HttpStatus.UNAUTHORIZED);
         }
     }
+
+    @Transactional(rollbackFor = {SQLException.class})
+    public ResponseEntity<ApiResponse> loggin(String pass, String email) {
+        Optional<User> foundUser = repository.loggin(pass, email);
+
+        if (foundUser.isPresent()) {
+            return new ResponseEntity<>(new ApiResponse(foundUser, HttpStatus.OK, false, "Usuario encontrado"), HttpStatus.OK);
+
+        } else {
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, false, "Usuario o contraseña Incorrectas"), HttpStatus.BAD_REQUEST);
+
+        }
+    }
+
 }
