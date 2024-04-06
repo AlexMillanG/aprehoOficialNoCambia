@@ -40,9 +40,11 @@ public class RoomControllers {
     public ResponseEntity<ApiResponse> getByHotel(@PathVariable Long id){
         return  service.getByHotel(id);
     }
+
+
     //el get all es solo pruebas
 
-    @GetMapping("/getByHotel/")
+    @GetMapping("/getByHotelBody/")
     public ResponseEntity<ApiResponse> getByHotelBody(@RequestBody DtoRoom dtoRoom){
         return  service.getByHotel(dtoRoom.getHotel().getHotelId());
     }
