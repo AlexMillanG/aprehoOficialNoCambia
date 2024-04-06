@@ -2,7 +2,7 @@ package mx.edu.utex.APREHO.services.ServicesUser;
 
 import lombok.AllArgsConstructor;
 import mx.edu.utex.APREHO.config.ApiResponse;
-import mx.edu.utex.APREHO.model.hotel.HotelRepository;
+//import mx.edu.utex.APREHO.model.vhotel.HotelRepository;
 import mx.edu.utex.APREHO.model.people.People;
 import mx.edu.utex.APREHO.model.people.PeopleRepository;
 import mx.edu.utex.APREHO.model.rol.Rol;
@@ -24,7 +24,7 @@ import java.util.Optional;
 public class UserService {
     private final UserRepository repository;
     private final PeopleRepository peopleRepository;
-    private final HotelRepository hotelRepository;
+   // private final HotelRepository hotelRepository;
     private final RolRepository rolRepository;
 
     @Transactional(rollbackFor = {SQLException.class})

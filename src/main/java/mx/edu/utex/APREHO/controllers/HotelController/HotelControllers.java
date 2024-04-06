@@ -3,14 +3,9 @@ package mx.edu.utex.APREHO.controllers.HotelController;
 import lombok.AllArgsConstructor;
 import mx.edu.utex.APREHO.config.ApiResponse;
 import mx.edu.utex.APREHO.controllers.HotelController.Dto.DtoHotel;
-import mx.edu.utex.APREHO.model.hotel.Hotel;
-import mx.edu.utex.APREHO.model.images.Images;
 import mx.edu.utex.APREHO.model.user.User;
 import mx.edu.utex.APREHO.services.ServicesHotel.HotelsService;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -54,11 +49,11 @@ public class HotelControllers {
         System.err.println("el drip"+hotel.getCity());
         return service.getByCity(hotel.getCity());
     }
-    /*
+
     @PutMapping("/update")
     public ResponseEntity<ApiResponse>update(@RequestBody DtoHotel hotel){
         return  service.updateHotel(hotel.toEntityUpdate());
-    }*/
+    }
     @DeleteMapping("/delete/{email}")
     public ResponseEntity<ApiResponse>delete(@PathVariable String email){
         return service.deleteHotel(email);

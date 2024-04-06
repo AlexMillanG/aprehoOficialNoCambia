@@ -19,9 +19,11 @@ import java.util.Set;
 @AllArgsConstructor
 public class RoomControllers {
     private final RoomService service;
+
     @PostMapping("/save")
     public ResponseEntity<ApiResponse> save(@RequestBody DtoRoom room){
-        return service.saveRoom(room.toEntity());
+      return service.saveRoom(room.toEntity());
+
     }
 
 
