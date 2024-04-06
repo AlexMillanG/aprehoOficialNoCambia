@@ -25,7 +25,7 @@ import java.util.Set;
 public class HotelControllers {
     private final HotelsService service;
 
-    @PostMapping("/save")
+ /*   @PostMapping("/save")
     public ResponseEntity<ApiResponse>save(@RequestBody DtoHotel hotel){
         System.out.println(hotel.getCity());
         String city = hotel.getCity();
@@ -38,7 +38,7 @@ public class HotelControllers {
             return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "La ciudad no puede tener espacios al principio ni al final"),HttpStatus.BAD_REQUEST);
         }
         return  service.saveHotel(hotel.toEntity());
-    }
+    }*/
 
     @GetMapping("/")
     public ResponseEntity<ApiResponse> getAll(){
@@ -54,11 +54,11 @@ public class HotelControllers {
         System.err.println("el drip"+hotel.getCity());
         return service.getByCity(hotel.getCity());
     }
-
+    /*
     @PutMapping("/update")
     public ResponseEntity<ApiResponse>update(@RequestBody DtoHotel hotel){
         return  service.updateHotel(hotel.toEntityUpdate());
-    }
+    }*/
     @DeleteMapping("/delete/{email}")
     public ResponseEntity<ApiResponse>delete(@PathVariable String email){
         return service.deleteHotel(email);
@@ -94,25 +94,6 @@ public class HotelControllers {
 
     }
 
-    // no
-    @GetMapping("/imagen/{id}")
-    public ResponseEntity<Resource> obtenerImagen(@PathVariable Long id) {
-        ResponseEntity<ApiResponse> responseEntity = service.getHotelAndImage();
-        if (responseEntity.getStatusCode() == HttpStatus.OK && responseEntity.getBody() != null) {
-            ApiResponse apiResponse = responseEntity.getBody();
-            Set<Hotel> hoteles = (Set<Hotel>) apiResponse.getData();
-            for (Hotel hotel : hoteles) {
-                for (Images imagen : hotel.getImages()) {
-                    if (imagen.getImagesId().equals(id)) {
-                        return ResponseEntity.ok()
-                                .contentType(MediaType.IMAGE_JPEG)
-                                .body(new ByteArrayResource(imagen.getImage()));
-                    }
-                }
-            }
-        }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-    }
 
     @GetMapping("/getCities")
     public  ResponseEntity<ApiResponse> getCities(){
