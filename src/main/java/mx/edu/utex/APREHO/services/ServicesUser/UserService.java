@@ -11,6 +11,7 @@ import mx.edu.utex.APREHO.model.user.User;
 import mx.edu.utex.APREHO.model.user.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +27,7 @@ public class UserService {
     private final PeopleRepository peopleRepository;
     private final HotelRepository hotelRepository;
     private final RolRepository rolRepository;
+
 
     @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<ApiResponse> save(User user) {
@@ -65,6 +67,7 @@ public class UserService {
         } else {
             return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "Uno o varios de los campos estan vacios"), HttpStatus.BAD_REQUEST);
         }
+
         return new ResponseEntity<>(new ApiResponse(repository.saveAndFlush(user), HttpStatus.OK, false, "usuario creado exitosamente"), HttpStatus.OK);
     }
 

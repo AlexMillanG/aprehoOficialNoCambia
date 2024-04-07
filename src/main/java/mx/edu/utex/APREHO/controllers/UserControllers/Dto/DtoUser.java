@@ -5,6 +5,7 @@ import mx.edu.utex.APREHO.model.hotel.Hotel;
 import mx.edu.utex.APREHO.model.people.People;
 import mx.edu.utex.APREHO.model.rol.Rol;
 import mx.edu.utex.APREHO.model.user.User;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Set;
 
