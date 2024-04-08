@@ -1,10 +1,12 @@
 package mx.edu.utex.APREHO.model.paymentHistory;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import mx.edu.utex.APREHO.model.hotel.Hotel;
 import mx.edu.utex.APREHO.model.products.Products;
 import mx.edu.utex.APREHO.model.reservations.ReservationsBean;
 
@@ -33,4 +35,9 @@ public class PaymentHistory {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "reservationId")
     private ReservationsBean reservations;
+
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "hotel_id")
+    private Hotel hotel;
 }

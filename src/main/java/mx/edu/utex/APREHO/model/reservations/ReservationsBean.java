@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import mx.edu.utex.APREHO.model.hotel.Hotel;
 import mx.edu.utex.APREHO.model.paymentHistory.PaymentHistory;
 import mx.edu.utex.APREHO.model.people.People;
 import mx.edu.utex.APREHO.model.room.Room;
@@ -64,5 +65,12 @@ public class ReservationsBean {
         }
     return true;
     }
+
+
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "hotel_id")
+    private Hotel hotel;
+
 
 }
