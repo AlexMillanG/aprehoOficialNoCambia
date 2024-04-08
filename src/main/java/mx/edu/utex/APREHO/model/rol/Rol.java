@@ -30,4 +30,12 @@ public class Rol {
                 ", rolName='" + rolName + '\'' +
                 '}';
     }
+
+    public Rol(String rolName) {
+        this.rolName = rolName;
+    }
+
+    public Rol(Long rolId) {
+        this.rolId = rolId;
+    }
 }

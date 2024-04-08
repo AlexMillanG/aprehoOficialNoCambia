@@ -6,6 +6,7 @@ import mx.edu.utex.APREHO.controllers.UserControllers.Dto.DtoUser;
 import mx.edu.utex.APREHO.model.user.User;
 import mx.edu.utex.APREHO.services.ServicesUser.UserService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -18,8 +19,11 @@ import java.util.List;
 public class UserControllers {
     private final UserService service;
 
+    private  final PasswordEncoder passwordEncoder;
+
     @PostMapping("/save")
     public ResponseEntity<ApiResponse> save(@RequestBody  DtoUser user){
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return service.save(user.toEntity());
     }
 

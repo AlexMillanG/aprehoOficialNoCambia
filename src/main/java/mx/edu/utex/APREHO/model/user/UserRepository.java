@@ -15,6 +15,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> all(String string);*/
 
     Optional<User> findByEmail(String string);
+    Optional<User> findFirstByEmail(String email);
+
 
     @Query(value = "SELECT user_table.*,rol.rol_name,People.curp,People.lastname,People.name FROM user user_table  INNER JOIN rol  on user_table.rol_id=rol.rol_id INNER JOIN People  ON user_table.people_id=People.people_id", nativeQuery = true)
     List<User> getUserss();

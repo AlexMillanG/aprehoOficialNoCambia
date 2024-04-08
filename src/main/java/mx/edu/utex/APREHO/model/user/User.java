@@ -24,7 +24,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
-    @Column(length = 45, nullable = false)
+    @Column( nullable = false)
     private String password;
 
     @Column(length =45, nullable = false)
@@ -37,7 +37,6 @@ public class User {
             property = "rolId"
     )
     private Rol rol;
-
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "peopleId")
     @JsonIdentityInfo(
@@ -63,6 +62,12 @@ public class User {
         this.password = password;
         this.email=email;
         this.rol = rol;
+        this.people = people;
+    }
+
+    public User(String password, String email, People people) {
+        this.password = password;
+        this.email = email;
         this.people = people;
     }
 
