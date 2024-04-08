@@ -30,6 +30,7 @@ public class HotelsService {
     private final UserRepository userRepository;
     private final ImageRepository imageRepository;
 
+    /*
     @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<ApiResponse> saveHotel(Hotel hotel) {
         Optional<Hotel> foundHotel = hotelRepository.findByEmail(hotel.getEmail());
@@ -54,7 +55,7 @@ public class HotelsService {
                 return new ResponseEntity<>(new ApiResponse(HttpStatus.OK, false, "Guardado correctamente"), HttpStatus.OK);
             }
         }
-    }
+    }*/
     @Transactional(rollbackFor = SQLException.class)
     public ResponseEntity<ApiResponse> getAll() {
         return new ResponseEntity<>(new ApiResponse(hotelRepository.findAll(), HttpStatus.OK), HttpStatus.OK);
@@ -114,6 +115,18 @@ public class HotelsService {
 
     @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<ApiResponse> saveWithImage(Set<MultipartFile> files, String hotelName, String address, String email, String phone, String city, Long userId, String description) throws IOException {
+        // Verificar si ya existe un hotel con el mismo correo electrónico
+        Optional<Hotel> foundHotel = hotelRepository.findByEmail(email);
+        if (foundHotel.isPresent()) {
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "Error, ya se ha registrado un hotel con ese email"), HttpStatus.BAD_REQUEST);
+        }
+
+        // Verificar si se ha asignado un usuario al hotel y si este usuario existe en la base de datos
+        Optional<User> foundUser = userRepository.findById(userId);
+        if (!foundUser.isPresent()) {
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "Error, no se ha encontrado el usuario asociado"), HttpStatus.BAD_REQUEST);
+        }
+
         Set<Images> images = new HashSet<>();
 
         for (MultipartFile file : files) {
@@ -137,7 +150,7 @@ public class HotelsService {
         hotel.setCity(city);
         hotel.setUser(users);
         hotel.setDescription(description);
-        hotel.setImages(images); //relaciona las imagenes
+        hotel.setImages(images); // Relaciona las imágenes
 
         hotelRepository.save(hotel);
         return new ResponseEntity<>(new ApiResponse(HttpStatus.OK, false, "Guardado correctamente"), HttpStatus.OK);
@@ -152,26 +165,6 @@ public class HotelsService {
         return new ResponseEntity<>(new ApiResponse(foundUsersHotels,HttpStatus.OK),HttpStatus.OK);
     }
 
-    @Transactional(rollbackFor = {SQLException.class})
-    public ResponseEntity<ApiResponse> getHotelAndImage() {
-        Set<Hotel> hoteles = hotelRepository.findAll().stream().collect(Collectors.toSet());
-
-        for (Hotel hotel : hoteles) {
-            Set<Images> imagenes = hotel.getImages().stream()
-                    .map(image -> imageRepository.findById(image.getImagesId()))
-                    .filter(Optional::isPresent)
-                    .map(Optional::get)
-                    .collect(Collectors.toSet());
-
-            hotel.setImages(imagenes);
-        }
-
-        if (hoteles.isEmpty()) {
-            return new ResponseEntity<>(new ApiResponse(HttpStatus.NOT_FOUND, true, "No se encontraron registros"), HttpStatus.NOT_FOUND);
-        } else {
-            return new ResponseEntity<>(new ApiResponse(hoteles, HttpStatus.OK), HttpStatus.OK);
-        }
-    }
 
     @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<ApiResponse> getCities() {

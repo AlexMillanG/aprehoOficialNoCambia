@@ -8,7 +8,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import mx.edu.utex.APREHO.model.images.Images;
+import mx.edu.utex.APREHO.model.paymentHistory.PaymentHistory;
 import mx.edu.utex.APREHO.model.products.Products;
+import mx.edu.utex.APREHO.model.reservations.ReservationsBean;
 import mx.edu.utex.APREHO.model.room.Room;
 import mx.edu.utex.APREHO.model.roomType.RoomType;
 import mx.edu.utex.APREHO.model.user.User;
@@ -89,19 +91,12 @@ public class Hotel {
     private Set<RoomType> roomTypes;
 
 
-/*
-    @Override
-    public String toString() {
-        return "Hotel{" +
-                "hotelId=" + hotelId +
-                ", hotelName='" + hotelName + '\'' +
-                ", address='" + address + '\'' +
-                ", email='" + email + '\'' +
-                ", phone=" + phone +
-                ", room=" + room +
-                ", user=" + user +
-                ", images=" + images +
-                ", products=" + products +
-                '}';
-    }*/
+    @JsonIgnore
+    @OneToMany(mappedBy = "hotel", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<ReservationsBean> reservations;
+
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "hotel", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<PaymentHistory> paymentHistory;
 }
