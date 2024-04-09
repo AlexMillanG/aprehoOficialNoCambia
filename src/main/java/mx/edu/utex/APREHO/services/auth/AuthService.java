@@ -1,6 +1,10 @@
 package mx.edu.utex.APREHO.services.auth;
 
 import mx.edu.utex.APREHO.config.ApiResponse;
+import mx.edu.utex.APREHO.model.people.People;
+import mx.edu.utex.APREHO.model.people.PeopleRepository;
+import mx.edu.utex.APREHO.model.rol.Rol;
+import mx.edu.utex.APREHO.model.rol.RolRepository;
 import mx.edu.utex.APREHO.model.user.User;
 import mx.edu.utex.APREHO.model.user.UserRepository;
 import mx.edu.utex.APREHO.security.jwt.JwtProvider;
@@ -28,16 +32,17 @@ public class AuthService {
     private final UserService userService;
     private final JwtProvider provider;
     private final AuthenticationManager manager;
-    private  final UserRepository repository;
-    private  final PasswordEncoder passwordEncoder;
+    private final UserRepository repository;
+    private final RolRepository rolRepository;
+    private final PeopleRepository peopleRepository;
 
-
-    public AuthService(UserService userService, JwtProvider provider, AuthenticationManager manager, UserRepository repository, PasswordEncoder passwordEncoder) {
+    public AuthService(UserService userService, JwtProvider provider, AuthenticationManager manager, UserRepository repository, RolRepository rolRepository, PeopleRepository peopleRepository) {
         this.userService = userService;
         this.provider = provider;
         this.manager = manager;
         this.repository = repository;
-        this.passwordEncoder = passwordEncoder;
+        this.rolRepository = rolRepository;
+        this.peopleRepository = peopleRepository;
     }
 
     @Transactional
@@ -52,8 +57,16 @@ public class AuthService {
             );
             SecurityContextHolder.getContext().setAuthentication(auth);
             String token = provider.generateToken(auth);
+            Optional<People> people = peopleRepository.findByPeopleId(user.getPeople().getPeopleId());
+            if (people.isPresent()) {
+            }
+            People people1 = people.get();
 
-            return new ResponseEntity<>(new ApiResponse(token, HttpStatus.OK, false, "Token generado"), HttpStatus.OK);
+            Optional<Rol> rolFound=rolRepository.findByRolId(user.getRol().getRolId());
+            Rol rol = rolFound.get();
+            DtoAuth dtoAuth1 = new DtoAuth(token, people1, user,rol);
+            //Clase DTO -> token, persona, id, user,
+            return new ResponseEntity<>(new ApiResponse(dtoAuth1, HttpStatus.OK, false, "Token generado"), HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
             String message = "CredentialsMismatch";

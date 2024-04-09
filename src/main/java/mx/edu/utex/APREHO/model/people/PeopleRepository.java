@@ -7,4 +7,5 @@ import java.util.Optional;
 public interface PeopleRepository extends JpaRepository<People,Long> {
 
     Optional<People> findByCurp(String string);
+    Optional<People> findByPeopleId(Long id);
 }
