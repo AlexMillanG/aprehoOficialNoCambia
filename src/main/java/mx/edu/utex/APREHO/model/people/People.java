@@ -48,6 +48,15 @@ public class People {
     private Set<ReservationsBean> reservations;
 
 
+    public People(String name, String lastname, String surname, String sex, LocalDate birthday, String curp) {
+        this.name = name;
+        this.lastname = lastname;
+        this.surname = surname;
+        this.sex = sex;
+        this.birthday = birthday;
+        this.curp = curp;
+    }
+
     public boolean isValid(String name, String lastname, String surname, String sex, LocalDate birthday, String curp){
         if (name == null || name.trim().isEmpty() ||
                 lastname == null || lastname.trim().isEmpty() ||

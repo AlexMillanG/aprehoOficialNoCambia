@@ -11,6 +11,7 @@ import mx.edu.utex.APREHO.model.user.User;
 import mx.edu.utex.APREHO.model.user.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +27,7 @@ public class UserService {
     private final PeopleRepository peopleRepository;
     private final HotelRepository hotelRepository;
     private final RolRepository rolRepository;
+
 
     @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<ApiResponse> save(User user) {
@@ -65,9 +67,11 @@ public class UserService {
         } else {
             return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "Uno o varios de los campos estan vacios"), HttpStatus.BAD_REQUEST);
         }
+
         return new ResponseEntity<>(new ApiResponse(repository.saveAndFlush(user), HttpStatus.OK, false, "usuario creado exitosamente"), HttpStatus.OK);
     }
 
+    @Transactional
     public ResponseEntity<ApiResponse> getAll() {
         List<User> users = repository.findAll();
         return new ResponseEntity<>(new ApiResponse(users, HttpStatus.OK, false, "Usuarios registrados"), HttpStatus.OK);
@@ -103,7 +107,7 @@ public class UserService {
             } else {
                 return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "Este usuario no existe"), HttpStatus.BAD_REQUEST);
             }
-        }else{
+        } else {
             return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "Uno o algunos de los campos estan vacios"), HttpStatus.BAD_REQUEST);
 
         }
@@ -156,6 +160,7 @@ public class UserService {
     @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<ApiResponse> loggin(String pass, String email) {
         Optional<User> foundUser = repository.loggin(pass, email);
+
         if (foundUser.isPresent()) {
             return new ResponseEntity<>(new ApiResponse(foundUser, HttpStatus.OK, false, "Usuario encontrado"), HttpStatus.OK);
 
@@ -164,7 +169,14 @@ public class UserService {
 
         }
     }
-    
 
+    @Transactional(rollbackFor = {SQLException.class})
+    public Optional<User> findUserByUsernameAndPassword(String pass, String email) {
+        return   repository.loggin(pass, email);
+    }
+    @Transactional(readOnly = true)
+    public Optional<User> findUserByUsername(String email){
+        return repository.findFirstByEmail(email);
+    }
 }
 
