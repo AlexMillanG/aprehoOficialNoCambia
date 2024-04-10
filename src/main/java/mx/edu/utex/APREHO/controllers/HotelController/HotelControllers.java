@@ -36,7 +36,7 @@ public class HotelControllers {
         return  service.saveHotel(hotel.toEntity());
     }*/
 
-    @GetMapping("/")
+    @GetMapping("/getAll")
     public ResponseEntity<ApiResponse> getAll(){
         return service.getAll();
     }
