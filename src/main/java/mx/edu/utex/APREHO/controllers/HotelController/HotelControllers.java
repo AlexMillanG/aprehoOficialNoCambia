@@ -3,14 +3,10 @@ package mx.edu.utex.APREHO.controllers.HotelController;
 import lombok.AllArgsConstructor;
 import mx.edu.utex.APREHO.config.ApiResponse;
 import mx.edu.utex.APREHO.controllers.HotelController.Dto.DtoHotel;
-import mx.edu.utex.APREHO.model.hotel.Hotel;
-import mx.edu.utex.APREHO.model.images.Images;
+import mx.edu.utex.APREHO.controllers.UserControllers.Dto.DtoUser;
 import mx.edu.utex.APREHO.model.user.User;
 import mx.edu.utex.APREHO.services.ServicesHotel.HotelsService;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,7 +21,7 @@ import java.util.Set;
 public class HotelControllers {
     private final HotelsService service;
 
-    @PostMapping("/save")
+ /*   @PostMapping("/save")
     public ResponseEntity<ApiResponse>save(@RequestBody DtoHotel hotel){
         System.out.println(hotel.getCity());
         String city = hotel.getCity();
@@ -38,7 +34,7 @@ public class HotelControllers {
             return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "La ciudad no puede tener espacios al principio ni al final"),HttpStatus.BAD_REQUEST);
         }
         return  service.saveHotel(hotel.toEntity());
-    }
+    }*/
 
     @GetMapping("/")
     public ResponseEntity<ApiResponse> getAll(){
@@ -92,31 +88,17 @@ public class HotelControllers {
 
 
 
-    @GetMapping("/findByUser")
-    public ResponseEntity<ApiResponse> findByUser(@RequestBody User user){
-        return service.findHotelsByUser(user);
-
+    @GetMapping("/findByUserBody")
+    public ResponseEntity<ApiResponse> findByUserBody(@RequestBody DtoUser dtoUser){
+        Long id = dtoUser.getUserId();
+        return service.findHotelsByUser(id);
     }
 
-    // no
-    @GetMapping("/imagen/{id}")
-    public ResponseEntity<Resource> obtenerImagen(@PathVariable Long id) {
-        ResponseEntity<ApiResponse> responseEntity = service.getHotelAndImage();
-        if (responseEntity.getStatusCode() == HttpStatus.OK && responseEntity.getBody() != null) {
-            ApiResponse apiResponse = responseEntity.getBody();
-            Set<Hotel> hoteles = (Set<Hotel>) apiResponse.getData();
-            for (Hotel hotel : hoteles) {
-                for (Images imagen : hotel.getImages()) {
-                    if (imagen.getImagesId().equals(id)) {
-                        return ResponseEntity.ok()
-                                .contentType(MediaType.IMAGE_JPEG)
-                                .body(new ByteArrayResource(imagen.getImage()));
-                    }
-                }
-            }
-        }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+    @GetMapping("/findByUser/{id}")
+    public ResponseEntity<ApiResponse> findByUser(@PathVariable Long id){
+        return service.findHotelsByUser(id);
     }
+
 
     @GetMapping("/getCities")
     public  ResponseEntity<ApiResponse> getCities(){
