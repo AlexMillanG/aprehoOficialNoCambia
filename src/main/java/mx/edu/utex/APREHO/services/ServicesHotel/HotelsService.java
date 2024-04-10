@@ -158,7 +158,9 @@ public class HotelsService {
 
 
     @Transactional(rollbackFor = {SQLException.class})
-    public ResponseEntity<ApiResponse> findHotelsByUser(User user){
+    public ResponseEntity<ApiResponse> findHotelsByUser(Long id){
+        User user = new User();
+        user.setUserId(id);
     List<Hotel> foundUsersHotels = hotelRepository.findByUser(user);
     if (foundUsersHotels.isEmpty())
         return new ResponseEntity<>(new ApiResponse(HttpStatus.NOT_FOUND,true,"No se encontraron hoteles relacionados a este usuario"),HttpStatus.NOT_FOUND);

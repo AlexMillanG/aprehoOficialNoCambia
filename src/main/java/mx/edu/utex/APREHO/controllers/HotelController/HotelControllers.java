@@ -3,6 +3,7 @@ package mx.edu.utex.APREHO.controllers.HotelController;
 import lombok.AllArgsConstructor;
 import mx.edu.utex.APREHO.config.ApiResponse;
 import mx.edu.utex.APREHO.controllers.HotelController.Dto.DtoHotel;
+import mx.edu.utex.APREHO.controllers.UserControllers.Dto.DtoUser;
 import mx.edu.utex.APREHO.model.user.User;
 import mx.edu.utex.APREHO.services.ServicesHotel.HotelsService;
 import org.springframework.http.HttpStatus;
@@ -83,10 +84,15 @@ public class HotelControllers {
 
 
 
-    @GetMapping("/findByUser")
-    public ResponseEntity<ApiResponse> findByUser(@RequestBody User user){
-        return service.findHotelsByUser(user);
+    @GetMapping("/findByUserBody")
+    public ResponseEntity<ApiResponse> findByUserBody(@RequestBody DtoUser dtoUser){
+        Long id = dtoUser.getUserId();
+        return service.findHotelsByUser(id);
+    }
 
+    @GetMapping("/findByUser/{id}")
+    public ResponseEntity<ApiResponse> findByUser(@PathVariable Long id){
+        return service.findHotelsByUser(id);
     }
 
 
