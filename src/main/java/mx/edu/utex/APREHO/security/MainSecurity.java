@@ -64,7 +64,7 @@ public class MainSecurity {
         http.cors(Customizer.withDefaults()).csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(req ->
                         req.requestMatchers(WHITE_LIST).permitAll()
-                                .requestMatchers("/api/user/**").hasAuthority("ADMIN_ROLE")
+                                .requestMatchers("/api/user/**").hasAnyAuthority("ADMIN_ROLE","USER_ROLE")
                                 .requestMatchers("/api/person/**").hasAnyAuthority("ADMIN_ROLE", "USER_ROLE")
                                 .anyRequest().authenticated()
                 )

@@ -30,7 +30,7 @@ public class UserControllers {
     @GetMapping("/findAll")
     public ResponseEntity<ApiResponse> findAll(){
         ResponseEntity<ApiResponse> users=service.getAll();
-        System.err.println(users.toString());
+
         return users;
     }
 
@@ -42,6 +42,7 @@ public class UserControllers {
 
     @PutMapping("update")
     public  ResponseEntity<ApiResponse> update(@RequestBody DtoUser dtoUser){
+        dtoUser.setPassword(passwordEncoder.encode(dtoUser.getPassword()));
         return  service.update(dtoUser.toEntityId());
     }
 

@@ -10,7 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.Set;
 
 @Data
-public class DtoUser {
+public class  DtoUser {
 
     private Long userId;
     private String password;

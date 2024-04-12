@@ -126,9 +126,9 @@ public class UserService {
                 Optional<People> foundPeople = peopleRepository.findById(user.getPeople().getPeopleId());
                 if (foundPeople.isPresent()) {
                     People people = foundPeople.get();
-                    peopleRepository.delete(people);
-                    User user1 = foundUser.get();
-                    repository.delete(user1);
+                    peopleRepository.deleteById(people.getPeopleId());
+                    repository.delete(foundUser.get());
+
                     return new ResponseEntity<>(new ApiResponse(HttpStatus.OK, false, "usuario Eliminado exitosamente"), HttpStatus.OK);
 
                 } else {
@@ -140,8 +140,7 @@ public class UserService {
 
             }
         }
-
-        return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "Este usuario no existe"), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "El usuario no existe"), HttpStatus.BAD_REQUEST);
     }
 
     @Transactional(rollbackFor = {SQLException.class})
