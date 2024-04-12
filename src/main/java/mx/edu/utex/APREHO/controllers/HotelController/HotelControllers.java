@@ -56,10 +56,17 @@ public class HotelControllers {
     public ResponseEntity<ApiResponse>update(@RequestBody DtoHotel hotel){
         return  service.updateHotel(hotel.toEntityUpdate());
     }
-    @DeleteMapping("/delete/{email}")
-    public ResponseEntity<ApiResponse>delete(@PathVariable String email){
-        return service.deleteHotel(email);
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<ApiResponse>delete(@PathVariable Long id){
+        return service.deleteHotel(id);
     }
+
+
+    @DeleteMapping("/deleteBody")
+    public ResponseEntity<ApiResponse>deleteBody(@RequestBody DtoHotel dtoHotel){
+        return service.deleteHotel(dtoHotel.getHotelId());
+    }
+
 
     @GetMapping("/findOne/{id}")
     public ResponseEntity<ApiResponse> findOne(@PathVariable Long id) {

@@ -94,11 +94,12 @@ public class HotelsService {
         }
     }
     @Transactional(rollbackFor = {SQLException.class})
-    public ResponseEntity<ApiResponse>deleteHotel(String email){
-        Optional<Hotel> foundHotel = hotelRepository.findByEmail(email);
+    public ResponseEntity<ApiResponse>deleteHotel(Long id){
+        Optional<Hotel> foundHotel = hotelRepository.findById(id);
         if (foundHotel.isEmpty())
         return new ResponseEntity<>(new ApiResponse(HttpStatus.NOT_FOUND,true,"No se encontró el hotel"),HttpStatus.NOT_FOUND);
-        return new ResponseEntity<>(new ApiResponse(hotelRepository.deleteByEmail(email),HttpStatus.OK,false,"Hotel eliminado correctamente"),HttpStatus.OK);
+        hotelRepository.deleteById(id);
+        return new ResponseEntity<>(new ApiResponse(HttpStatus.OK,false,"Hotel eliminado correctamente"),HttpStatus.OK);
     }
 
     @Transactional(rollbackFor = {SQLException.class})
