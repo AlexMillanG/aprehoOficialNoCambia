@@ -16,10 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -127,6 +124,8 @@ public class HotelsService {
             return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "Error, no se ha encontrado el usuario asociado"), HttpStatus.BAD_REQUEST);
         }
 
+
+
         Set<Images> images = new HashSet<>();
 
         for (MultipartFile file : files) {
@@ -155,6 +154,74 @@ public class HotelsService {
         hotelRepository.save(hotel);
         return new ResponseEntity<>(new ApiResponse(HttpStatus.OK, false, "Guardado correctamente"), HttpStatus.OK);
     }
+
+
+
+    @Transactional(rollbackFor = SQLException.class)
+    public ResponseEntity<ApiResponse> updateWithImage(Long id,Set<MultipartFile> files, String hotelName, String address, String email, String phone, String city, Long userId, String description, List<Long> imagesId) throws IOException{
+
+        // Verificar si ya existe un hotel con el mismo correo electrónico
+        Optional<Hotel> foundHotel = hotelRepository.findByEmail(email);
+
+
+        // Verificar si se ha asignado un usuario al hotel y si este usuario existe en la base de datos
+        Optional<User> foundUser = userRepository.findById(userId);
+        if (!foundUser.isPresent()) {
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "Error, no se ha encontrado el usuario asociado"), HttpStatus.BAD_REQUEST);
+        }
+
+
+        Set<Images> images = new HashSet<>();
+
+        // Obtener un iterador para la lista de IDs de imágenes
+        Iterator<Long> idIterator = imagesId.iterator();
+
+        // Iterar sobre los archivos y asignar los IDs correspondientes
+        for (MultipartFile file : files) {
+            // Verificar si aún quedan IDs disponibles
+            if (!idIterator.hasNext()) {
+                // Manejar el caso en el que no hay suficientes IDs
+                throw new IllegalArgumentException("No hay suficientes IDs de imágenes");
+            }
+
+            // Obtener el próximo ID de imagen disponible
+            Long imageId = idIterator.next();
+
+            // Obtener los datos del archivo
+            byte[] imageData = file.getBytes();
+
+            // Crear una instancia de Images y asignar el ID y los datos de la imagen
+            Images image = new Images();
+            image.setImagesId(imageId); // Asignar el ID de la imagen
+            image.setImage(imageData);
+
+            // Guardar la imagen en la base de datos
+            imageRepository.saveAndFlush(image);
+
+            // Agregar la imagen al conjunto de imágenes
+            images.add(image);
+        }
+
+
+        User user = new User();
+        user.setUserId(userId);
+        Set<User> users = new HashSet<>();
+        users.add(user);
+
+        Hotel hotel = new Hotel();
+        hotel.setHotelName(hotelName);
+        hotel.setAddress(address);
+        hotel.setEmail(email);
+        hotel.setPhone(phone);
+        hotel.setCity(city);
+        hotel.setUser(users);
+        hotel.setDescription(description);
+        hotel.setImages(images); // Relaciona las imágenes
+
+        hotelRepository.save(hotel);
+        return new ResponseEntity<>(new ApiResponse(HttpStatus.OK, false, "Guardado correctamente"), HttpStatus.OK);
+    }
+
 
 
     @Transactional(rollbackFor = {SQLException.class})

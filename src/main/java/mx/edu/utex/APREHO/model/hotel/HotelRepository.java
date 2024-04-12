@@ -1,7 +1,9 @@
 package mx.edu.utex.APREHO.model.hotel;
 
+import mx.edu.utex.APREHO.model.images.Images;
 import mx.edu.utex.APREHO.model.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -14,6 +16,9 @@ public interface HotelRepository extends JpaRepository<Hotel,Long> {
 
     List<Hotel> findByUser(User user);
     //List<Hotel> findAllByCity();
+
+
+
 
 
 }

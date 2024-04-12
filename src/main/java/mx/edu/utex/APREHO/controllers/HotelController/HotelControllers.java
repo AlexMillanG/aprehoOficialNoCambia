@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -85,6 +86,30 @@ public class HotelControllers {
         return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "No se pueden subir más de 3 imagenes"), HttpStatus.BAD_REQUEST);
         return service.saveWithImage(files, hotelName, address, email, phone, city, userId, description);
     }
+
+
+    @PostMapping("/updateHotelWithImages")
+    public ResponseEntity<ApiResponse> updateWithImages(
+            @RequestParam("id") Long id,
+            @RequestParam("images") Set<MultipartFile> files,
+            @RequestParam("hotelName") String hotelName,
+            @RequestParam("email") String email,
+            @RequestParam("address") String address,
+            @RequestParam("phone") String phone,
+            @RequestParam("city") String city,
+            @RequestParam("userId") Long userId,
+            @RequestParam("description") String description,
+            @RequestParam("imagesId") List<Long> imagesId) throws IOException {
+        if (files.isEmpty())
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "No se han subido imágenes"), HttpStatus.BAD_REQUEST);
+        if (files.size()>3)
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "No se pueden subir más de 3 imágenes"), HttpStatus.BAD_REQUEST);
+        return service.updateWithImage(id, files, hotelName, address, email, phone, city, userId, description, imagesId);
+    }
+
+
+
+
 
 
 
