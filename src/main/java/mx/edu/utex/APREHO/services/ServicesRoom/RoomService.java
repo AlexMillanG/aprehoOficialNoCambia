@@ -109,6 +109,7 @@ public class RoomService {
     @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<ApiResponse> saveWithImage(Set<MultipartFile> files, String roomName, String status, int peopleQuantity, String description, Long hotelId, Long roomTypeId) throws IOException {
         Set<Images> images = new HashSet<>();
+        System.err.println(hotelId);
 
         for (MultipartFile file : files) {
             byte[] imageData = file.getBytes();
