@@ -38,4 +38,7 @@ public class DtoRoom {
         this.type = type;
         this.images = images;
     }
+
+
+
 }

@@ -41,7 +41,7 @@ public class RoomControllers {
 
     @GetMapping("/getByHotel/{id}")
     public ResponseEntity<ApiResponse> getByHotel(@PathVariable Long id){
-        return  service.getByHotel(id);
+        return  service.findRoomsByHotelId(id);
     }
 
 

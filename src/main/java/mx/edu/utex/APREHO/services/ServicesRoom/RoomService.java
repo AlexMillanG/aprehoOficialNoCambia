@@ -19,10 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @AllArgsConstructor
 @Transactional
@@ -84,18 +81,13 @@ public class RoomService {
     public ResponseEntity<ApiResponse> getByHotel(Long id) {
         //devolver por hotel, por categoría y que este disponible
         List<Room> hotelRooms = roomRepository.findByHotel_HotelId(id);
-        if (!hotelRooms.isEmpty()) {
-            return new ResponseEntity<>(new ApiResponse(hotelRooms, HttpStatus.OK), HttpStatus.OK);
-        } else {
+        if (hotelRooms.isEmpty())
             return new ResponseEntity<>(new ApiResponse(HttpStatus.NOT_FOUND, true, "Error, no se encontraron habitaciones asociadas"), HttpStatus.NOT_FOUND);
-        }
+
+
+            return new ResponseEntity<>(new ApiResponse(hotelRooms, HttpStatus.OK), HttpStatus.OK);
     }
 
-    //el getAll no se va a quedar es solo para pruebas
-    @Transactional(rollbackFor = {SQLException.class})
-    public ResponseEntity<ApiResponse> getAll(){
-        return new ResponseEntity<>(new ApiResponse(roomRepository.findAll(), HttpStatus.OK),HttpStatus.OK);
-    }
 
     @Transactional (rollbackFor = {SQLException.class})
     public ResponseEntity<ApiResponse> findOneRoom(Long id){
@@ -104,6 +96,7 @@ public class RoomService {
 
         if (foundOneRoom.isEmpty())
         return new ResponseEntity<>(new ApiResponse(HttpStatus.NOT_FOUND,true,"No se encontró la habitación"),HttpStatus.NOT_FOUND);
+
         Room room = foundOneRoom.get();
         RoomType roomType = foundOneRoom.get().getRoomType();
         Set<Images> images = foundOneRoom.get().getImages();
@@ -120,6 +113,36 @@ public class RoomService {
 
        return new ResponseEntity<>(new ApiResponse(dtoRoom,HttpStatus.OK),HttpStatus.OK);
     }
+
+
+    @Transactional(rollbackFor = {SQLException.class})
+    public ResponseEntity<ApiResponse> findRoomsByHotelId(Long hotelId) {
+        List<Room> rooms = roomRepository.findByHotel_HotelId(hotelId);
+
+        if (rooms.isEmpty()) {
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.NOT_FOUND, true, "No se encontraron habitaciones para el hotel con ID " + hotelId), HttpStatus.NOT_FOUND);
+        }
+
+        List<DtoRoom> dtoRooms = new ArrayList<>();
+        for (Room room : rooms) {
+            RoomType roomType = room.getRoomType();
+            Set<Images> images = room.getImages();
+
+            DtoRoom dtoRoom = new DtoRoom(
+                    room.getRoomId(),
+                    room.getRoomName(),
+                    room.getStatus(),
+                    room.getPeopleQuantity(),
+                    room.getDescription(),
+                    roomType,
+                    images
+            );
+            dtoRooms.add(dtoRoom);
+        }
+
+        return new ResponseEntity<>(new ApiResponse(dtoRooms, HttpStatus.OK), HttpStatus.OK);
+    }
+
 
 
 
@@ -176,6 +199,10 @@ public class RoomService {
         return new ResponseEntity<>(new ApiResponse(foundByTypeAndHotel,HttpStatus.OK),HttpStatus.OK);
     }
 
-    //
+    //el getAll no se va a quedar es solo para pruebas
+    @Transactional(rollbackFor = {SQLException.class})
+    public ResponseEntity<ApiResponse> getAll(){
+        return new ResponseEntity<>(new ApiResponse(roomRepository.findAll(), HttpStatus.OK),HttpStatus.OK);
+    }
 
 }
