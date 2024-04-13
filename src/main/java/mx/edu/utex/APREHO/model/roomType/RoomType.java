@@ -26,6 +26,9 @@ public class RoomType {
     @Column(length = 45, nullable = false)
     private String typeName;
 
+    @Column(length = 6)
+    private double price;
+
 
     @OneToMany(mappedBy = "roomType", cascade = CascadeType.ALL)
     private Set<Room> rooms = new HashSet<>();
