@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import mx.edu.utex.APREHO.model.hotel.Hotel;
+import mx.edu.utex.APREHO.model.paymentHistory.PaymentHistory;
 import mx.edu.utex.APREHO.model.people.People;
 import mx.edu.utex.APREHO.model.rol.Rol;
 
@@ -82,16 +83,8 @@ public class User {
 
         return true;
     }
-    /*
-    @Override
-    public String toString() {
-        return "User{" +
-                "userId=" + userId +
-                ", password='" + password + '\'' +
-                ", rol=" + rol +
-                ", people=" + people +
-                ", hotel=" + hotel +
-                '}';
-    }*/
+    // Nueva relación con PaymentHistory
+    @OneToMany(mappedBy = "user")
+    private Set<PaymentHistory> paymentHistory;
 
 }

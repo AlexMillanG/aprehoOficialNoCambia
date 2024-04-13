@@ -8,6 +8,8 @@ import mx.edu.utex.APREHO.model.products.ProductRepository;
 import mx.edu.utex.APREHO.model.products.Products;
 import mx.edu.utex.APREHO.model.reservations.ReservationsBean;
 import mx.edu.utex.APREHO.model.reservations.ReservationsRepository;
+import mx.edu.utex.APREHO.model.user.User;
+import mx.edu.utex.APREHO.model.user.UserRepository;
 import org.hibernate.tool.schema.spi.SqlScriptException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,10 +25,15 @@ public class PaymentHistoryService {
     private final PaymentHistoryRepository repository;
     private final ProductRepository productRepository;
     private final ReservationsRepository reservationsRepository;
+    private final UserRepository userRepository;
 
     @Transactional(rollbackFor = {SqlScriptException.class})
     public ResponseEntity<ApiResponse> savePayment(PaymentHistory paymentHistory){
 
+
+        Optional<User> foundUser = userRepository.findById(paymentHistory.getUser().getUserId());
+        if (foundUser.isEmpty())
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.NOT_FOUND,true,"No se encontró el usuario asociado"), HttpStatus.NOT_FOUND);
 
         //validación del producto que se agregará al ticket
 
@@ -44,6 +51,7 @@ public class PaymentHistoryService {
 
         // Se reduce la cantidad del stock
         int requestedQuantity = paymentHistory.getProducts().getQuantity();
+
         int currentStock = foundProduct.get().getQuantity();
         int newStock = currentStock - requestedQuantity;
         foundProduct.get().setQuantity(newStock);

@@ -16,7 +16,6 @@ public class ReservationsControllers {
 
     @PostMapping("/save")
     public ResponseEntity<ApiResponse> saveReservation(@RequestBody DtoReservations dtoReservations){
-        System.err.println(dtoReservations);
         return service.saveReservations(dtoReservations.toEntity());
     }
 

@@ -2,6 +2,8 @@ package mx.edu.utex.APREHO.services.ServicesReservations;
 
 import lombok.AllArgsConstructor;
 import mx.edu.utex.APREHO.config.ApiResponse;
+import mx.edu.utex.APREHO.model.hotel.Hotel;
+import mx.edu.utex.APREHO.model.hotel.HotelRepository;
 import mx.edu.utex.APREHO.model.people.People;
 import mx.edu.utex.APREHO.model.people.PeopleRepository;
 import mx.edu.utex.APREHO.model.reservations.ReservationsBean;
@@ -25,10 +27,15 @@ public class ReservationService {
     private final ReservationsRepository repository;
     private final PeopleRepository peopleRepository;
     private final RoomRepository roomRepository;
-
+    private final HotelRepository hotelRepository;
 
     @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<ApiResponse> saveReservations(ReservationsBean reservations){
+
+        //verifica que este asociada a un hotel
+        Optional<Hotel> foundHotel = hotelRepository.findById(reservations.getHotel().getHotelId());
+        if (foundHotel.isEmpty())
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.NOT_FOUND,true,"No se encontró el hotel asociado"), HttpStatus.NOT_FOUND);
 
         // Verifica que la persona que esté reservando exista
         Optional<People> foundPerson = peopleRepository.findById(reservations.getPeople().getPeopleId());
