@@ -29,7 +29,7 @@ public class RoomType {
     @Column(length = 6)
     private double price;
 
-
+    @JsonIgnore
     @OneToMany(mappedBy = "roomType", cascade = CascadeType.ALL)
     private Set<Room> rooms = new HashSet<>();
 

@@ -59,7 +59,7 @@ public class Room {
     private Set<ReservationsBean> reservations;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "roomTypeId")
     private RoomType roomType;
 

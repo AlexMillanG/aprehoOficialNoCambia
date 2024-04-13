@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @AllArgsConstructor
@@ -29,43 +30,41 @@ public class PaymentHistoryService {
 
     @Transactional(rollbackFor = {SqlScriptException.class})
     public ResponseEntity<ApiResponse> savePayment(PaymentHistory paymentHistory){
+        //validación que este asociada a una reservación
+        Optional<ReservationsBean> foundReservation = reservationsRepository.findById(paymentHistory.getReservations().getReservationId());
+        if (foundReservation.isEmpty())
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST,true,"No se ha encontrado la reservación asociada"), HttpStatus.BAD_REQUEST);
 
-
+        //valida que este asociada a un usuario
         Optional<User> foundUser = userRepository.findById(paymentHistory.getUser().getUserId());
         if (foundUser.isEmpty())
             return new ResponseEntity<>(new ApiResponse(HttpStatus.NOT_FOUND,true,"No se encontró el usuario asociado"), HttpStatus.NOT_FOUND);
 
-        //validación del producto que se agregará al ticket
-
-        Optional<Products> foundProduct = productRepository.findById(paymentHistory.getProducts().getProductId());
-        //valida si el producto que se agrega al ticket es valido
-        if (foundProduct.isEmpty())
-            return new ResponseEntity<>(new ApiResponse(HttpStatus.NOT_FOUND,true,"No se encontró el producto"), HttpStatus.NOT_FOUND);
-        //valida que haya stock disponible
-        if (foundProduct.get().getQuantity()<1)
-            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST,true,"No hay stock del producto"), HttpStatus.BAD_REQUEST);
-        //valida que haya suficiente stock para la compra
-        if(foundProduct.get().getQuantity()<paymentHistory.getProducts().getQuantity())
-            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "No hay suficiente cantidad para la compra, stock: "+foundProduct.get().getQuantity()), HttpStatus.BAD_REQUEST);
 
 
-        // Se reduce la cantidad del stock
-        int requestedQuantity = paymentHistory.getProducts().getQuantity();
+        //validación para procesar los productos
+        Set<Products> productsSet = paymentHistory.getProducts();
+        for (Products product : productsSet) {
+            Optional<Products> foundProduct = productRepository.findById(product.getProductId());
+            if (foundProduct.isEmpty()) {
+                return new ResponseEntity<>(new ApiResponse(HttpStatus.NOT_FOUND, true, "No se encontró el producto"), HttpStatus.NOT_FOUND);
+            }
+            if (foundProduct.get().getQuantity() < 1) {
+                return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "No hay stock del producto"), HttpStatus.BAD_REQUEST);
+            }
+            if (foundProduct.get().getQuantity() < product.getQuantity()) {
+                return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "No hay suficiente cantidad para la compra, stock: " + foundProduct.get().getQuantity()), HttpStatus.BAD_REQUEST);
+            }
 
-        int currentStock = foundProduct.get().getQuantity();
-        int newStock = currentStock - requestedQuantity;
-        foundProduct.get().setQuantity(newStock);
+            // Se reduce la cantidad del stock
+            int requestedQuantity = product.getQuantity();
+            int currentStock = foundProduct.get().getQuantity();
+            int newStock = currentStock - requestedQuantity;
+            foundProduct.get().setQuantity(newStock);
 
-        // Se actualiza el producto en la base de datos
-        productRepository.save(foundProduct.get());
-
-
-        //en reservación, solo se valida que exista, ya que todas las validaciones se hacen en su
-        //respectivo service
-
-        Optional<ReservationsBean> foundReservation = reservationsRepository.findById(paymentHistory.getReservations().getReservationId());
-        if (foundReservation.isEmpty())
-            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST,true,"No se ha encontrado la reservación asociada"), HttpStatus.BAD_REQUEST);
+            // Se actualiza el producto en la base de datos
+            productRepository.save(foundProduct.get());
+        }
 
 
 

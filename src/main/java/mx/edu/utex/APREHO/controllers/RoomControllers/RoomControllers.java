@@ -30,7 +30,8 @@ public class RoomControllers {
 
     @PutMapping("/update")
     public ResponseEntity<ApiResponse> update(@RequestBody DtoRoom room){
-        return service.updateRoom(room.toEntityUpdate());
+       // return service.updateRoom(room.toEntityUpdate());
+        return null;
     }
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<ApiResponse> delete(@PathVariable Long id){
@@ -64,7 +65,7 @@ public class RoomControllers {
 
     @GetMapping("findOneRoomBody/")
     public ResponseEntity<ApiResponse> findOneRoomBody(@RequestBody DtoRoom room){
-        System.err.println(room.getRoomId());
+
         return service.findOneRoom(room.getRoomId());
     }
 

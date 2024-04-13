@@ -2,6 +2,7 @@ package mx.edu.utex.APREHO.services.ServicesRoom;
 
 import lombok.AllArgsConstructor;
 import mx.edu.utex.APREHO.config.ApiResponse;
+import mx.edu.utex.APREHO.controllers.RoomControllers.Dto.DtoRoom;
 import mx.edu.utex.APREHO.model.hotel.Hotel;
 import mx.edu.utex.APREHO.model.hotel.HotelRepository;
 import mx.edu.utex.APREHO.model.images.ImageRepository;
@@ -99,9 +100,25 @@ public class RoomService {
     @Transactional (rollbackFor = {SQLException.class})
     public ResponseEntity<ApiResponse> findOneRoom(Long id){
         Optional<Room> foundOneRoom = roomRepository.findById(id);
+
+
         if (foundOneRoom.isEmpty())
-            return new ResponseEntity<>(new ApiResponse(HttpStatus.NOT_FOUND,true,"No se encontró la habitación"),HttpStatus.NOT_FOUND);
-            return new ResponseEntity<>(new ApiResponse(foundOneRoom.get(),HttpStatus.OK),HttpStatus.OK);
+        return new ResponseEntity<>(new ApiResponse(HttpStatus.NOT_FOUND,true,"No se encontró la habitación"),HttpStatus.NOT_FOUND);
+        Room room = foundOneRoom.get();
+        RoomType roomType = foundOneRoom.get().getRoomType();
+        Set<Images> images = foundOneRoom.get().getImages();
+
+        DtoRoom dtoRoom = new DtoRoom(
+                room.getRoomId(),
+                room.getRoomName(),
+                room.getStatus(),
+                room.getPeopleQuantity(),
+                room.getDescription(),
+                roomType,
+                images
+        );
+
+       return new ResponseEntity<>(new ApiResponse(dtoRoom,HttpStatus.OK),HttpStatus.OK);
     }
 
 

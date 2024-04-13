@@ -9,6 +9,7 @@ import mx.edu.utex.APREHO.model.room.Room;
 import mx.edu.utex.APREHO.model.user.User;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 @Data
 public class DtoPaymentHistory {
@@ -18,7 +19,7 @@ public class DtoPaymentHistory {
     private boolean paymentStatus;
     private User user;
     private Hotel hotel;
-    private Products products;
+    private Set<Products> products;
     private ReservationsBean reservation;
     public PaymentHistory toEntity(){
         return new PaymentHistory(paymentHistoryId,checkout,total,paymentStatus,products,reservation,hotel,user);

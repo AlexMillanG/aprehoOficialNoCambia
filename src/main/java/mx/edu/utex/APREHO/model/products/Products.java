@@ -46,10 +46,9 @@ public class Products {
     @ManyToMany(mappedBy = "products")
     Set<Hotel> hotel;
 
-
-    @OneToMany(mappedBy = "products", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<PaymentHistory> paymentHistory;
-
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "paymentHistoryId")
+    private PaymentHistory paymentHistory;
 
 
 }
