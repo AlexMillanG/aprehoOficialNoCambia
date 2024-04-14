@@ -53,6 +53,9 @@ public class HotelsService {
             }
         }
     }*/
+
+
+    //trae todos los registros de hotel, junto con el estado de la petición
     @Transactional(rollbackFor = SQLException.class)
     public ResponseEntity<ApiResponse> getAll() {
         return new ResponseEntity<>(new ApiResponse(hotelRepository.findAll(), HttpStatus.OK), HttpStatus.OK);
@@ -61,8 +64,9 @@ public class HotelsService {
     //muestra los hoteles por ciudad
     @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<ApiResponse>getByCity(String city){
-        System.err.println("ciudad"+city);
+
         List<Hotel> foundCity = hotelRepository.findByCity(city);
+        //revisa si encontró algo el metodo de arriba
         if (!foundCity.isEmpty())
             return new ResponseEntity<>(new ApiResponse(foundCity,HttpStatus.OK,false,"ciudad encontrada"),HttpStatus.OK);
         return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST,true,"Error, ciudad no encontrada"),HttpStatus.BAD_REQUEST);
@@ -93,18 +97,21 @@ public class HotelsService {
             }
         }
     }
+    //elimina un registro de hotel
     @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<ApiResponse>deleteHotel(Long id){
         Optional<Hotel> foundHotel = hotelRepository.findById(id);
+        //valida que el hotel que se quiere eliminar exista
         if (foundHotel.isEmpty())
         return new ResponseEntity<>(new ApiResponse(HttpStatus.NOT_FOUND,true,"No se encontró el hotel"),HttpStatus.NOT_FOUND);
         hotelRepository.deleteById(id);
         return new ResponseEntity<>(new ApiResponse(HttpStatus.OK,false,"Hotel eliminado correctamente"),HttpStatus.OK);
     }
-
+    //busca un hotel que coincida por id
     @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<ApiResponse> findOneHotel(Long id){
         Optional<Hotel> foundHotel = hotelRepository.findById(id);
+        //valida que el hotel exista
         if (foundHotel.isEmpty())
             return new ResponseEntity<>(new ApiResponse(HttpStatus.NOT_FOUND,true,"No se encontró el hotel"),HttpStatus.NOT_FOUND);
             return new ResponseEntity<>(new ApiResponse(foundHotel.get(),HttpStatus.OK),HttpStatus.OK);
@@ -125,33 +132,48 @@ public class HotelsService {
             return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "Error, no se ha encontrado el usuario asociado"), HttpStatus.BAD_REQUEST);
         }
 
-
-
+        //declara una lista de imágenes llamada "images"
         Set<Images> images = new HashSet<>();
 
+        //itera objetos MultipartFile
+        //variable de interación "file", va a iterar la lista "files" que recibe el método
         for (MultipartFile file : files) {
+            //hace un arreglo de bytes lamado imageData y le setea los variables del objeto
+            //que esta iterando (variable de iteración), mediante el método getBytes
             byte[] imageData = file.getBytes();
+            //instancia de imágen
             Images image = new Images();
+            //le setea los datos obtenidos de image data
             image.setImage(imageData);
+            //lo guarda en la base de datos
             imageRepository.saveAndFlush(image);
+            //agrega la imagen a una lista
             images.add(image);
         }
-
+        //instancia de usuario
         User user = new User();
+        //le setea un id
         user.setUserId(userId);
+        //debido a que la relación de usuario con Hotel es muchos a muchos
+        //se crea una lista de usuarios
         Set<User> users = new HashSet<>();
+        //y a esta lista de usuarios se le agrega el usuario creado previamente
         users.add(user);
 
+        //instancia de hotel
         Hotel hotel = new Hotel();
+        //se le setean los datos
         hotel.setHotelName(hotelName);
         hotel.setAddress(address);
         hotel.setEmail(email);
         hotel.setPhone(phone);
         hotel.setCity(city);
+        //se setea el usuario (dueño del hotel)
         hotel.setUser(users);
         hotel.setDescription(description);
         hotel.setImages(images); // Relaciona las imágenes
 
+        //se guarda en la base de datos, por medio del repositorio la entidad hotel
         hotelRepository.save(hotel);
         return new ResponseEntity<>(new ApiResponse(HttpStatus.OK, false, "Guardado correctamente"), HttpStatus.OK);
     }
@@ -223,13 +245,17 @@ public class HotelsService {
         return new ResponseEntity<>(new ApiResponse(HttpStatus.OK, false, "Guardado correctamente"), HttpStatus.OK);
     }
 
-
-
+    //encontrar hoteles por usuario
     @Transactional(rollbackFor = {SQLException.class})
+    //se espera un id
     public ResponseEntity<ApiResponse> findHotelsByUser(Long id){
+        //se crea un objeto usuario
         User user = new User();
+        //a este objeto se le setea la id obtenida
         user.setUserId(id);
+        //crea una lista de hoteles que coincida con el usuario
     List<Hotel> foundUsersHotels = hotelRepository.findByUser(user);
+    //valida que encuentre registros
     if (foundUsersHotels.isEmpty())
         return new ResponseEntity<>(new ApiResponse(HttpStatus.NOT_FOUND,true,"No se encontraron hoteles relacionados a este usuario"),HttpStatus.NOT_FOUND);
         return new ResponseEntity<>(new ApiResponse(foundUsersHotels,HttpStatus.OK),HttpStatus.OK);
@@ -237,6 +263,7 @@ public class HotelsService {
 
 
     @Transactional(rollbackFor = {SQLException.class})
+    //la neta esto es chat
     public ResponseEntity<ApiResponse> getCities() {
         // Obtener todos los hoteles
         List<Hotel> hotels = hotelRepository.findAll();
