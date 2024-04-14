@@ -9,14 +9,15 @@ import lombok.Setter;
 import mx.edu.utex.APREHO.model.hotel.Hotel;
 import mx.edu.utex.APREHO.model.products.Products;
 import mx.edu.utex.APREHO.model.reservations.ReservationsBean;
+import mx.edu.utex.APREHO.model.user.User;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 @Entity
 @Table(name = "paymentHistory")
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
 public class PaymentHistory {
     @Id
@@ -28,10 +29,11 @@ public class PaymentHistory {
     @Column(nullable = false)
     private  Boolean paymentStatus;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "productId")
-    private Products products;
 
+    @OneToMany(mappedBy = "paymentHistory", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Products> products;
+
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "reservationId")
     private ReservationsBean reservations;
@@ -40,4 +42,22 @@ public class PaymentHistory {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "hotel_id")
     private Hotel hotel;
+
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
+
+    public PaymentHistory(Long paymentHistoryId, LocalDate checkout, Double total, Boolean paymentStatus,Set <Products> products, ReservationsBean reservations, Hotel hotel, User user) {
+        this.paymentHistoryId = paymentHistoryId;
+        this.checkout = checkout;
+        this.total = total;
+        this.paymentStatus = paymentStatus;
+        this.products = products;
+        this.reservations = reservations;
+        this.hotel = hotel;
+        this.user = user;
+    }
 }
+

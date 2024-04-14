@@ -21,38 +21,51 @@ import java.util.Set;
 @AllArgsConstructor
 public class HotelControllers {
     private final HotelsService service;
-
+//obtiene todos lo registros de hotel
     @GetMapping("/getAll")
     public ResponseEntity<ApiResponse> getAll(){
         return service.getAll();
     }
+
+//obtiene todos lo registros de hotel filtrados por ciudad SE OBTIENE POR URL
+
     @GetMapping("/{city}")
     public ResponseEntity<ApiResponse>getByCity(@PathVariable String city){
         return service.getByCity(city);
     }
-
+//obtiene todos lo registros de hotel filtrados por ciudad SE OBTIENE POR BODY
     @GetMapping("/getByCity")
     public ResponseEntity<ApiResponse>getByCityBody(@RequestBody DtoHotel hotel){
         return service.getByCity(hotel.getCity());
     }
 
-    @DeleteMapping("/delete/{email}")
-    public ResponseEntity<ApiResponse>delete(@PathVariable String email){
-        return service.deleteHotel(email);
+    //elimina un registro por id se obtiene por url
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<ApiResponse>delete(@PathVariable Long id){
+        return service.deleteHotel(id);
+
     }
+    //elimina un registro por id se obtiene por body
+    @DeleteMapping("/deleteBody")
+    public ResponseEntity<ApiResponse>deleteBody(@RequestBody DtoHotel dtoHotel){
+        return service.deleteHotel(dtoHotel.getHotelId());
+    }
+
+    //encuentra un registro por id se obtiene por url
 
     @GetMapping("/findOne/{id}")
     public ResponseEntity<ApiResponse> findOne(@PathVariable Long id) {
         return service.findOneHotel(id);
     }
+    //encuentra un registro por id se obtiene por body
     @GetMapping("/findOneBody")
     public ResponseEntity<ApiResponse> findOneBody(@RequestBody DtoHotel dtoHotel){
         return service.findOneHotel(dtoHotel.getHotelId());
     }
 
-
-    @PostMapping("/saveHotelWithImages") // Cambio en el nombre del endpoint para reflejar la opción de múltiples imágenes
-    public ResponseEntity<ApiResponse> saveWithImages(@RequestParam("images") Set<MultipartFile> files,
+    //guarda un hotel, obtiene los datos por formularios
+    @PostMapping("/saveHotelWithImages")
+    public ResponseEntity<ApiResponse> saveWithImages(@RequestParam("images") Set<MultipartFile> files, //lista de imágenes
                                                       @RequestParam("hotelName") String hotelName,
                                                       @RequestParam("email") String email,
                                                       @RequestParam("address") String address,
@@ -60,10 +73,13 @@ public class HotelControllers {
                                                       @RequestParam("city") String city,
                                                       @RequestParam("userId") Long userId,
                                                       @RequestParam("description") String description) throws IOException {
+        //valida que se envíen imágenes
         if (files.isEmpty())
             return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "No se han subido imágenes"), HttpStatus.BAD_REQUEST);
+        //valida que no sean más de 3 imágenes
         if (files.size()>3)
         return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "No se pueden subir más de 3 imagenes"), HttpStatus.BAD_REQUEST);
+        //manda los datos al método
         return service.saveWithImage(files, hotelName, address, email, phone, city, userId, description);
     }
 

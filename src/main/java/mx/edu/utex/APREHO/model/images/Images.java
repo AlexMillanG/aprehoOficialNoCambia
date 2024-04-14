@@ -1,5 +1,6 @@
 package mx.edu.utex.APREHO.model.images;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -23,6 +24,7 @@ public class Images {
     @Column(nullable = false,columnDefinition = "LONGBLOB")
     private byte[] image;
 
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "room_images",
             joinColumns = @JoinColumn(name = "images_id"),
@@ -32,6 +34,7 @@ public class Images {
     public Images() {
         this.rooms = new HashSet<>();
     }
+
 
     @JsonIgnoreProperties("images")
     @ManyToMany(mappedBy = "images", fetch = FetchType.LAZY)

@@ -47,7 +47,7 @@ public class ReservationsBean {
     @OneToMany(mappedBy = "reservations", fetch = FetchType.LAZY)
     private Set<PaymentHistory> paymentHistory;
 
-    public ReservationsBean(Long reservationId, LocalDate checkin, LocalDate checkout, Double discountQuantity, Boolean discount, People people, Room room) {
+    public ReservationsBean(Long reservationId, LocalDate checkin, LocalDate checkout, Double discountQuantity, Boolean discount, People people, Room room,Hotel hotel) {
         this.reservationId = reservationId;
         this.checkin = checkin;
         this.checkout = checkout;
@@ -55,6 +55,7 @@ public class ReservationsBean {
         this.discount = discount;
         this.people = people;
         this.room = room;
+        this.hotel = hotel;
     }
 
     public boolean validateDate(LocalDate ld) {
