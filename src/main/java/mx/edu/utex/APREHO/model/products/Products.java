@@ -21,9 +21,9 @@ public class Products {
     private Long productId;
     @Column(length = 45, nullable = false)
     private String productName;
-    @Column(nullable = false)
+    @Column(nullable = true)
     private int price;
-    @Column(length = 150, nullable = false)
+    @Column(length = 150, nullable = true)
     private String productDescription;
     @Column(nullable = false)
     private int quantity;

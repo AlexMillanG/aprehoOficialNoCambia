@@ -39,17 +39,19 @@ public class RoomType {
     @JoinColumn(name = "hotel_id")
     private Hotel hotel;
 
-    public RoomType(Long roomTypeId, String typeName, Set<Room> rooms, Hotel hotel) {
+    public RoomType(Long roomTypeId, String typeName, Set<Room> rooms, Hotel hotel, Double price) {
         this.roomTypeId = roomTypeId;
         this.typeName = typeName;
         this.rooms = rooms;
         this.hotel = hotel;
+        this.price = price;
     }
 
-    public RoomType(String typeName, Set<Room> rooms, Hotel hotel) {
+    public RoomType(String typeName, Set<Room> rooms, Hotel hotel, Double price) {
         this.typeName = typeName;
         this.rooms = rooms;
         this.hotel = hotel;
+        this.price = price;
     }
 
 

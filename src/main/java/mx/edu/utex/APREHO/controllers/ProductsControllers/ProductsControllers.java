@@ -20,7 +20,7 @@ private final ProductsService service;
         return service.getAll();
     }
 
-    @PostMapping("/")
+    @PostMapping("/save")
     public ResponseEntity<ApiResponse> save(@RequestBody DtoProducts dto) {
         return service.save(dto.toEntity());
     }

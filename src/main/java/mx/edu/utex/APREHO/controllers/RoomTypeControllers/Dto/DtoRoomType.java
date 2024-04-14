@@ -13,11 +13,12 @@ public class DtoRoomType {
     private String typeName;
     private Set<Room> rooms;
     private Hotel hotel;
+    private Double price;
     public RoomType toEntity(){
-        return new RoomType(typeName,rooms,hotel);
+        return new RoomType(typeName,rooms,hotel,price);
     }
     public RoomType toEntityUpdate(){
-        return new RoomType(roomTypeId,typeName,rooms, hotel);
+        return new RoomType(roomTypeId,typeName,rooms, hotel,price);
     }
 
 }

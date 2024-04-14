@@ -22,21 +22,6 @@ import java.util.Set;
 public class HotelControllers {
     private final HotelsService service;
 
- /*   @PostMapping("/save")
-    public ResponseEntity<ApiResponse>save(@RequestBody DtoHotel hotel){
-        System.out.println(hotel.getCity());
-        String city = hotel.getCity();
-        // Verificar si la ciudad es nula o está vacía
-        if (city == null || city.isEmpty()) {
-            return  new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "La ciudad no puede estar vacía"),HttpStatus.BAD_REQUEST);
-        }
-        // Verificar si la ciudad tiene espacios al principio o al final
-        if (!city.equals(city.trim())) {
-            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "La ciudad no puede tener espacios al principio ni al final"),HttpStatus.BAD_REQUEST);
-        }
-        return  service.saveHotel(hotel.toEntity());
-    }*/
-
     @GetMapping("/getAll")
     public ResponseEntity<ApiResponse> getAll(){
         return service.getAll();
@@ -48,14 +33,9 @@ public class HotelControllers {
 
     @GetMapping("/getByCity")
     public ResponseEntity<ApiResponse>getByCityBody(@RequestBody DtoHotel hotel){
-        System.err.println("el drip"+hotel.getCity());
         return service.getByCity(hotel.getCity());
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<ApiResponse>update(@RequestBody DtoHotel hotel){
-        return  service.updateHotel(hotel.toEntityUpdate());
-    }
     @DeleteMapping("/delete/{email}")
     public ResponseEntity<ApiResponse>delete(@PathVariable String email){
         return service.deleteHotel(email);
