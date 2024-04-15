@@ -3,6 +3,8 @@ package mx.edu.utex.APREHO.services.ServicesUser;
 import lombok.AllArgsConstructor;
 import mx.edu.utex.APREHO.config.ApiResponse;
 //import mx.edu.utex.APREHO.model.vhotel.HotelRepository;
+import mx.edu.utex.APREHO.model.hotel.Hotel;
+import mx.edu.utex.APREHO.model.hotel.HotelRepository;
 import mx.edu.utex.APREHO.model.people.People;
 import mx.edu.utex.APREHO.model.people.PeopleRepository;
 import mx.edu.utex.APREHO.model.rol.Rol;
@@ -25,8 +27,62 @@ import java.util.Optional;
 public class UserService {
     private final UserRepository repository;
     private final PeopleRepository peopleRepository;
-   // private final HotelRepository hotelRepository;
+    private final HotelRepository hotelRepository;
     private final RolRepository rolRepository;
+
+    @Transactional(rollbackFor = {SQLException.class})
+    public ResponseEntity<ApiResponse> saveReceptionist(User user) {
+        if (!user.isValid(user.getEmail(), user.getPassword())) {
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "Uno o algunos de los campos estan vacios"), HttpStatus.BAD_REQUEST);
+        }
+
+        if (!user.getPeople().isValid(user.getPeople().getName(), user.getPeople().getLastname(), user.getPeople().getSurname(), user.getPeople().getSex(), user.getPeople().getBirthday(), user.getPeople().getCurp())) {
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "Uno o algunos de los campos estan vacios"), HttpStatus.BAD_REQUEST);
+        }
+        Optional<User> foundUser = repository.findByEmail(user.getEmail());
+        if (foundUser.isPresent()) {
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "Este correo ya se ha registrado previamente"), HttpStatus.BAD_REQUEST);
+        } else {
+            if (user.getPeople() != null) {
+                Optional<People> foundPeople = peopleRepository.findByCurp(user.getPeople().getCurp());
+                if (!foundPeople.isPresent()) {
+                    peopleRepository.saveAndFlush(user.getPeople());
+                } else {
+                    return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "El curp ya esta registrado"), HttpStatus.BAD_REQUEST);
+
+                }
+            } else {
+                return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "No has ingresado a una Persona para este Usuario"), HttpStatus.BAD_REQUEST);
+
+            }
+            if (user.getRol() != null) {
+                Optional<Rol> foundRol = rolRepository.findByRolName(user.getRol().getRolName());
+                if (!foundRol.isPresent()) {
+                    rolRepository.saveAndFlush(user.getRol());
+                } else {
+                    user.getRol().setRolId(foundRol.get().getRolId());
+                }
+            } else {
+                return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "No has ingresado a un ROL para este Usuario"), HttpStatus.BAD_REQUEST);
+
+            }
+
+            if (user.getHotel() != null) {
+                for (Hotel hotel1 : user.getHotel()) {
+                    Optional<Hotel> foundHotel = hotelRepository.findById(hotel1.getHotelId());
+                  
+                }
+
+            } else {
+                return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "No has ingresado a un ROL para este Usuario"), HttpStatus.BAD_REQUEST);
+
+            }
+
+
+        }
+
+        return new ResponseEntity<>(new ApiResponse(repository.saveAndFlush(user), HttpStatus.OK, false, "usuario creado exitosamente"), HttpStatus.OK);
+    }
 
 
     @Transactional(rollbackFor = {SQLException.class})
@@ -172,10 +228,11 @@ public class UserService {
 
     @Transactional(rollbackFor = {SQLException.class})
     public Optional<User> findUserByUsernameAndPassword(String pass, String email) {
-        return   repository.loggin(pass, email);
+        return repository.loggin(pass, email);
     }
+
     @Transactional(readOnly = true)
-    public Optional<User> findUserByUsername(String email){
+    public Optional<User> findUserByUsername(String email) {
         return repository.findFirstByEmail(email);
     }
 }

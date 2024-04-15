@@ -27,6 +27,12 @@ public class UserControllers {
         return service.save(user.toEntity());
     }
 
+    @PostMapping("/saveReceptionist")
+    public ResponseEntity<ApiResponse> saveReceptionist(@RequestBody  DtoUser user){
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        return service.saveReceptionist(user.toReceptionst());
+    }
+
     @GetMapping("/findAll")
     public ResponseEntity<ApiResponse> findAll(){
         ResponseEntity<ApiResponse> users=service.getAll();

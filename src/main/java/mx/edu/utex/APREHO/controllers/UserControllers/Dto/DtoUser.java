@@ -28,4 +28,8 @@ public class DtoUser {
     public User toEntityId() {
         return new User(userId,password,email, rol, people);
     }
+
+    public  User toReceptionst(){
+        return  new User(password,email,rol,people,hotel);
+    }
 }

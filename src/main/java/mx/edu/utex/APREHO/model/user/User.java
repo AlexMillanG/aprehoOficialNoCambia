@@ -59,7 +59,15 @@ public class User {
         this.people = people;
     }
 
-    public User( String password,  String email, Rol rol, People people) {
+    public User(String password, String email, Rol rol, People people, Set<Hotel> hotel) {
+        this.password = password;
+        this.email = email;
+        this.rol = rol;
+        this.people = people;
+        this.hotel = hotel;
+    }
+
+    public User(String password, String email, Rol rol, People people) {
         this.password = password;
         this.email=email;
         this.rol = rol;
