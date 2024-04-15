@@ -19,6 +19,6 @@ public interface RoomRepository extends JpaRepository<Room,Long> {
     int countAllByHotel(Hotel hotel);
 
 
-    @Query("SELECT COUNT(r.roomId) FROM Room r JOIN r.hotel h JOIN h.users u WHERE u.userId = :userId")
+    @Query("SELECT COUNT(r.roomId) FROM Room r JOIN r.hotel h JOIN h.user u WHERE u.userId = :userId")
     int countRoomsByUserId(@Param("userId") Long userId);
 }
