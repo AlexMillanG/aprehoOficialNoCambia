@@ -29,7 +29,7 @@ public class Room {
     private String status;
     @Column(nullable = false)
     private int peopleQuantity;
-    @Column(length = 45, nullable = false)
+    @Column(length = 300, nullable = false)
     private String description;
 
 
