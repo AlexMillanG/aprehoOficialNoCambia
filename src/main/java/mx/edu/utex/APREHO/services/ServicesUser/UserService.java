@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -68,10 +69,16 @@ public class UserService {
             }
 
             if (user.getHotel() != null) {
+                Hotel hotel=new Hotel();
                 for (Hotel hotel1 : user.getHotel()) {
                     Optional<Hotel> foundHotel = hotelRepository.findById(hotel1.getHotelId());
+                    if(foundHotel.isPresent()){
+                        hotel=foundHotel.get();
+                    }
                   
                 }
+                hotel.setUser((Set<User>) user);
+                hotelRepository.saveAndFlush(hotel);
 
             } else {
                 return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "No has ingresado a un ROL para este Usuario"), HttpStatus.BAD_REQUEST);
@@ -84,6 +91,69 @@ public class UserService {
         return new ResponseEntity<>(new ApiResponse(repository.saveAndFlush(user), HttpStatus.OK, false, "usuario creado exitosamente"), HttpStatus.OK);
     }
 
+    @Transactional(rollbackFor = {SQLException.class})
+    public ResponseEntity<ApiResponse> updateReceptionist(User newUser) {
+        try {
+            Optional<User> existingUserOpt = repository.findById(newUser.getUserId());
+
+            if (!existingUserOpt.isPresent()) {
+                return new ResponseEntity<>(new ApiResponse(HttpStatus.NOT_FOUND, true, "Usuario no encontrado"), HttpStatus.NOT_FOUND);
+            }
+
+            User existingUser = existingUserOpt.get();
+
+            if (!existingUser.getEmail().equals(newUser.getEmail())) {
+                Optional<User> userWithEmail = repository.findByEmail(newUser.getEmail());
+                if (userWithEmail.isPresent()) {
+                    return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "El correo electrónico ya está registrado"), HttpStatus.BAD_REQUEST);
+                }
+                existingUser.setEmail(newUser.getEmail());
+            }
+
+            People existingPeople = existingUser.getPeople();
+            People newPeople = newUser.getPeople();
+            if (newPeople != null) {
+                if (newPeople.isValid(newPeople.getName(), newPeople.getLastname(), newPeople.getSurname(), newPeople.getSex(), newPeople.getBirthday(), newPeople.getCurp())) {
+                    existingPeople.setName(newPeople.getName());
+                    existingPeople.setLastname(newPeople.getLastname());
+                    existingPeople.setSurname(newPeople.getSurname());
+                    existingPeople.setSex(newPeople.getSex());
+                    existingPeople.setBirthday(newPeople.getBirthday());
+                    existingPeople.setCurp(newPeople.getCurp());
+                } else {
+                    return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "Uno o varios campos de la persona son inválidos"), HttpStatus.BAD_REQUEST);
+                }
+            }
+
+            Rol existingRol = existingUser.getRol();
+            Rol newRol = newUser.getRol();
+            if (newRol != null) {
+                Optional<Rol> rolWithName = rolRepository.findByRolName(newRol.getRolName());
+                if (!rolWithName.isPresent()) {
+                    return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "El rol especificado no existe"), HttpStatus.BAD_REQUEST);
+                }
+                existingRol.setRolName(newRol.getRolName());
+            }
+
+            Set<Hotel> existingHotels = existingUser.getHotel();
+            Set<Hotel> newHotels = newUser.getHotel();
+            if (newHotels != null) {
+                for (Hotel newHotel : newHotels) {
+                    Optional<Hotel> hotelOpt = hotelRepository.findById(newHotel.getHotelId());
+                    if (!hotelOpt.isPresent()) {
+                        return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "Uno o más hoteles especificados no existen"), HttpStatus.BAD_REQUEST);
+                    }
+                    existingHotels.add(hotelOpt.get());
+                }
+            }
+
+            repository.saveAndFlush(existingUser);
+
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.OK, false, "Usuario actualizado exitosamente"), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.INTERNAL_SERVER_ERROR, true, "Error interno del servidor"), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
     @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<ApiResponse> save(User user) {
