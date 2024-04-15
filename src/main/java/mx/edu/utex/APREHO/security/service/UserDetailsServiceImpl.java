@@ -26,6 +26,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         Optional<User> foundUser = service.findUserByUsername( email);
         if (foundUser.isPresent())
             return UserDetailsImpl.build(foundUser.get());
-        throw new UsernameNotFoundException("UserNotFound");
+        throw new UsernameNotFoundException("Usuario no encontrado. Por favor registrese");
     }
 }
