@@ -25,4 +25,10 @@ public class ReservationsControllers {
     }
 
 
+    @GetMapping("/getByPerson/{id}")
+    public  ResponseEntity<ApiResponse> findByPerson(@PathVariable  Long id){
+        return  service.findByPerson(id);
+    }
+
+
 }

@@ -10,4 +10,5 @@ import java.util.Optional;
 public interface ReservationsRepository extends JpaRepository<ReservationsBean,Long> {
     Optional<ReservationsBean> deleteByReservationId(Long id);
     List<ReservationsBean> findByRoom_RoomId(Long id);
+    List<ReservationsBean> findByPeople(People people);
 }

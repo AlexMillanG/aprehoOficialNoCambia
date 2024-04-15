@@ -19,8 +19,13 @@ import java.sql.SQLException;
 import java.util.*;
 import java.util.stream.Collectors;
 
+//indica que es un servicio
 @Service
+//constructor específico
 @AllArgsConstructor
+//etiqueta de transacción
+//en caso de que algún error durante la ejecución
+//hecha pa atás todos los cambios en la base de datos
 @Transactional
 public class HotelsService {
     private final HotelRepository hotelRepository;

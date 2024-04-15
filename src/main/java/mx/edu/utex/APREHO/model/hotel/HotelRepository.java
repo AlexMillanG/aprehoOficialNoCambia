@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Optional;
 @Repository
 public interface HotelRepository extends JpaRepository<Hotel,Long> {
+
     Optional<Hotel> findByEmail(String email);
     List<Hotel> findByCity(String city);
     Optional<Hotel> deleteByEmail(String email);

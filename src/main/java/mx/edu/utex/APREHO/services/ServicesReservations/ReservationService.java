@@ -85,6 +85,17 @@ public class ReservationService {
             return new ResponseEntity<>(new ApiResponse(repository.deleteByReservationId(id),false,"eliminado correctamente"),HttpStatus.OK);
     }
 
+    @Transactional(rollbackFor = {SQLException.class})
+    public ResponseEntity<ApiResponse> findByPerson(Long id){
+        People people = new People();
+        people.setPeopleId(id);
+        List<ReservationsBean> foundPerson = repository.findByPeople(people);
+        if (foundPerson.isEmpty())
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.NOT_FOUND,true,"no existen reservaciones de esa persona"), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new ApiResponse(foundPerson,HttpStatus.OK),HttpStatus.OK);
+
+    }
+
 
 
 }
