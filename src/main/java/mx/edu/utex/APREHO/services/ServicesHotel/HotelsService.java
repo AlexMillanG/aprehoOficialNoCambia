@@ -288,5 +288,17 @@ public class HotelsService {
     }
 
 
+    @Transactional(rollbackFor = SQLException.class)
+    public ResponseEntity<ApiResponse>countByUser(Long id){
+        User user = new User();
+        user.setUserId(id);
+
+        Optional<User> foundUser = userRepository.findById(id);
+
+        if (foundUser.isEmpty())
+        return new ResponseEntity<>(new ApiResponse(HttpStatus.NOT_FOUND,true,"error, no encontró el usuario"),HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(new ApiResponse(hotelRepository.countHotelByUser(user),HttpStatus.OK),HttpStatus.OK);
+    }
+
 
 }
