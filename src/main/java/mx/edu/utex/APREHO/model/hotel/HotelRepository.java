@@ -18,6 +18,7 @@ public interface HotelRepository extends JpaRepository<Hotel,Long> {
     List<Hotel> findByUser(User user);
     //List<Hotel> findAllByCity();
 
+    int countHotelByUser(User user);
 
 
 

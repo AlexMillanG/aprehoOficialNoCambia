@@ -88,4 +88,9 @@ public class RoomControllers {
     public ResponseEntity<ApiResponse> getByType(@RequestBody DtoRoom dtoRoom){
         return service.findByTypeAndHotel(dtoRoom.getType().getTypeName(),dtoRoom.getHotel().getHotelId());
     }
+
+    @GetMapping("/getCountByHotel/{id}")
+    public ResponseEntity<ApiResponse> countByUser(@PathVariable Long id){
+        return service.countByUser(id);
+    }
 }

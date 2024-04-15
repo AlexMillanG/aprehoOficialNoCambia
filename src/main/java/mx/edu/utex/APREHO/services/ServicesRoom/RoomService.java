@@ -11,6 +11,8 @@ import mx.edu.utex.APREHO.model.room.Room;
 import mx.edu.utex.APREHO.model.room.RoomRepository;
 import mx.edu.utex.APREHO.model.roomType.RoomType;
 import mx.edu.utex.APREHO.model.roomType.RoomTypeRepository;
+import mx.edu.utex.APREHO.model.user.User;
+import mx.edu.utex.APREHO.model.user.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -29,6 +31,7 @@ public class RoomService {
     private final HotelRepository hotelRepository;
     private  final RoomTypeRepository roomTypeRepository;
     private final ImageRepository imageRepository;
+    private final UserRepository userRepository;
 
     @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<ApiResponse> saveRoom(Room room){
@@ -203,6 +206,30 @@ public class RoomService {
     @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<ApiResponse> getAll(){
         return new ResponseEntity<>(new ApiResponse(roomRepository.findAll(), HttpStatus.OK),HttpStatus.OK);
+    }
+
+
+
+    @Transactional(rollbackFor = SQLException.class)
+    public ResponseEntity<ApiResponse>countByHotel(Long id){
+        Hotel hotel = new Hotel();
+        hotel.setHotelId(id);
+
+        Optional<Hotel> foundHotel = hotelRepository.findById(id);
+        if (foundHotel.isEmpty())
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.NOT_FOUND,true,"error, no encontró el hotel"),HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new ApiResponse(roomRepository.countAllByHotel(hotel),HttpStatus.OK),HttpStatus.OK);
+
+    }
+
+    @Transactional(rollbackFor = SQLException.class)
+    public ResponseEntity<ApiResponse>countByUser(Long id){
+        Optional<User> foundUser = userRepository.findById(id);
+
+        if (foundUser.isEmpty())
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.NOT_FOUND,true,"error, no encontró el usuario"),HttpStatus.NOT_FOUND);
+
+        return new ResponseEntity<>(new ApiResponse(roomRepository.countRoomsByUserId(id),HttpStatus.OK),HttpStatus.OK);
     }
 
 }

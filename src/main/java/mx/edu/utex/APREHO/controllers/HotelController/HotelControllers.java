@@ -130,6 +130,11 @@ import java.util.Set;
             return service.getCities();
         }
 
+        @GetMapping("/countByUsers/{idUser}")
+        public ResponseEntity<ApiResponse> countByUser(@PathVariable Long idUser){
+            return service.countByUser(idUser);
+        }
+
 
 
     }

@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import mx.edu.utex.APREHO.model.hotel.Hotel;
 import mx.edu.utex.APREHO.model.images.Images;
+import mx.edu.utex.APREHO.model.paymentHistory.PaymentHistory;
 import mx.edu.utex.APREHO.model.reservations.ReservationsBean;
 import mx.edu.utex.APREHO.model.roomType.RoomType;
 
@@ -72,4 +73,7 @@ public class Room {
     @JoinColumn(name = "hotelId")
     private Hotel hotel;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "room", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<PaymentHistory> paymentHistories;
 }
