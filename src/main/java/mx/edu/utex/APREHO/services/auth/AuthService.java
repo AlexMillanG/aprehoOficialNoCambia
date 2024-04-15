@@ -1,6 +1,8 @@
 package mx.edu.utex.APREHO.services.auth;
 
 import mx.edu.utex.APREHO.config.ApiResponse;
+import mx.edu.utex.APREHO.model.hotel.Hotel;
+import mx.edu.utex.APREHO.model.hotel.HotelRepository;
 import mx.edu.utex.APREHO.model.people.People;
 import mx.edu.utex.APREHO.model.people.PeopleRepository;
 import mx.edu.utex.APREHO.model.rol.Rol;
@@ -35,14 +37,16 @@ public class AuthService {
     private final UserRepository repository;
     private final RolRepository rolRepository;
     private final PeopleRepository peopleRepository;
+    private  final HotelRepository hotelRepository;
 
-    public AuthService(UserService userService, JwtProvider provider, AuthenticationManager manager, UserRepository repository, RolRepository rolRepository, PeopleRepository peopleRepository) {
+    public AuthService(UserService userService, JwtProvider provider, AuthenticationManager manager, UserRepository repository, RolRepository rolRepository, PeopleRepository peopleRepository, HotelRepository hotelRepository) {
         this.userService = userService;
         this.provider = provider;
         this.manager = manager;
         this.repository = repository;
         this.rolRepository = rolRepository;
         this.peopleRepository = peopleRepository;
+        this.hotelRepository = hotelRepository;
     }
 
     @Transactional
@@ -64,7 +68,16 @@ public class AuthService {
 
             Optional<Rol> rolFound=rolRepository.findByRolId(user.getRol().getRolId());
             Rol rol = rolFound.get();
-            DtoAuth dtoAuth1 = new DtoAuth(token, people1, user,rol);
+
+            Hotel hotel=new Hotel();
+            for (Hotel hotel1 : user.getHotel()) {
+                Optional<Hotel> foundHotel = hotelRepository.findById(hotel1.getHotelId());
+                if(foundHotel.isPresent()){
+                    hotel=foundHotel.get();
+                }
+
+            }
+            DtoAuth dtoAuth1 = new DtoAuth(token, people1, user,rol,hotel);
             //Clase DTO -> token, persona, id, user,
             return new ResponseEntity<>(new ApiResponse(dtoAuth1, HttpStatus.OK, false, "Token generado"), HttpStatus.OK);
         } catch (Exception e) {

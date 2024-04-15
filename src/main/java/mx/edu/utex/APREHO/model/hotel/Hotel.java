@@ -86,6 +86,7 @@ public class Hotel {
             joinColumns = @JoinColumn(name = "productId"),
             inverseJoinColumns = @JoinColumn(name = "hotelId"))
     Set<Products> products = new HashSet<>();
+
     @JsonIgnore
     @OneToMany(mappedBy = "hotel", fetch = FetchType.EAGER)
     private Set<RoomType> roomTypes;

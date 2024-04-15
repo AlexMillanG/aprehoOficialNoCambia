@@ -156,6 +156,39 @@ public class UserService {
     }
 
     @Transactional(rollbackFor = {SQLException.class})
+    public ResponseEntity<ApiResponse> deleteReceptionist(Long userId) {
+        try {
+            Optional<User> userToDeleteOpt = repository.findById(userId);
+
+            if (!userToDeleteOpt.isPresent()) {
+                return new ResponseEntity<>(new ApiResponse(HttpStatus.NOT_FOUND, true, "Usuario no encontrado"), HttpStatus.NOT_FOUND);
+            }
+
+            User userToDelete = userToDeleteOpt.get();
+
+            Set<Hotel> userHotels = userToDelete.getHotel();
+            if (!userHotels.isEmpty()) {
+                for (Hotel hotel : userHotels) {
+                    hotel.getUser().remove(userToDelete);
+                    hotelRepository.saveAndFlush(hotel);
+                }
+            }
+
+            People people = userToDelete.getPeople();
+            if (people != null) {
+                people.setUser(null);
+                peopleRepository.delete(people);
+            }
+
+            repository.delete(userToDelete);
+
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.OK, false, "Usuario eliminado exitosamente"), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.INTERNAL_SERVER_ERROR, true, "Error interno del servidor"), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<ApiResponse> save(User user) {
         if (!user.isValid(user.getEmail(), user.getPassword())) {
             return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "Uno o algunos de los campos estan vacios"), HttpStatus.BAD_REQUEST);
