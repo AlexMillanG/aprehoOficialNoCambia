@@ -9,6 +9,7 @@ import lombok.Setter;
 import mx.edu.utex.APREHO.model.hotel.Hotel;
 import mx.edu.utex.APREHO.model.products.Products;
 import mx.edu.utex.APREHO.model.reservations.ReservationsBean;
+import mx.edu.utex.APREHO.model.room.Room;
 import mx.edu.utex.APREHO.model.user.User;
 
 import java.time.LocalDate;
@@ -49,6 +50,14 @@ public class PaymentHistory {
     private User user;
 
 
+
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "roomId") // Columna en PaymentHistory que hace referencia a Room
+    private Room room; // Relación muchos-a-uno con Room
+
+
+
     public PaymentHistory(Long paymentHistoryId, LocalDate checkout, Double total, Boolean paymentStatus,Set <Products> products, ReservationsBean reservations, Hotel hotel, User user) {
         this.paymentHistoryId = paymentHistoryId;
         this.checkout = checkout;
@@ -59,5 +68,9 @@ public class PaymentHistory {
         this.hotel = hotel;
         this.user = user;
     }
+
+
+
+
 }
 
