@@ -77,7 +77,7 @@ public class ReservationService {
     }
 
     @Transactional(rollbackFor = {SQLException.class})
-    public ResponseEntity<ApiResponse> saveReservationsRecepsionist(ReservationsBean reservations){
+    public ResponseEntity<ApiResponse> saveReservationsReceptionist(ReservationsBean reservations){
 
         //verifica que este asociada a un hotel
         Optional<Hotel> foundHotel = hotelRepository.findById(reservations.getHotel().getHotelId());
