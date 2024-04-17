@@ -2,14 +2,17 @@ package mx.edu.utex.APREHO.services.ServicesProducts;
 
 import lombok.AllArgsConstructor;
 import mx.edu.utex.APREHO.config.ApiResponse;
+import mx.edu.utex.APREHO.model.hotel.Hotel;
 import mx.edu.utex.APREHO.model.products.ProductRepository;
 import mx.edu.utex.APREHO.model.products.Products;
+import mx.edu.utex.APREHO.model.user.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -22,6 +25,20 @@ public class ProductsService {
         return new ResponseEntity<>(new ApiResponse(repository.findAll(), HttpStatus.OK), HttpStatus.OK);
     }
 
+    @Transactional(rollbackFor = {SQLException.class})
+    //se espera un id
+    public ResponseEntity<ApiResponse> findProductsByHotel(Long id){
+        //se crea un objeto usuario
+        Hotel hotel = new Hotel();
+        //a este objeto se le setea la id obtenida
+        hotel.setHotelId(id);
+        //crea una lista de hoteles que coincida con el usuario
+        List<Products> foundUsersHotels = repository.findByHotel(hotel);
+        //valida que encuentre registros
+        if (foundUsersHotels.isEmpty())
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.NOT_FOUND,true,"No se encontraron hoteles relacionados a este usuario"),HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(new ApiResponse(foundUsersHotels,HttpStatus.OK),HttpStatus.OK);
+    }
     @Transactional(rollbackFor = {SQLException.class})
 public ResponseEntity<ApiResponse> save(Products product){
         Optional<Products> foundProducto = repository.findByProductName(product.getProductName());
