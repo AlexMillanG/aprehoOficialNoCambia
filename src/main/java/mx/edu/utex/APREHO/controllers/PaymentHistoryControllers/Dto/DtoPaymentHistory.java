@@ -21,7 +21,8 @@ public class DtoPaymentHistory {
     private Hotel hotel;
     private Set<Products> products;
     private ReservationsBean reservation;
+    private Room room;
     public PaymentHistory toEntity(){
-        return new PaymentHistory(paymentHistoryId,checkout,total,paymentStatus,products,reservation,hotel,user);
+        return new PaymentHistory(paymentHistoryId,checkout,total,paymentStatus,products,reservation,hotel,user,room);
     }
 }

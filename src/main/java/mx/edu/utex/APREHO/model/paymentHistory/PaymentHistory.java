@@ -30,8 +30,13 @@ public class PaymentHistory {
     @Column(nullable = false)
     private  Boolean paymentStatus;
 
-
-    @OneToMany(mappedBy = "paymentHistory", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+@JsonIgnore
+    @ManyToMany
+    @JoinTable(
+            name = "payment_history_products",
+            joinColumns = @JoinColumn(name = "payment_history_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id")
+    )
     private Set<Products> products;
 
     @JsonIgnore
@@ -70,7 +75,16 @@ public class PaymentHistory {
     }
 
 
-
-
+    public PaymentHistory(Long paymentHistoryId, LocalDate checkout, Double total, Boolean paymentStatus, Set<Products> products, ReservationsBean reservations, Hotel hotel, User user, Room room) {
+        this.paymentHistoryId = paymentHistoryId;
+        this.checkout = checkout;
+        this.total = total;
+        this.paymentStatus = paymentStatus;
+        this.products = products;
+        this.reservations = reservations;
+        this.hotel = hotel;
+        this.user = user;
+        this.room = room;
+    }
 }
 

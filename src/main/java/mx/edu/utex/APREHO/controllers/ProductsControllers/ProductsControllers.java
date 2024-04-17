@@ -27,10 +27,6 @@ private final ProductsService service;
         return service.saveChido(dto);
     }
 
-    @PostMapping("/association")
-    public ResponseEntity<ApiResponse> association(@RequestBody DtoAsosiate dtoAsosiate){
-        return service.asosiationHotel(dtoAsosiate.getHotelId(),dtoAsosiate.getProductId());
-    }
 
 
     @PutMapping("/{id}")

@@ -23,12 +23,15 @@ public class PaymentHistoryControllers {
     public ResponseEntity<ApiResponse> save(@RequestBody DtoPaymentHistory dtoPaymentHistory){
         return service.savePayment(dtoPaymentHistory.toEntity());
     }
+
     @GetMapping("/")
     public ResponseEntity<ApiResponse> g() {
         Iterable<PaymentHistory> datos = repository.findAll(); // Reemplaza 'TipoDeTuEntidad' con el tipo real de tus entidades
         ApiResponse response = new ApiResponse(datos, HttpStatus.OK);
         return ResponseEntity.ok(response);
     }
+
+
 
 
 

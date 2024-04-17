@@ -61,9 +61,9 @@ public class Products {
     Set<Hotel> hotel;
 
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "paymentHistoryId")
-    private PaymentHistory paymentHistory;
+
+    @ManyToMany(mappedBy = "products")
+    private Set<PaymentHistory> paymentHistories;
 
 
 
