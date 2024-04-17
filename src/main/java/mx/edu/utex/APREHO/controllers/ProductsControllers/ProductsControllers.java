@@ -29,7 +29,8 @@ private final ProductsService service;
 
     @PostMapping("/saveDos")
     public ResponseEntity<ApiResponse> saveDos(@RequestBody DtoProducts dto) {
-        return service.saveDos(dto.toEntity());
+        System.err.println(dto.toEntity().toString());
+        return service.saveTres(dto.toEntity());
     }
 
 

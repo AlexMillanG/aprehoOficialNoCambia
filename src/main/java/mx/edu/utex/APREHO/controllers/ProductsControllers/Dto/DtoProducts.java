@@ -16,7 +16,6 @@ public class DtoProducts {
     private String productDescription;
     private int quantity;
     private Long hotelId;
-    private Set<Hotel> hotels;
     public Products toEntity() {
         return new Products(productId,productName, price, productDescription, quantity,hotelId);
     }
@@ -25,11 +24,7 @@ public class DtoProducts {
         return new Products(productId, productName, price, productDescription, quantity);
     }
 
-    public Products toEntitySave(){
 
-        System.err.println(hotels);
-        return new Products(productId,productName,price,productDescription,quantity,hotels);
-    }
 
 
 }

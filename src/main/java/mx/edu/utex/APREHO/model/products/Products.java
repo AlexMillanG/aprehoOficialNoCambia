@@ -70,4 +70,14 @@ public class Products {
     private PaymentHistory paymentHistory;
 
 
+    @Override
+    public String toString() {
+        return "Products{" +
+                "hotelId=" + hotelId +
+                ", productId=" + productId +
+                ", productName='" + productName + '\'' +
+                ", price=" + price +
+                ", productDescription='" + productDescription + '\'' +
+                ", quantity=" + quantity;
+    }
 }

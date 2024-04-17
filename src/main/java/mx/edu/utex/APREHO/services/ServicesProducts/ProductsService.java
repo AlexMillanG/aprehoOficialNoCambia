@@ -1,5 +1,6 @@
 package mx.edu.utex.APREHO.services.ServicesProducts;
 
+import jakarta.persistence.EntityManager;
 import lombok.AllArgsConstructor;
 import mx.edu.utex.APREHO.config.ApiResponse;
 import mx.edu.utex.APREHO.controllers.ProductsControllers.Dto.DtoProducts;
@@ -14,10 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @Transactional
@@ -25,6 +23,7 @@ import java.util.Set;
 public class ProductsService {
     private final ProductRepository repository;
     private final HotelRepository hotelRepository;
+    private EntityManager entityManager;
 
     public ResponseEntity<ApiResponse> getAll(){
         return new ResponseEntity<>(new ApiResponse(repository.findAll(), HttpStatus.OK), HttpStatus.OK);
@@ -96,32 +95,70 @@ public class ProductsService {
         // Devolver respuesta de éxito
         return new ResponseEntity<>(new ApiResponse(HttpStatus.OK, false, "Producto registrado"), HttpStatus.OK);
     }
+
+
     @Transactional(rollbackFor = {SQLException.class})
-    public ResponseEntity<ApiResponse> saveDos(Products products){
-        Optional<Products> foundProduct = repository.findById(products.getProductId());
-        if (foundProduct.isEmpty())
-        return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "ya se ha registrado ese producto"), HttpStatus.BAD_REQUEST);
+    public ResponseEntity<ApiResponse> saveTres(Products products){
+        Optional<Hotel> foundHotel = hotelRepository.findById(products.getHotelId());
+        if (foundHotel.isEmpty())
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "No se ha encontrado el hotel asociado"), HttpStatus.BAD_REQUEST);
 
-       Optional<Hotel> foundHotel = hotelRepository.findById(products.getHotelId());
-       if (foundHotel.isEmpty())
-        return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "no se ha encontrado el hotel asociado"), HttpStatus.BAD_REQUEST);
+        Products products1 = new Products();
 
-       Products products1 = new Products();
-       products1.setProductDescription(products.getProductDescription());
-       products1.setProductName(products.getProductName());
-       products1.setPrice(products.getPrice());
-       products1.setQuantity(products.getQuantity());
+        products1.setProductName(products.getProductName());
+        products1.setProductDescription(products.getProductDescription());
+        products1.setPrice(products.getPrice());
+        products1.setQuantity(products.getQuantity());
 
+        // Usar persist() en lugar de saveAndFlush()
+        repository.save(products1);
+        entityManager.flush(); // Forzar la sincronización con la base de datos
 
-       Hotel hotel = new Hotel();
-       Set<Hotel> hotels = new HashSet<>();
-       hotels.add(hotel);
-       products1.setHotel(hotels);
-       repository.saveAndFlush(products1);
+        // Obtener el ID del producto después de guardarlo
+        Long productId = products1.getProductId();
+        Long hotelId = products.getHotelId();
 
-        return new ResponseEntity<>(new ApiResponse(HttpStatus.OK,false,"guardado con exito"),HttpStatus.OK);
+        System.err.println("product: " + productId);
+        System.err.println("hotel: " + hotelId);
+
+        // Verificar si el productId es nulo o cero
+        if (productId == null || productId == 0) {
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.INTERNAL_SERVER_ERROR, true, "Error al guardar el producto"), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        // Crear la relación entre el producto y el hotel en la tabla hotelproducts
+        repository.saveHotelProducts(productId, hotelId);
+
+        return new ResponseEntity<>(new ApiResponse(HttpStatus.OK, false, "Guardado con éxito"), HttpStatus.OK);
     }
 
+
+
+
+
+    @Transactional(rollbackFor = {SQLException.class})
+    public ResponseEntity<ApiResponse> saveDosTres(Products products) {
+        Optional<Products> foundProduct = repository.findById(products.getProductId());
+        if (foundProduct.isPresent()) {
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "Ya se ha registrado ese producto"), HttpStatus.BAD_REQUEST);
+        }
+
+        Optional<Hotel> foundHotel = hotelRepository.findById(products.getHotelId());
+        if (foundHotel.isEmpty()) {
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "No se ha encontrado el hotel asociado"), HttpStatus.BAD_REQUEST);
+        }
+
+        // Obtener el hotel asociado al producto
+        Hotel hotel = foundHotel.get();
+
+        // Asignar el hotel al producto
+        products.setHotel(Collections.singleton(hotel));
+
+        // Guardar el producto en la base de datos
+        repository.saveAndFlush(products);
+
+        return new ResponseEntity<>(new ApiResponse(HttpStatus.OK,false,"Guardado con éxito"),HttpStatus.OK);
+    }
 
 
 
