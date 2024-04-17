@@ -32,7 +32,7 @@ public class HotelsService {
     private final UserRepository userRepository;
     private final ImageRepository imageRepository;
 
-    /*
+
     @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<ApiResponse> saveHotel(Hotel hotel) {
         Optional<Hotel> foundHotel = hotelRepository.findByEmail(hotel.getEmail());
@@ -57,7 +57,7 @@ public class HotelsService {
                 return new ResponseEntity<>(new ApiResponse(HttpStatus.OK, false, "Guardado correctamente"), HttpStatus.OK);
             }
         }
-    }*/
+    }
 
 
     //trae todos los registros de hotel, junto con el estado de la petición

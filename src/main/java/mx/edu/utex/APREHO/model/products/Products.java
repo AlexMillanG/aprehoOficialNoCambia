@@ -16,6 +16,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Products {
+    private Long hotelId;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long productId;
@@ -43,6 +44,24 @@ public class Products {
         this.quantity = quantity;
     }
 
+    public Products(Long productId, String productName, int price, String productDescription, int quantity, Set<Hotel> hotel) {
+        this.productId = productId;
+        this.productName = productName;
+        this.price = price;
+        this.productDescription = productDescription;
+        this.quantity = quantity;
+        this.hotel = hotel;
+    }
+
+    public Products(Long productId, String productName, int price, String productDescription, int quantity,Long hotelId) {
+        this.hotelId = hotelId;
+        this.productId = productId;
+        this.productName = productName;
+        this.price = price;
+        this.productDescription = productDescription;
+        this.quantity = quantity;
+    }
+
     @ManyToMany(mappedBy = "products")
     Set<Hotel> hotel;
 
@@ -51,4 +70,14 @@ public class Products {
     private PaymentHistory paymentHistory;
 
 
+    @Override
+    public String toString() {
+        return "Products{" +
+                "hotelId=" + hotelId +
+                ", productId=" + productId +
+                ", productName='" + productName + '\'' +
+                ", price=" + price +
+                ", productDescription='" + productDescription + '\'' +
+                ", quantity=" + quantity;
+    }
 }
