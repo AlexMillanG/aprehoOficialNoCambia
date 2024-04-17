@@ -33,9 +33,8 @@ private final ProductsService service;
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse> delete(@PathVariable long id){return service.delete(id);}
 
-    @GetMapping("/findByHotelody")
-    public ResponseEntity<ApiResponse> findByUserBody(@RequestBody DtoUser dtoUser){
-        Long id = dtoUser.getUserId();
-        return service.findProductsByHotel(id);
+    @GetMapping("/findByHotel/{hotelId}")
+    public ResponseEntity<ApiResponse> findByUserBody(@PathVariable Long hotelId){
+        return service.findProductsByHotel(hotelId);
     }
 }

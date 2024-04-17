@@ -36,7 +36,7 @@ public class ProductsService {
         List<Products> foundUsersHotels = repository.findByHotel(hotel);
         //valida que encuentre registros
         if (foundUsersHotels.isEmpty())
-            return new ResponseEntity<>(new ApiResponse(HttpStatus.NOT_FOUND,true,"No se encontraron hoteles relacionados a este usuario"),HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.NOT_FOUND,true,"No se encontraron productos para este hotel"),HttpStatus.NOT_FOUND);
         return new ResponseEntity<>(new ApiResponse(foundUsersHotels,HttpStatus.OK),HttpStatus.OK);
     }
     @Transactional(rollbackFor = {SQLException.class})
