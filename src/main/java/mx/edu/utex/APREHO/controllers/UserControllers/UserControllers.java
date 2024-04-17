@@ -33,10 +33,11 @@ public class UserControllers {
         return service.saveReceptionist(user.toReceptionst());
     }
 
+
+
     @GetMapping("/findAll")
     public ResponseEntity<ApiResponse> findAll(){
         ResponseEntity<ApiResponse> users=service.getAll();
-        System.err.println(users.toString());
         return users;
     }
 
