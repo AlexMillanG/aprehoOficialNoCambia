@@ -2,6 +2,7 @@ package mx.edu.utex.APREHO.controllers.ProductsControllers;
 
 import lombok.AllArgsConstructor;
 import mx.edu.utex.APREHO.config.ApiResponse;
+import mx.edu.utex.APREHO.controllers.ProductsControllers.Dto.DtoAsosiate;
 import mx.edu.utex.APREHO.controllers.ProductsControllers.Dto.DtoProducts;
 import mx.edu.utex.APREHO.controllers.UserControllers.Dto.DtoUser;
 import mx.edu.utex.APREHO.services.ServicesProducts.ProductsService;
@@ -31,6 +32,12 @@ private final ProductsService service;
     public ResponseEntity<ApiResponse> saveDos(@RequestBody DtoProducts dto) {
         System.err.println(dto.toEntity().toString());
         return service.saveTres(dto.toEntity());
+    }
+
+
+    @PostMapping("/association")
+    public ResponseEntity<ApiResponse> association(@RequestBody DtoAsosiate dtoAsosiate){
+        return service.asosiationHotel(dtoAsosiate.getHotelId(),dtoAsosiate.getProductId());
     }
 
 

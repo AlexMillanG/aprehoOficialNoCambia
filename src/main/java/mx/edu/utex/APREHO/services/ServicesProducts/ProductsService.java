@@ -110,6 +110,11 @@ public class ProductsService {
         products1.setPrice(products.getPrice());
         products1.setQuantity(products.getQuantity());
 
+        Hotel hotel = new Hotel();
+        hotel.setHotelId(products.getHotelId());
+        Set<Hotel> hotels = new HashSet<>();
+
+        products1.setHotel(hotels);
         // Usar persist() en lugar de saveAndFlush()
         repository.save(products1);
         entityManager.flush(); // Forzar la sincronización con la base de datos
@@ -121,18 +126,18 @@ public class ProductsService {
         System.err.println("product: " + productId);
         System.err.println("hotel: " + hotelId);
 
-        // Verificar si el productId es nulo o cero
-        if (productId == null || productId == 0) {
-            return new ResponseEntity<>(new ApiResponse(HttpStatus.INTERNAL_SERVER_ERROR, true, "Error al guardar el producto"), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
 
         // Crear la relación entre el producto y el hotel en la tabla hotelproducts
-        repository.saveHotelProducts(productId, hotelId);
 
-        return new ResponseEntity<>(new ApiResponse(HttpStatus.OK, false, "Guardado con éxito"), HttpStatus.OK);
+        return new ResponseEntity<>(new ApiResponse(products1,HttpStatus.OK, false, "Guardado con éxito"), HttpStatus.OK);
     }
 
 
+    @Transactional(rollbackFor = {SQLException.class})
+    public ResponseEntity<ApiResponse>asosiationHotel(Long hotelId, Long productId){
+        repository.saveHotelProducts(productId,hotelId);
+        return new ResponseEntity<>(new ApiResponse(HttpStatus.OK,false,"asociado con exito"),HttpStatus.OK);
+    }
 
 
 
