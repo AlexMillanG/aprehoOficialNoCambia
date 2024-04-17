@@ -55,7 +55,8 @@ public class Room {
         this.hotel = hotel;
     }
 
-    @JsonBackReference
+
+    @JsonIgnore
     @OneToMany(mappedBy = "room", fetch = FetchType.LAZY)
     private Set<ReservationsBean> reservations;
 

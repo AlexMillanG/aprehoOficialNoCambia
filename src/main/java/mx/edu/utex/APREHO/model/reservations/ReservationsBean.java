@@ -39,7 +39,7 @@ public class ReservationsBean {
     @JoinColumn(name = "peopleId")
     private People people;
 
-    @JsonManagedReference
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "roomId")
     private Room room;
@@ -69,7 +69,7 @@ public class ReservationsBean {
     }
 
 
-    @JsonManagedReference
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "hotel_id")
     private Hotel hotel;

@@ -44,6 +44,7 @@ public class People {
     @OneToOne(mappedBy = "people", cascade = CascadeType.ALL)
     private User user;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "people", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<ReservationsBean> reservations;
 

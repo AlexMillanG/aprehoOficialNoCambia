@@ -90,7 +90,7 @@
         private Set<RoomType> roomTypes;
     
     
-        @JsonBackReference
+        @JsonIgnore
         @OneToMany(mappedBy = "hotel", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
         private Set<ReservationsBean> reservations;
     
