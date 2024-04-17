@@ -1,5 +1,6 @@
 package mx.edu.utex.APREHO.model.room;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -54,8 +55,7 @@ public class Room {
         this.hotel = hotel;
     }
 
-
-    @JsonIgnore
+    @JsonBackReference
     @OneToMany(mappedBy = "room", fetch = FetchType.LAZY)
     private Set<ReservationsBean> reservations;
 

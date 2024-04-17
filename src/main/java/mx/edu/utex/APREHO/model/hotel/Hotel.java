@@ -1,5 +1,6 @@
 package mx.edu.utex.APREHO.model.hotel;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
@@ -92,7 +93,7 @@ public class Hotel {
     private Set<RoomType> roomTypes;
 
 
-    @JsonIgnore
+    @JsonBackReference
     @OneToMany(mappedBy = "hotel", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<ReservationsBean> reservations;
 
