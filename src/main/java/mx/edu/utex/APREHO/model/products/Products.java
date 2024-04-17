@@ -56,8 +56,8 @@ public class Products {
 
     @ManyToMany
     @JoinTable(name="hotelproducts",
-            joinColumns = @JoinColumn(name = "hotelId"),
-            inverseJoinColumns = @JoinColumn(name = "productId"))
+            joinColumns = @JoinColumn(name = "productId"),
+            inverseJoinColumns = @JoinColumn(name = "hotelId"))
     Set<Hotel> hotel;
 
 

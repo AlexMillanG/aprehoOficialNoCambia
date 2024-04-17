@@ -168,32 +168,32 @@ public class ProductsService {
 
 
     @Transactional(rollbackFor = {Exception.class})
-    public ResponseEntity<ApiResponse>saveChido(DtoProducts dtoProducts){
+    public ResponseEntity<ApiResponse> saveChido(DtoProducts dtoProducts) {
         Optional<Hotel> foundHotel = hotelRepository.findById(dtoProducts.getHotelId());
         if (foundHotel.isEmpty())
-        return new ResponseEntity<>(new ApiResponse(HttpStatus.NOT_FOUND, true, "No se encontró el hotel relacionado"), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.NOT_FOUND, true, "No se encontró el hotel relacionado"), HttpStatus.NOT_FOUND);
+
         Optional<Products> foundProduct = repository.findByProductName(dtoProducts.getProductName());
         if (!foundProduct.isEmpty())
             return new ResponseEntity<>(new ApiResponse(HttpStatus.NOT_FOUND, true, "Ya se ha registrado este producto"), HttpStatus.NOT_FOUND);
 
-
         Products products = new Products();
-
         products.setProductDescription(dtoProducts.getProductDescription());
         products.setQuantity(dtoProducts.getQuantity());
         products.setPrice(dtoProducts.getPrice());
         products.setProductName(dtoProducts.getProductName());
 
-        Hotel hotel = new Hotel();
-        hotel.setHotelId(dtoProducts.getHotelId());
+        // Obtener el hotel existente desde la base de datos
+        Hotel hotel = foundHotel.get();
+        // Agregar el hotel al conjunto de hoteles del producto
         Set<Hotel> hotels = new HashSet<>();
         hotels.add(hotel);
         products.setHotel(hotels);
 
         repository.save(products);
         return new ResponseEntity<>(new ApiResponse(HttpStatus.OK, false, "Producto registrado"), HttpStatus.OK);
-
     }
+
 
 
     @Transactional(rollbackFor = {Exception.class})
