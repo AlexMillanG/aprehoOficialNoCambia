@@ -16,7 +16,6 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Products {
-    private Long hotelId;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long productId;
@@ -53,31 +52,19 @@ public class Products {
         this.hotel = hotel;
     }
 
-    public Products(Long productId, String productName, int price, String productDescription, int quantity,Long hotelId) {
-        this.hotelId = hotelId;
-        this.productId = productId;
-        this.productName = productName;
-        this.price = price;
-        this.productDescription = productDescription;
-        this.quantity = quantity;
-    }
 
-    @ManyToMany(mappedBy = "products")
+
+    @ManyToMany
+    @JoinTable(name="hotelproducts",
+            joinColumns = @JoinColumn(name = "hotelId"),
+            inverseJoinColumns = @JoinColumn(name = "productId"))
     Set<Hotel> hotel;
+
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "paymentHistoryId")
     private PaymentHistory paymentHistory;
 
 
-    @Override
-    public String toString() {
-        return "Products{" +
-                "hotelId=" + hotelId +
-                ", productId=" + productId +
-                ", productName='" + productName + '\'' +
-                ", price=" + price +
-                ", productDescription='" + productDescription + '\'' +
-                ", quantity=" + quantity;
-    }
+
 }

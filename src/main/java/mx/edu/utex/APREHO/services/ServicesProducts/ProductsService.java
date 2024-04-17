@@ -46,7 +46,7 @@ public class ProductsService {
 
 
 
-
+/*
     @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<ApiResponse> save(DtoProducts product){
         // Verificar si el hotel asociado al producto existe
@@ -90,13 +90,13 @@ public class ProductsService {
                         return new ResponseEntity<>(new ApiResponse(HttpStatus.BAD_REQUEST, true, "Error, no se ha encontrado el usuario asociado"), HttpStatus.BAD_REQUEST);
 
 
-        */
+
 
         // Devolver respuesta de éxito
         return new ResponseEntity<>(new ApiResponse(HttpStatus.OK, false, "Producto registrado"), HttpStatus.OK);
     }
-
-
+*/
+/*
     @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<ApiResponse> saveTres(Products products){
         Optional<Hotel> foundHotel = hotelRepository.findById(products.getHotelId());
@@ -130,7 +130,7 @@ public class ProductsService {
         // Crear la relación entre el producto y el hotel en la tabla hotelproducts
 
         return new ResponseEntity<>(new ApiResponse(products1,HttpStatus.OK, false, "Guardado con éxito"), HttpStatus.OK);
-    }
+    }*/
 
 
     @Transactional(rollbackFor = {SQLException.class})
@@ -140,7 +140,7 @@ public class ProductsService {
     }
 
 
-
+/*
     @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<ApiResponse> saveDosTres(Products products) {
         Optional<Products> foundProduct = repository.findById(products.getProductId());
@@ -164,8 +164,36 @@ public class ProductsService {
 
         return new ResponseEntity<>(new ApiResponse(HttpStatus.OK,false,"Guardado con éxito"),HttpStatus.OK);
     }
+*/
 
 
+    @Transactional(rollbackFor = {Exception.class})
+    public ResponseEntity<ApiResponse>saveChido(DtoProducts dtoProducts){
+        Optional<Hotel> foundHotel = hotelRepository.findById(dtoProducts.getHotelId());
+        if (foundHotel.isEmpty())
+        return new ResponseEntity<>(new ApiResponse(HttpStatus.NOT_FOUND, true, "No se encontró el hotel relacionado"), HttpStatus.NOT_FOUND);
+        Optional<Products> foundProduct = repository.findByProductName(dtoProducts.getProductName());
+        if (!foundProduct.isEmpty())
+            return new ResponseEntity<>(new ApiResponse(HttpStatus.NOT_FOUND, true, "Ya se ha registrado este producto"), HttpStatus.NOT_FOUND);
+
+
+        Products products = new Products();
+
+        products.setProductDescription(dtoProducts.getProductDescription());
+        products.setQuantity(dtoProducts.getQuantity());
+        products.setPrice(dtoProducts.getPrice());
+        products.setProductName(dtoProducts.getProductName());
+
+        Hotel hotel = new Hotel();
+        hotel.setHotelId(dtoProducts.getHotelId());
+        Set<Hotel> hotels = new HashSet<>();
+        hotels.add(hotel);
+        products.setHotel(hotels);
+
+        repository.save(products);
+        return new ResponseEntity<>(new ApiResponse(HttpStatus.OK, false, "Producto registrado"), HttpStatus.OK);
+
+    }
 
 
     @Transactional(rollbackFor = {Exception.class})

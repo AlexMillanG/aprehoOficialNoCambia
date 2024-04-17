@@ -24,16 +24,10 @@ private final ProductsService service;
 
     @PostMapping("/save")
     public ResponseEntity<ApiResponse> save(@RequestBody DtoProducts dto) {
-        return service.save(dto);
+        return service.saveChido(dto);
+
+
     }
-
-
-    @PostMapping("/saveDos")
-    public ResponseEntity<ApiResponse> saveDos(@RequestBody DtoProducts dto) {
-        System.err.println(dto.toEntity().toString());
-        return service.saveTres(dto.toEntity());
-    }
-
 
     @PostMapping("/association")
     public ResponseEntity<ApiResponse> association(@RequestBody DtoAsosiate dtoAsosiate){
