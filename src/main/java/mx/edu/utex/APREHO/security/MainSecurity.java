@@ -38,7 +38,8 @@ public class MainSecurity {
             "/api/user/findOne/{id}/**",
             "/api/reservation/getByPerson/{id}/**",
             "/api/room/delete/{id}/**",
-            "/api/user/saveReceptionist/**"
+            "/api/user/saveReceptionist/**",
+            "/**"
     };
     private final UserDetailsServiceImpl service;
 

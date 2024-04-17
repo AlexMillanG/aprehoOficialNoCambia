@@ -23,8 +23,15 @@ private final ProductsService service;
 
     @PostMapping("/save")
     public ResponseEntity<ApiResponse> save(@RequestBody DtoProducts dto) {
-        return service.save(dto.toEntity());
+        return service.save(dto);
     }
+
+
+    @PostMapping("/saveDos")
+    public ResponseEntity<ApiResponse> saveDos(@RequestBody DtoProducts dto) {
+        return service.saveDos(dto.toEntity());
+    }
+
 
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse> update(@PathVariable long id,@RequestBody DtoProducts dto){return service.update(id,dto.toEntityId());}

@@ -52,6 +52,7 @@ import java.util.Set;
         //elimina un registro por id se obtiene por body
         @DeleteMapping("/deleteBody")
         public ResponseEntity<ApiResponse>deleteBody(@RequestBody DtoHotel dtoHotel){
+            System.err.println(dtoHotel);
             return service.deleteHotel(dtoHotel.getHotelId());
         }
 
